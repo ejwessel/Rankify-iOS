@@ -8,12 +8,15 @@
 
 #import "ViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "FriendData.h"
 
 @interface ViewController () <FBLoginViewDelegate>
 
 @end
 
 @implementation ViewController
+
+@synthesize friendList;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -43,6 +46,9 @@
     loginview.delegate = self;
     [self.view addSubview:loginview];
     [loginview sizeToFit];
+    
+    friendList = [[NSMutableDictionary alloc] init];
+    [self getFriends];
 }
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
@@ -60,7 +66,7 @@
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               if (!error) {
                                   // Sucess! Include your code to handle the results here
-                                  NSLog(@"user events: %@", result);
+                                  //NSLog(@"user events: %@", result);
                               } else {
                                   // An error occurred, we need to handle the error
                                   // See: https://developers.facebook.com/docs/ios/errors
@@ -72,6 +78,32 @@
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) getFriends {
+    [FBRequestConnection startWithGraphPath:@"me/?fields=friends"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              if (!error) {
+                                  //NSLog(@"%@", result);
+                                  
+                                  NSArray *friendArray = [[result objectForKey:@"friends"] objectForKey:@"data"];
+                                  //NSLog(@"%@", friendArray);
+                                  
+                                  for (NSDictionary *friend in friendArray ){
+                                      NSString *user_id = [friend objectForKey:@"id"];
+                                      //FriendData *friendObject = [[FriendData alloc] initWithDefault];
+                                      [friendList setObject:[[FriendData alloc] initWithDefault] forKey:user_id];
+                                      
+                                  }
+                                  
+                                  
+                                  NSLog(@"%@", friendList);
+                                  
+                                  NSLog(@"%i", [[friendList objectForKey:(@"100000054880541")] totalLikes]);
+                              } else {
+                                  NSLog(@"%@", error);
+                              }
+                          }];
 }
 
 @end
