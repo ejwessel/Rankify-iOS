@@ -49,6 +49,7 @@
     
     friendList = [[NSMutableDictionary alloc] init];
     [self getFriends];
+    
 }
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
@@ -73,6 +74,9 @@
                                   NSLog(@"data not retrieved");
                               }
                           }];
+    
+    FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
+    
 }
 
 - (void)didReceiveMemoryWarning{
