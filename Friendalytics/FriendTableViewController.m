@@ -13,7 +13,7 @@
 @end
 
 @implementation FriendTableViewController
-@synthesize data;
+@synthesize friendData;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -23,8 +23,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -32,10 +31,10 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSLog(@"total friends: %i",friendData.count);
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -44,18 +43,25 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return data.count;
+    return friendData.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text = @"TEST";
+    
+    int index = [indexPath indexAtPosition:[indexPath length] - 1];
+    NSDictionary *element = [friendData objectAtIndex:index];
+    NSString *firstName = [[element objectForKey:@"User"] objectForKey:@"firstName"];
+    NSString *lastName = [[element objectForKey:@"User"] objectForKey:@"lastName"];
+    NSString *fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+    cell.textLabel.text = fullName;
     return cell;
 }
 

@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FriendTableViewController.h"
 
 @interface CalculateViewController : UIViewController
 
+@property NSString *userId;
+@property NSString *accessToken;
+@property NSArray *friendData;
+
+- (void) requestUsers;
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 @end

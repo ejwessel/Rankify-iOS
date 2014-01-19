@@ -7,7 +7,6 @@
 //
 
 #import "LoginViewController.h"
-#import "FriendData.h"
 
 @interface LoginViewController () <FBLoginViewDelegate>
 
@@ -17,6 +16,8 @@
 
 @synthesize friendList;
 @synthesize loginView;
+@synthesize userId;
+@synthesize accessToken;
 @synthesize calculateButton;
 
 - (void)viewDidLoad{
@@ -39,8 +40,7 @@
     calculateButton.enabled = false;
     calculateButton.layer.borderWidth = 1.0;
     calculateButton.layer.cornerRadius = 5;
-    
-    [calculateButton addTarget:self action:@selector(calculateButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    calculateButton.layer.borderColor = calculateButton.titleLabel.textColor.CGColor;
     
 //    loginView.frame = CGRectOffset(loginView.frame, 5, 5);
 //#ifdef __IPHONE_7_0
@@ -57,7 +57,7 @@
     
 }
 
-- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
+- (void) loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
 //    // here we use helper properties of FBGraphUser to dot-through to first_name and
 //    // id properties of the json response from the server; alternatively we could use
 //    // NSDictionary methods such as objectForKey to get values from the my json object
@@ -71,12 +71,12 @@
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               if (!error) {
                                   //send the access token and user id if successfully logged in.
-                                  NSString *userId = [result objectForKey:@"id"];
+                                  userId = [result objectForKey:@"id"];
                                   FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
-                                  [self sendAccessToken:(NSString*)token withUserID:userId];
-                                  [self requestUsers];
+                                  accessToken = (NSString*)token;
+                                  [self sendAccessToken:accessToken withUserID:userId];
                                   calculateButton.enabled = true;
-
+                                  calculateButton.layer.borderColor = calculateButton.titleLabel.textColor.CGColor;
                               } else {
                                   // An error occurred, we need to handle the error
                                   // See: https://developers.facebook.com/docs/ios/errors
@@ -85,38 +85,38 @@
                           }];
 }
 
-- (void)didReceiveMemoryWarning{
+- (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void) getFriends {
-    [FBRequestConnection startWithGraphPath:@"me/?fields=friends"
-                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                              if (!error) {
-                                  //NSLog(@"%@", result);
-                                  
-                                  NSArray *friendArray = [[result objectForKey:@"friends"] objectForKey:@"data"];
-                                  //NSLog(@"%@", friendArray);
-                                  
-                                  for (NSDictionary *friend in friendArray ){
-                                      NSString *user_id = [friend objectForKey:@"id"];
-                                      //FriendData *friendObject = [[FriendData alloc] initWithDefault];
-                                      [friendList setObject:[[FriendData alloc] initWithDefault] forKey:user_id];
-                                      
-                                  }
-                                  
-                                  
-                                  NSLog(@"%@", friendList);
-                                  
-                                  NSLog(@"%i", [[friendList objectForKey:(@"100000054880541")] totalLikes]);
-                              } else {
-                                  NSLog(@"%@", error);
-                              }
-                          }];
-}
+//- (void) getFriends {
+//    [FBRequestConnection startWithGraphPath:@"me/?fields=friends"
+//                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+//                              if (!error) {
+//                                  //NSLog(@"%@", result);
+//                                  
+//                                  NSArray *friendArray = [[result objectForKey:@"friends"] objectForKey:@"data"];
+//                                  //NSLog(@"%@", friendArray);
+//                                  
+//                                  for (NSDictionary *friend in friendArray ){
+//                                      NSString *user_id = [friend objectForKey:@"id"];
+//                                      //FriendData *friendObject = [[FriendData alloc] initWithDefault];
+//                                      [friendList setObject:[[FriendData alloc] initWithDefault] forKey:user_id];
+//                                      
+//                                  }
+//                                  
+//                                  
+//                                  NSLog(@"%@", friendList);
+//                                  
+//                                  NSLog(@"%i", [[friendList objectForKey:(@"100000054880541")] totalLikes]);
+//                              } else {
+//                                  NSLog(@"%@", error);
+//                              }
+//                          }];
+//}
 
-- (void) sendAccessToken:(NSString *)token withUserID:(NSString *)userId{
+- (void) sendAccessToken:(NSString *)token withUserID:(NSString *)userId {
     //make url request
     //send url request to israel's database
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/refreshToken/%@/%@", userId, token];
@@ -130,25 +130,13 @@
     NSLog(@"Token and userId sent? %@", responseString);
 }
 
-- (void) requestUsers{
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users"];
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    NSURLResponse *response = NULL;
-    NSError *requestError = NULL;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    
-    NSError *err;
-    NSDictionary* jsonObject = [NSJSONSerialization JSONObjectWithData:responseData
-                                                               options:NSJSONReadingMutableContainers
-                                                                 error:&err];
-    
-    
-    NSLog(@"JSON: %@", jsonObject);
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:@"sequeToCompute"]){
+        CalculateViewController *controller = (CalculateViewController *)segue.destinationViewController;
+        //pass data to the next view controller
+        controller.userId = userId;
+        controller.accessToken = accessToken;
+    }
 }
 
-- (void) calculateButtonClicked{
-    NSLog(@"hi");
-    
-}
 @end

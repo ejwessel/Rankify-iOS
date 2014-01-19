@@ -10,6 +10,6 @@
 
 @interface FriendTableViewController : UITableViewController
 
-@property NSDictionary *data;
+@property NSArray *friendData;
 
 @end
