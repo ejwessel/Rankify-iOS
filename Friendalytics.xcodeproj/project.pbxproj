@@ -15,7 +15,7 @@
 		230846271883A77B0056A6A7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 230846261883A77B0056A6A7 /* AppDelegate.m */; };
 		2308462A1883A77B0056A6A7 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 230846281883A77B0056A6A7 /* Main_iPhone.storyboard */; };
 		2308462D1883A77B0056A6A7 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2308462B1883A77B0056A6A7 /* Main_iPad.storyboard */; };
-		230846301883A77B0056A6A7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308462F1883A77B0056A6A7 /* ViewController.m */; };
+		230846301883A77B0056A6A7 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308462F1883A77B0056A6A7 /* LoginViewController.m */; };
 		230846321883A77B0056A6A7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 230846311883A77B0056A6A7 /* Images.xcassets */; };
 		230846391883A77B0056A6A7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230846381883A77B0056A6A7 /* XCTest.framework */; };
 		2308463A1883A77B0056A6A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230846161883A77B0056A6A7 /* Foundation.framework */; };
@@ -49,8 +49,8 @@
 		230846261883A77B0056A6A7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		230846291883A77B0056A6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		2308462C1883A77B0056A6A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		2308462E1883A77B0056A6A7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		2308462F1883A77B0056A6A7 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		2308462E1883A77B0056A6A7 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		2308462F1883A77B0056A6A7 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		230846311883A77B0056A6A7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		230846371883A77B0056A6A7 /* FriendalyticsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FriendalyticsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		230846381883A77B0056A6A7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -125,8 +125,8 @@
 				230846261883A77B0056A6A7 /* AppDelegate.m */,
 				230846281883A77B0056A6A7 /* Main_iPhone.storyboard */,
 				2308462B1883A77B0056A6A7 /* Main_iPad.storyboard */,
-				2308462E1883A77B0056A6A7 /* ViewController.h */,
-				2308462F1883A77B0056A6A7 /* ViewController.m */,
+				2308462E1883A77B0056A6A7 /* LoginViewController.h */,
+				2308462F1883A77B0056A6A7 /* LoginViewController.m */,
 				23771CBE188B6DFA00C3652F /* FriendData.h */,
 				23771CBF188B6DFA00C3652F /* FriendData.m */,
 				230846311883A77B0056A6A7 /* Images.xcassets */,
@@ -262,7 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				230846301883A77B0056A6A7 /* ViewController.m in Sources */,
+				230846301883A77B0056A6A7 /* LoginViewController.m in Sources */,
 				23771CC0188B6DFA00C3652F /* FriendData.m in Sources */,
 				230846271883A77B0056A6A7 /* AppDelegate.m in Sources */,
 				230846231883A77B0056A6A7 /* main.m in Sources */,

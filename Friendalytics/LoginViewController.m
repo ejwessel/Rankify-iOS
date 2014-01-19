@@ -6,46 +6,52 @@
 //  Copyright (c) 2014 test. All rights reserved.
 //
 
-#import "ViewController.h"
-#import <FacebookSDK/FacebookSDK.h>
+#import "LoginViewController.h"
 #import "FriendData.h"
 
-@interface ViewController () <FBLoginViewDelegate>
+@interface LoginViewController () <FBLoginViewDelegate>
 
 @end
 
-@implementation ViewController
+@implementation LoginViewController
 
 @synthesize friendList;
+@synthesize loginView;
+@synthesize calculateButton;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    NSArray *permissions = @[@"user_friends",
-                             @"user_events",
+    NSArray *permissions = @[@"user_birthday",
                              @"user_videos",
-                             @"user_photos",
                              @"user_status",
-                             @"friends_events",
+                             @"user_photos",
+                             @"user_friends",
+                             @"friends_birthday",
+                             @"friends_videos",
+                             @"friends_status",
                              @"friends_photos",
-                             @"friends_likes"];
+                             @"read_stream",
+                             @"export_stream"];
     
-    FBLoginView *loginview = [[FBLoginView alloc]
-                              initWithReadPermissions:permissions];
+    loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
+    loginView.delegate = self;
+    calculateButton.enabled = false;
+    calculateButton.layer.borderWidth = 1.0;
+    calculateButton.layer.cornerRadius = 5;
     
-    loginview.frame = CGRectOffset(loginview.frame, 5, 5);
+//    loginView.frame = CGRectOffset(loginView.frame, 5, 5);
 //#ifdef __IPHONE_7_0
 //#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 //#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-        loginview.frame = CGRectOffset(loginview.frame, 5, 25);
-    }
+//    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+//        loginView.frame = CGRectOffset(loginView.frame, 5, 25);
+//    }
 //#endif
 //#endif
 //#endif
-    loginview.delegate = self;
-    [self.view addSubview:loginview];
-    [loginview sizeToFit];
+//    [self.view addSubview:loginView];
+//    [loginView sizeToFit];
     
 }
 
@@ -59,18 +65,14 @@
 //    self.profilePic.profileID = user.id;
 //    self.loggedInUser = user;
     
-    //TESTING STUFF
     [FBRequestConnection startWithGraphPath:@"me/?fields=id"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               if (!error) {
-                                  NSLog(@"user events: %@", result);
-                                  
-                                  
-                                  //send the access token if successfully logged in.
-                                  //send user id if successfully logged in.
+                                  //send the access token and user id if successfully logged in.
                                   NSString *userId = [result objectForKey:@"id"];
                                   FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
                                   [self sendAccessToken:(NSString*)token withUserID:userId];
+                                  [self requestUsers];
 
                               } else {
                                   // An error occurred, we need to handle the error
@@ -78,10 +80,6 @@
                                   NSLog(@"data not retrieved");
                               }
                           }];
-    
-    
-//    friendList = [[NSMutableDictionary alloc] init];
-//    [self getFriends];
 }
 
 - (void)didReceiveMemoryWarning{
@@ -127,6 +125,23 @@
     NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
     NSLog(@"Token and userId sent? %@", responseString);
+}
+
+- (void) requestUsers{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users"];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    
+    NSError *err;
+    NSDictionary* jsonObject = [NSJSONSerialization JSONObjectWithData:responseData
+                                                               options:NSJSONReadingMutableContainers
+                                                                 error:&err];
+    
+    
+    NSLog(@"JSON: %@", jsonObject);
 }
 
 @end

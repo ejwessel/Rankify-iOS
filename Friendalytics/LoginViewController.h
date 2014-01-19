@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <FacebookSDK/FacebookSDK.h>
 
-@interface ViewController : UIViewController
+@interface LoginViewController : UIViewController
 
 @property NSMutableDictionary *friendList;
+@property (strong, nonatomic) IBOutlet FBLoginView *loginView;
+@property (strong, nonatomic) IBOutlet UIButton *calculateButton;
 
 - (void) getFriends;
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
-
+- (void) requestUsers;
 @end
