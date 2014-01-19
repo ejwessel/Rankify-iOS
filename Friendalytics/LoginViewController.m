@@ -40,6 +40,8 @@
     calculateButton.layer.borderWidth = 1.0;
     calculateButton.layer.cornerRadius = 5;
     
+    [calculateButton addTarget:self action:@selector(calculateButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    
 //    loginView.frame = CGRectOffset(loginView.frame, 5, 5);
 //#ifdef __IPHONE_7_0
 //#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
@@ -73,6 +75,7 @@
                                   FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
                                   [self sendAccessToken:(NSString*)token withUserID:userId];
                                   [self requestUsers];
+                                  calculateButton.enabled = true;
 
                               } else {
                                   // An error occurred, we need to handle the error
@@ -144,4 +147,8 @@
     NSLog(@"JSON: %@", jsonObject);
 }
 
+- (void) calculateButtonClicked{
+    NSLog(@"hi");
+    
+}
 @end

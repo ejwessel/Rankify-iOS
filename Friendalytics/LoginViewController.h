@@ -18,4 +18,5 @@
 - (void) getFriends;
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
 - (void) requestUsers;
+- (void) calculateButtonClicked;
 @end
