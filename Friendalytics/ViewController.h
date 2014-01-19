@@ -13,5 +13,6 @@
 @property NSMutableDictionary *friendList;
 
 - (void) getFriends;
+- (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
 
 @end

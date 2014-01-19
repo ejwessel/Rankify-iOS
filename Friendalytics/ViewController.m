@@ -47,9 +47,6 @@
     [self.view addSubview:loginview];
     [loginview sizeToFit];
     
-    friendList = [[NSMutableDictionary alloc] init];
-    [self getFriends];
-    
 }
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
@@ -63,11 +60,18 @@
 //    self.loggedInUser = user;
     
     //TESTING STUFF
-    [FBRequestConnection startWithGraphPath:@"me/?fields=permissions,friends.limit(5).fields(photos.limit(3))"
+    [FBRequestConnection startWithGraphPath:@"me/?fields=id"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                               if (!error) {
-                                  // Sucess! Include your code to handle the results here
-                                  //NSLog(@"user events: %@", result);
+                                  NSLog(@"user events: %@", result);
+                                  
+                                  
+                                  //send the access token if successfully logged in.
+                                  //send user id if successfully logged in.
+                                  NSString *userId = [result objectForKey:@"id"];
+                                  FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
+                                  [self sendAccessToken:(NSString*)token withUserID:userId];
+
                               } else {
                                   // An error occurred, we need to handle the error
                                   // See: https://developers.facebook.com/docs/ios/errors
@@ -75,8 +79,9 @@
                               }
                           }];
     
-    FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
     
+//    friendList = [[NSMutableDictionary alloc] init];
+//    [self getFriends];
 }
 
 - (void)didReceiveMemoryWarning{
@@ -108,6 +113,20 @@
                                   NSLog(@"%@", error);
                               }
                           }];
+}
+
+- (void) sendAccessToken:(NSString *)token withUserID:(NSString *)userId{
+    //make url request
+    //send url request to israel's database
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/refreshToken/%@/%@", userId, token];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"Token and userId sent? %@", responseString);
 }
 
 @end
