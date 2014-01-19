@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SpecificsViewController.h"
 
 @interface FriendTableViewController : UITableViewController
 
 @property NSArray *friendData;
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
 @end

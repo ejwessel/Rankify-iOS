@@ -28,7 +28,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self requestUsers];
+    //[self requestUsers];
+    [self getFriends];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -73,8 +74,25 @@
     }
 }
 
+- (void) getFriends {
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/getfriends/%@", userId];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    
+    //obtain the json data
+    NSError *err;
+    friendData = [NSJSONSerialization JSONObjectWithData:responseData
+                                                 options:NSJSONReadingMutableContainers
+                                                   error:&err];
+    
+    NSLog(@"friendData: %@", friendData);
+}
+
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([segue.identifier isEqualToString:@"sequeToFriendList"]){
+    if([segue.identifier isEqualToString:@"segueToFriendList"]){
         FriendTableViewController *controller = (FriendTableViewController *)segue.destinationViewController;
         controller.friendData = friendData;
     }

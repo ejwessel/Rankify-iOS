@@ -131,7 +131,7 @@
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([segue.identifier isEqualToString:@"sequeToCompute"]){
+    if([segue.identifier isEqualToString:@"segueToCompute"]){
         CalculateViewController *controller = (CalculateViewController *)segue.destinationViewController;
         //pass data to the next view controller
         controller.userId = userId;

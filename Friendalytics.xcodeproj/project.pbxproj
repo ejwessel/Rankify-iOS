@@ -26,6 +26,7 @@
 		2352E2BB188B9B57001B805F /* FriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2352E2BA188B9B57001B805F /* FriendTableViewController.m */; };
 		2352E2BE188BA06C001B805F /* CalculateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2352E2BD188BA06C001B805F /* CalculateViewController.m */; };
 		23771CC0188B6DFA00C3652F /* FriendData.m in Sources */ = {isa = PBXBuildFile; fileRef = 23771CBF188B6DFA00C3652F /* FriendData.m */; };
+		23794ACC188C855400EA7A74 /* SpecificsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23794ACB188C855400EA7A74 /* SpecificsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,8 @@
 		2352E2BD188BA06C001B805F /* CalculateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculateViewController.m; sourceTree = "<group>"; };
 		23771CBE188B6DFA00C3652F /* FriendData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendData.h; sourceTree = "<group>"; };
 		23771CBF188B6DFA00C3652F /* FriendData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendData.m; sourceTree = "<group>"; };
+		23794ACA188C855400EA7A74 /* SpecificsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecificsViewController.h; sourceTree = "<group>"; };
+		23794ACB188C855400EA7A74 /* SpecificsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecificsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +130,7 @@
 		2308461C1883A77B0056A6A7 /* Friendalytics */ = {
 			isa = PBXGroup;
 			children = (
+				23794AC9188C853C00EA7A74 /* Old Files */,
 				230846251883A77B0056A6A7 /* AppDelegate.h */,
 				230846261883A77B0056A6A7 /* AppDelegate.m */,
 				230846281883A77B0056A6A7 /* Main_iPhone.storyboard */,
@@ -137,8 +141,8 @@
 				2352E2BD188BA06C001B805F /* CalculateViewController.m */,
 				2352E2B9188B9B57001B805F /* FriendTableViewController.h */,
 				2352E2BA188B9B57001B805F /* FriendTableViewController.m */,
-				23771CBE188B6DFA00C3652F /* FriendData.h */,
-				23771CBF188B6DFA00C3652F /* FriendData.m */,
+				23794ACA188C855400EA7A74 /* SpecificsViewController.h */,
+				23794ACB188C855400EA7A74 /* SpecificsViewController.m */,
 				230846311883A77B0056A6A7 /* Images.xcassets */,
 				2308461D1883A77B0056A6A7 /* Supporting Files */,
 			);
@@ -172,6 +176,15 @@
 				230846411883A77B0056A6A7 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		23794AC9188C853C00EA7A74 /* Old Files */ = {
+			isa = PBXGroup;
+			children = (
+				23771CBE188B6DFA00C3652F /* FriendData.h */,
+				23771CBF188B6DFA00C3652F /* FriendData.m */,
+			);
+			name = "Old Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,6 +291,7 @@
 				2352E2BE188BA06C001B805F /* CalculateViewController.m in Sources */,
 				230846271883A77B0056A6A7 /* AppDelegate.m in Sources */,
 				230846231883A77B0056A6A7 /* main.m in Sources */,
+				23794ACC188C855400EA7A74 /* SpecificsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

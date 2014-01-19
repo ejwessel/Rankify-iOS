@@ -39,6 +39,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([segue.identifier isEqualToString:@"segueToSpecifics"]){
+        SpecificsViewController *controller = (SpecificsViewController *)segue.destinationViewController;
+        controller.friendName = @"TEST";
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
