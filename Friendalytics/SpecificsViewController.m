@@ -39,6 +39,8 @@
 	// Do any additional setup after loading the view.
     
     friendNameLabel.text = friendName;
+    totalLikesLabel.text = totalLikes;
+    self.title = friendName;
 }
 
 - (void)didReceiveMemoryWarning {

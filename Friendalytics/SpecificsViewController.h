@@ -19,7 +19,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *totalStatusLikesLabel;
 
 @property NSString *friendName;
-@property int totalLikes;
+@property NSString *totalLikes;
 @property int totalAlbumLikes;
 @property int totalPhotoLikes;
 @property int totalVideoLikes;

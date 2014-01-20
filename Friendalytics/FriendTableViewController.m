@@ -33,6 +33,11 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     NSLog(@"total friends: %i",friendData.count);
+    
+    //set the back button here so that it doesn't show "back"
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -47,7 +52,6 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     self.navigationController.navigationBarHidden = false;
     friendName = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
-    
     NSLog(@"clicked on: %@", friendName);
     
     //this calls "prepareForSegue" since prepare for segue has has priority over this function
@@ -61,6 +65,7 @@
     if([segue.identifier isEqualToString:@"segueToSpecifics"]){
         SpecificsViewController *controller = (SpecificsViewController *)segue.destinationViewController;
         controller.friendName = friendName;
+        controller.totalLikes = @"1000";
         
         //PASS THE REST OF THE DATA TO THE SPECIFIC VIEW HERE!
     }
@@ -85,9 +90,12 @@
     
     int index = [indexPath indexAtPosition:[indexPath length] - 1];
     NSDictionary *element = [friendData objectAtIndex:index];
+    
+    //make full name to display
     NSString *firstName = [[element objectForKey:@"User"] objectForKey:@"firstName"];
     NSString *lastName = [[element objectForKey:@"User"] objectForKey:@"lastName"];
     NSString *fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+    
     cell.textLabel.text = fullName;
     return cell;
 }
