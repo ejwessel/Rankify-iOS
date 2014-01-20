@@ -57,7 +57,8 @@
     friendObject = [[friendData objectAtIndex:indexClicked] objectForKey:@"User"];
     
     self.navigationController.navigationBarHidden = false;
-    friendName = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+    CustomCell *cell = [tableView cellForRowAtIndexPath:indexPath]; //warning shouldn't be a problem
+    friendName = cell.nameLabel.text;
     NSLog(@"clicked on: %@", friendName);
     
     //this calls "prepareForSegue" since prepare for segue has has priority over this function
@@ -91,10 +92,10 @@
     return friendData.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
+- (CustomCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"CustomCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     int index = [indexPath indexAtPosition:[indexPath length] - 1];
     NSDictionary *element = [friendData objectAtIndex:index];
@@ -103,8 +104,11 @@
     NSString *firstName = [[element objectForKey:@"User"] objectForKey:@"firstName"];
     NSString *lastName = [[element objectForKey:@"User"] objectForKey:@"lastName"];
     NSString *fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+    NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
     
-    cell.textLabel.text = fullName;
+    //cell.textLabel.text = fullName;
+    cell.nameLabel.text = fullName;
+    cell.countLabel.text = totalLikes;
     return cell;
 }
 

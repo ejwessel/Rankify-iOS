@@ -74,8 +74,20 @@
     }
 }
 
+- (void) addNewFriends{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/newFriends/%@/%@", userId, accessToken];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"addNewFriends: %@", responseString);
+}
+
 - (void) getFriends {
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/getfriends/%@", userId];
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/getFriends/%@", userId];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;

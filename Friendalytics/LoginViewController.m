@@ -90,36 +90,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-//- (void) getFriends {
-//    [FBRequestConnection startWithGraphPath:@"me/?fields=friends"
-//                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-//                              if (!error) {
-//                                  //NSLog(@"%@", result);
-//                                  
-//                                  NSArray *friendArray = [[result objectForKey:@"friends"] objectForKey:@"data"];
-//                                  //NSLog(@"%@", friendArray);
-//                                  
-//                                  for (NSDictionary *friend in friendArray ){
-//                                      NSString *user_id = [friend objectForKey:@"id"];
-//                                      //FriendData *friendObject = [[FriendData alloc] initWithDefault];
-//                                      [friendList setObject:[[FriendData alloc] initWithDefault] forKey:user_id];
-//                                      
-//                                  }
-//                                  
-//                                  
-//                                  NSLog(@"%@", friendList);
-//                                  
-//                                  NSLog(@"%i", [[friendList objectForKey:(@"100000054880541")] totalLikes]);
-//                              } else {
-//                                  NSLog(@"%@", error);
-//                              }
-//                          }];
-//}
-
 - (void) sendAccessToken:(NSString *)token withUserID:(NSString *)userId {
     //make url request
     //send url request to israel's database
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/refreshToken/%@/%@", userId, token];
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/login/%@/%@", userId, token];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;

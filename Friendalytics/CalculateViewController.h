@@ -17,6 +17,8 @@
 
 - (void) requestUsers;
 
+- (void) addNewFriends;
+
 - (void) getFriends;
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;

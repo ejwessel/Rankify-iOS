@@ -27,6 +27,7 @@
 		2352E2BE188BA06C001B805F /* CalculateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2352E2BD188BA06C001B805F /* CalculateViewController.m */; };
 		23771CC0188B6DFA00C3652F /* FriendData.m in Sources */ = {isa = PBXBuildFile; fileRef = 23771CBF188B6DFA00C3652F /* FriendData.m */; };
 		23794ACC188C855400EA7A74 /* SpecificsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23794ACB188C855400EA7A74 /* SpecificsViewController.m */; };
+		23D83366188D123100091022 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D83365188D123100091022 /* CustomCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,8 @@
 		23771CBF188B6DFA00C3652F /* FriendData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendData.m; sourceTree = "<group>"; };
 		23794ACA188C855400EA7A74 /* SpecificsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecificsViewController.h; sourceTree = "<group>"; };
 		23794ACB188C855400EA7A74 /* SpecificsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecificsViewController.m; sourceTree = "<group>"; };
+		23D83364188D123100091022 /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
+		23D83365188D123100091022 /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +146,8 @@
 				2352E2BA188B9B57001B805F /* FriendTableViewController.m */,
 				23794ACA188C855400EA7A74 /* SpecificsViewController.h */,
 				23794ACB188C855400EA7A74 /* SpecificsViewController.m */,
+				23D83364188D123100091022 /* CustomCell.h */,
+				23D83365188D123100091022 /* CustomCell.m */,
 				230846311883A77B0056A6A7 /* Images.xcassets */,
 				2308461D1883A77B0056A6A7 /* Supporting Files */,
 			);
@@ -287,6 +292,7 @@
 			files = (
 				230846301883A77B0056A6A7 /* LoginViewController.m in Sources */,
 				23771CC0188B6DFA00C3652F /* FriendData.m in Sources */,
+				23D83366188D123100091022 /* CustomCell.m in Sources */,
 				2352E2BB188B9B57001B805F /* FriendTableViewController.m in Sources */,
 				2352E2BE188BA06C001B805F /* CalculateViewController.m in Sources */,
 				230846271883A77B0056A6A7 /* AppDelegate.m in Sources */,

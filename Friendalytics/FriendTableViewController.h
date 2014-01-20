@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SpecificsViewController.h"
+#import "CustomCell.h";
 
 @interface FriendTableViewController : UITableViewController
 
