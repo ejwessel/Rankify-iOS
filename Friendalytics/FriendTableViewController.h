@@ -12,7 +12,10 @@
 @interface FriendTableViewController : UITableViewController
 
 @property NSArray *friendData;
+@property NSString *friendName;
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

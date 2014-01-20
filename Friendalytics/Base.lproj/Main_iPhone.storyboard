@@ -233,9 +233,6 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="YQG-Kf-NSm" kind="push" identifier="segueToSpecifics" id="CbT-N6-ZMX"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -244,6 +241,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="xk6-cV-1In"/>
+                    <connections>
+                        <segue destination="YQG-Kf-NSm" kind="push" identifier="segueToSpecifics" id="RA0-jk-KrA"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wj9-6d-vtY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -14,6 +14,7 @@
 
 @implementation FriendTableViewController
 @synthesize friendData;
+@synthesize friendName;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -34,15 +35,34 @@
     NSLog(@"total friends: %i",friendData.count);
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = true;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    self.navigationController.navigationBarHidden = false;
+    friendName = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+    
+    NSLog(@"clicked on: %@", friendName);
+    
+    //this calls "prepareForSegue" since prepare for segue has has priority over this function
+    //we need to call this function first, this is how we do it
+    [self performSegueWithIdentifier:@"segueToSpecifics" sender:self];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    //this function will be called after didSelectRowAtIndexPath
+    
     if([segue.identifier isEqualToString:@"segueToSpecifics"]){
         SpecificsViewController *controller = (SpecificsViewController *)segue.destinationViewController;
-        controller.friendName = @"TEST";
+        controller.friendName = friendName;
+        
+        //PASS THE REST OF THE DATA TO THE SPECIFIC VIEW HERE!
     }
 }
 
