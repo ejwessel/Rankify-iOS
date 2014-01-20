@@ -20,9 +20,9 @@
 
 @property NSString *friendName;
 @property NSString *totalLikes;
-@property int totalAlbumLikes;
-@property int totalPhotoLikes;
-@property int totalVideoLikes;
-@property int totalStatusLikes;
+@property NSString *totalAlbumLikes;
+@property NSString *totalPhotoLikes;
+@property NSString *totalVideoLikes;
+@property NSString *totalStatusLikes;
 
 @end

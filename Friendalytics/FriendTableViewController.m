@@ -15,6 +15,7 @@
 @implementation FriendTableViewController
 @synthesize friendData;
 @synthesize friendName;
+@synthesize friendObject;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -49,7 +50,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    int indexClicked = [indexPath indexAtPosition:[indexPath length] - 1];
+    
+    friendObject = [[friendData objectAtIndex:indexClicked] objectForKey:@"User"];
+    
     self.navigationController.navigationBarHidden = false;
     friendName = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
     NSLog(@"clicked on: %@", friendName);
@@ -65,9 +71,11 @@
     if([segue.identifier isEqualToString:@"segueToSpecifics"]){
         SpecificsViewController *controller = (SpecificsViewController *)segue.destinationViewController;
         controller.friendName = friendName;
-        controller.totalLikes = @"1000";
-        
-        //PASS THE REST OF THE DATA TO THE SPECIFIC VIEW HERE!
+        controller.totalLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"totalLikes"]];
+        controller.totalPhotoLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"photoLikes"]];
+        controller.totalAlbumLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"albumLikes"]];
+        controller.totalVideoLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"videoLikes"]];
+        controller.totalStatusLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"statusLikes"]];
     }
 }
 

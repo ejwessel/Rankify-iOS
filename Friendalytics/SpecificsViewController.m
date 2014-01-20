@@ -37,10 +37,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+
+    self.title = friendName;
     friendNameLabel.text = friendName;
     totalLikesLabel.text = totalLikes;
-    self.title = friendName;
+    totalStatusLikesLabel.text = totalStatusLikes;
+    totalVideoLikesLabel.text = totalVideoLikes;
+    totalPhotoLikesLabel.text = totalPhotoLikes;
+    totalAlbumLikesLabel.text = totalAlbumLikes;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:totalLikes style:UIBarButtonItemStyleDone target:self action:nil];
 }
 
 - (void)didReceiveMemoryWarning {

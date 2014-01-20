@@ -13,6 +13,7 @@
 
 @property NSArray *friendData;
 @property NSString *friendName;
+@property NSMutableDictionary *friendObject;
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
