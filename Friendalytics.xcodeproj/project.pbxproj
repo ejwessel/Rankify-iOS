@@ -64,7 +64,7 @@
 		230846401883A77B0056A6A7 /* FriendalyticsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FriendalyticsTests-Info.plist"; sourceTree = "<group>"; };
 		230846421883A77B0056A6A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		230846441883A77B0056A6A7 /* FriendalyticsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendalyticsTests.m; sourceTree = "<group>"; };
-		2308464E1883A8F60056A6A7 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = SOURCE_ROOT; };
+		2308464E1883A8F60056A6A7 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		2338ABC4188E5F1A00C9D1D1 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2338ABC5188E5F1A00C9D1D1 /* userIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userIcon.png; sourceTree = "<group>"; };
 		2338ABC8188E621900C9D1D1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
