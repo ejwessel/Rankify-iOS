@@ -85,6 +85,7 @@
 }
 
 - (void)downloadAndLoadImageWithCell:(CustomCell *)cell withURL:(NSString *)urlPath{
+    //THIS FUNCTION IS NOT CURRENTLY USED! COME BACK TO IT
     NSURL *url = [NSURL URLWithString:urlPath];
     NSData *data = [[NSData alloc] initWithContentsOfURL:url];
     UIImage *tmpImage = [[UIImage alloc] initWithData:data];
@@ -135,6 +136,7 @@
     //setup the cell
     cell.nameLabel.text = fullName;
     cell.countLabel.text = totalLikes;
+    cell.countLabel.textColor = self.navigationController.navigationBar.tintColor;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
