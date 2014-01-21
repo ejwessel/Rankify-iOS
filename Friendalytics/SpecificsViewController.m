@@ -49,7 +49,8 @@
     profilePicture.layer.borderWidth = .5;
     
     //load the profile picture in the background to prevent blocking main thread
-    [NSThread detachNewThreadSelector:@selector(downloadAndLoadImage) toTarget:self withObject:nil];
+    [self performSelectorInBackground:@selector(downloadAndLoadImage) withObject:nil];
+    //[NSThread detachNewThreadSelector:@selector(downloadAndLoadImage) toTarget:self withObject:nil];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:totalLikes style:UIBarButtonItemStyleDone target:self action:nil];
 }

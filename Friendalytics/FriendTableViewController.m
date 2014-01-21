@@ -132,6 +132,7 @@
     //load the small icon on the list of friends
     //NSString *url = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
     //[self downloadAndLoadImageWithCell:cell withURL:url];
+    //[self performSelectorInBackground:@selector(downloadAndLoadImageWithCell:(CustomCell*)cell withURL:(NSString*)url) withObject:nil];
 
     //setup the cell
     cell.nameLabel.text = fullName;
