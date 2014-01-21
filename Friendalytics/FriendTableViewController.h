@@ -8,16 +8,20 @@
 
 #import <UIKit/UIKit.h>
 #import "SpecificsViewController.h"
-#import "CustomCell.h";
+#import "CustomCell.h"
 
-@interface FriendTableViewController : UITableViewController
+@interface FriendTableViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property NSArray *friendData;
 @property NSString *friendName;
 @property NSMutableDictionary *friendObject;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+@property NSMutableArray *filteredResults;
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)downloadAndLoadImageWithCell:(CustomCell*)cell withURL:(NSString*)url;
 
 @end

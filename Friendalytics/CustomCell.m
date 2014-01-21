@@ -9,6 +9,7 @@
 #import "CustomCell.h"
 
 @implementation CustomCell
+@synthesize arrayIndex;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

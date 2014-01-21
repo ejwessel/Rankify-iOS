@@ -11,7 +11,6 @@
 @interface SpecificsViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet UIImageView *profilePicture;
-@property (strong, nonatomic) IBOutlet UILabel *friendNameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalLikesLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalAlbumLikesLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalPhotoLikesLabel;
@@ -24,5 +23,8 @@
 @property NSString *totalPhotoLikes;
 @property NSString *totalVideoLikes;
 @property NSString *totalStatusLikes;
+@property NSString *profilePictureURL;
+
+- (void)downloadAndLoadImage;
 
 @end

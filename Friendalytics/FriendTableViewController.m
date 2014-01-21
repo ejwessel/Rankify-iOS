@@ -16,6 +16,8 @@
 @synthesize friendData;
 @synthesize friendName;
 @synthesize friendObject;
+@synthesize searchBar;
+@synthesize filteredResults;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -38,6 +40,7 @@
     //set the back button here so that it doesn't show "back"
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
+    filteredResults = [[NSMutableArray alloc] initWithCapacity:friendData.count];
 
 }
 
@@ -77,7 +80,25 @@
         controller.totalAlbumLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"albumLikes"]];
         controller.totalVideoLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"videoLikes"]];
         controller.totalStatusLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"statusLikes"]];
+        controller.profilePictureURL = [friendObject objectForKey:@"profilePictureLarge"];
     }
+}
+
+- (void)downloadAndLoadImageWithCell:(CustomCell *)cell withURL:(NSString *)urlPath{
+    NSURL *url = [NSURL URLWithString:urlPath];
+    NSData *data = [[NSData alloc] initWithContentsOfURL:url];
+    UIImage *tmpImage = [[UIImage alloc] initWithData:data];
+    cell.image = tmpImage;
+}
+
+#pragma mark Content Filtering
+-(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
+    // Update the filtered array based on the search text and scope.
+    // Remove all objects from the filtered search array
+    [self.filteredResults removeAllObjects];
+    // Filter the array using NSPredicate
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.name contains[c] %@",searchText];
+    filteredResults = [NSMutableArray arrayWithArray:[friendData filteredArrayUsingPredicate:predicate]];
 }
 
 #pragma mark - Table view data source
@@ -98,6 +119,7 @@
     CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     int index = [indexPath indexAtPosition:[indexPath length] - 1];
+    cell.arrayIndex = index;    //sets the index for the cell so we know where in the friendData to find it
     NSDictionary *element = [friendData objectAtIndex:index];
     
     //make full name to display
@@ -106,9 +128,14 @@
     NSString *fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
     NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
     
-    //cell.textLabel.text = fullName;
+    //load the small icon on the list of friends
+    //NSString *url = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
+    //[self downloadAndLoadImageWithCell:cell withURL:url];
+
+    //setup the cell
     cell.nameLabel.text = fullName;
     cell.countLabel.text = totalLikes;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
