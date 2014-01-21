@@ -11,6 +11,5 @@
 @interface CustomCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *countLabel;
-@property int arrayIndex;
-
+@property (strong, nonatomic) IBOutlet UIImageView *smallIconPicture;
 @end

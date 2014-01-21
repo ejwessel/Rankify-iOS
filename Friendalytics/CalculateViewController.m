@@ -16,6 +16,16 @@
 @synthesize friendData;
 @synthesize userId;
 @synthesize accessToken;
+@synthesize gatheringFriendsColor;
+@synthesize gatheringAlbumsColor;
+@synthesize gatheringPhotosColor;
+@synthesize gatheringVideosColor;
+@synthesize gatheringStatusColor;
+@synthesize statusFriends;
+@synthesize statusAlbums;
+@synthesize statusPhotos;
+@synthesize statusVideos;
+@synthesize statusStatus;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -29,6 +39,21 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     //[self requestUsers];
+    gatheringFriendsColor.backgroundColor = [UIColor redColor];
+    gatheringFriendsColor.layer.cornerRadius = 10;
+    
+    gatheringAlbumsColor.backgroundColor = [UIColor redColor];
+    gatheringAlbumsColor.layer.cornerRadius = 10;
+    
+    gatheringPhotosColor.backgroundColor = [UIColor redColor];
+    gatheringPhotosColor.layer.cornerRadius = 10;
+    
+    gatheringVideosColor.backgroundColor = [UIColor redColor];
+    gatheringVideosColor.layer.cornerRadius = 10;
+    
+    gatheringStatusColor.backgroundColor = [UIColor redColor];
+    gatheringStatusColor.layer.cornerRadius = 10;
+    
     [self getFriends];
 }
 

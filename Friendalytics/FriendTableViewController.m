@@ -18,6 +18,8 @@
 @synthesize friendObject;
 @synthesize searchBar;
 @synthesize filteredResults;
+@synthesize urlPath;
+@synthesize cellDownload;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -84,12 +86,11 @@
     }
 }
 
-- (void)downloadAndLoadImageWithCell:(CustomCell *)cell withURL:(NSString *)urlPath{
-    //THIS FUNCTION IS NOT CURRENTLY USED! COME BACK TO IT
+- (void)downloadAndLoadImageWithCell{
     NSURL *url = [NSURL URLWithString:urlPath];
     NSData *data = [[NSData alloc] initWithContentsOfURL:url];
     UIImage *tmpImage = [[UIImage alloc] initWithData:data];
-    cell.image = tmpImage;
+    cellDownload.smallIconPicture.image = tmpImage;
 }
 
 #pragma mark Content Filtering
@@ -120,7 +121,6 @@
     CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     int index = [indexPath indexAtPosition:[indexPath length] - 1];
-    cell.arrayIndex = index;    //sets the index for the cell so we know where in the friendData to find it
     NSDictionary *element = [friendData objectAtIndex:index];
     
     //make full name to display
@@ -130,10 +130,10 @@
     NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
     
     //load the small icon on the list of friends
-    //NSString *url = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
-    //[self downloadAndLoadImageWithCell:cell withURL:url];
-    //[self performSelectorInBackground:@selector(downloadAndLoadImageWithCell:(CustomCell*)cell withURL:(NSString*)url) withObject:nil];
-
+    urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
+    cellDownload = cell;
+    [self performSelectorInBackground:@selector(downloadAndLoadImageWithCell) withObject:nil];
+    
     //setup the cell
     cell.nameLabel.text = fullName;
     cell.countLabel.text = totalLikes;
