@@ -40,7 +40,7 @@
     calculateButton.enabled = false;
     calculateButton.layer.borderWidth = 1.0;
     calculateButton.layer.cornerRadius = 5;
-    calculateButton.layer.borderColor = calculateButton.titleLabel.textColor.CGColor;
+    calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
 //    loginView.frame = CGRectOffset(loginView.frame, 5, 5);
 //#ifdef __IPHONE_7_0

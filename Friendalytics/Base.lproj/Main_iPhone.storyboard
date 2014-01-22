@@ -168,6 +168,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="zkK-W0-Wcq"/>
                     <connections>
+                        <outlet property="continueButton" destination="yXg-uh-kSH" id="oW6-4P-aYg"/>
                         <outlet property="gatheringAlbumsColor" destination="rmF-CD-rTT" id="fxC-xj-Ijn"/>
                         <outlet property="gatheringFriendsColor" destination="e7p-tO-7hy" id="I1e-qA-YEX"/>
                         <outlet property="gatheringPhotosColor" destination="aeH-E0-ayr" id="z4f-5s-aoY"/>

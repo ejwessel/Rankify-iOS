@@ -28,6 +28,7 @@
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusPhotos;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusVideos;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusStatus;
+@property (strong, nonatomic) IBOutlet UIButton *continueButton;
 
 - (void) requestUsers;
 

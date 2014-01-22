@@ -30,6 +30,7 @@
 @synthesize statusPhotos;
 @synthesize statusVideos;
 @synthesize statusStatus;
+@synthesize continueButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -41,25 +42,42 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    //[self requestUsers];
-    gatheringFriendsColor.backgroundColor = [UIColor redColor];
+    
+    continueButton.layer.borderWidth = 1;
+    continueButton.layer.cornerRadius = 5;
+    continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    
+    gatheringFriendsColor.backgroundColor = [UIColor yellowColor];
     gatheringFriendsColor.layer.cornerRadius = 10;
+    gatheringFriendsColor.layer.borderWidth = .5;
     
-    gatheringAlbumsColor.backgroundColor = [UIColor redColor];
+    gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
     gatheringAlbumsColor.layer.cornerRadius = 10;
+    gatheringAlbumsColor.layer.borderWidth = .5;
     
-    gatheringPhotosColor.backgroundColor = [UIColor redColor];
+    gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
     gatheringPhotosColor.layer.cornerRadius = 10;
+    gatheringPhotosColor.layer.borderWidth = .5;
     
-    gatheringVideosColor.backgroundColor = [UIColor redColor];
+    gatheringVideosColor.backgroundColor = [UIColor yellowColor];
     gatheringVideosColor.layer.cornerRadius = 10;
+    gatheringVideosColor.layer.borderWidth = .5;
     
-    gatheringStatusColor.backgroundColor = [UIColor redColor];
+    gatheringStatusColor.backgroundColor = [UIColor yellowColor];
     gatheringStatusColor.layer.cornerRadius = 10;
+    gatheringStatusColor.layer.borderWidth = .5;
     
-    [self getFriends];
-    [self getPhotos];
+    [self.statusFriends startAnimating];
+    [self.statusAlbums startAnimating];
+    [self.statusPhotos startAnimating];
+    [self.statusVideos startAnimating];
+    [self.statusStatus startAnimating];
+    
+    [self performSelectorInBackground:@selector(getFriends) withObject:nil];
+    [self performSelectorInBackground:@selector(getPhotos) withObject:nil];
+    [self performSelectorInBackground:@selector(getAlbums) withObject:nil];
+    [self performSelectorInBackground:@selector(getVideos) withObject:nil];
+    [self performSelectorInBackground:@selector(getStatuses) withObject:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -131,6 +149,17 @@
                                                  options:NSJSONReadingMutableContainers
                                                    error:&err];
     
+    if(friendData != nil){
+        [statusFriends stopAnimating];
+        statusFriends.hidden = true;
+        gatheringFriendsColor.backgroundColor = [UIColor greenColor];
+    }
+    else{
+        [statusFriends stopAnimating];
+        statusFriends.hidden = true;
+        gatheringFriendsColor.backgroundColor = [UIColor redColor];
+    }
+    
     NSLog(@"friendData: %@", friendData);
 }
 
@@ -148,6 +177,17 @@
                                                  options:NSJSONReadingMutableContainers
                                                    error:&err];
     
+    if(photoData != nil){
+        [statusPhotos stopAnimating];
+        statusPhotos.hidden = true;
+        gatheringPhotosColor.backgroundColor = [UIColor greenColor];
+    }
+    else{
+        [statusPhotos stopAnimating];
+        statusPhotos.hidden = true;
+        gatheringPhotosColor.backgroundColor = [UIColor redColor];
+    }
+
     NSLog(@"photoData: %@", photoData);
 }
 
@@ -164,6 +204,16 @@
     albumData = [NSJSONSerialization JSONObjectWithData:responseData
                                                 options:NSJSONReadingMutableContainers
                                                   error:&err];
+    if(albumData != nil){
+        [statusAlbums stopAnimating];
+        statusAlbums.hidden = true;
+        gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
+    }
+    else{
+        [statusPhotos stopAnimating];
+        statusAlbums.hidden = true;
+        gatheringAlbumsColor.backgroundColor = [UIColor redColor];
+    }
     
     NSLog(@"albumData: %@", albumData);
 }
@@ -182,6 +232,17 @@
                                                 options:NSJSONReadingMutableContainers
                                                   error:&err];
     
+    if(videoData != nil){
+        [statusVideos stopAnimating];
+        statusVideos.hidden = true;
+        gatheringVideosColor.backgroundColor = [UIColor greenColor];
+    }
+    else{
+        [statusVideos stopAnimating];
+        statusVideos.hidden = true;
+        gatheringVideosColor.backgroundColor = [UIColor redColor];
+    }
+    
     NSLog(@"videoData: %@", videoData);
 }
 
@@ -198,6 +259,17 @@
     statusData = [NSJSONSerialization JSONObjectWithData:responseData
                                                 options:NSJSONReadingMutableContainers
                                                   error:&err];
+   
+    if(statusData != nil){
+        [statusStatus stopAnimating];
+        statusStatus.hidden = true;
+        gatheringStatusColor.backgroundColor = [UIColor greenColor];
+    }
+    else{
+        [statusStatus stopAnimating];
+        statusStatus.hidden = true;
+        gatheringStatusColor.backgroundColor = [UIColor redColor];
+    }
     
     NSLog(@"statusData: %@", statusData);
 }
