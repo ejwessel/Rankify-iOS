@@ -14,6 +14,10 @@
 
 @implementation CalculateViewController
 @synthesize friendData;
+@synthesize photoData;
+@synthesize albumData;
+@synthesize videoData;
+@synthesize statusData;
 @synthesize userId;
 @synthesize accessToken;
 @synthesize gatheringFriendsColor;
@@ -55,6 +59,7 @@
     gatheringStatusColor.layer.cornerRadius = 10;
     
     [self getFriends];
+    [self getPhotos];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,10 +67,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) getFriendsWithUserID:(NSString *)userId {
+- (void) getFriendsWithUserID:(NSString *)passedUserId {
     //make url request
     //send url request to israel's database
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/refreshToken/%@", userId];
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/refreshToken/%@", passedUserId];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -77,6 +82,7 @@
 }
 
 - (void) requestUsers {
+    //this function is used primarily for testing
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users"];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -126,6 +132,74 @@
                                                    error:&err];
     
     NSLog(@"friendData: %@", friendData);
+}
+
+- (void) getPhotos{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/getPhotos/%@/%@", userId, accessToken];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    
+    //obtain the json data
+    NSError *err;
+    photoData = [NSJSONSerialization JSONObjectWithData:responseData
+                                                 options:NSJSONReadingMutableContainers
+                                                   error:&err];
+    
+    NSLog(@"photoData: %@", photoData);
+}
+
+- (void) getAlbums{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/albums/getAlbums/%@/%@", userId, accessToken];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    
+    //obtain the json data
+    NSError *err;
+    albumData = [NSJSONSerialization JSONObjectWithData:responseData
+                                                options:NSJSONReadingMutableContainers
+                                                  error:&err];
+    
+    NSLog(@"albumData: %@", albumData);
+}
+
+- (void) getVideos{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/videos/getVideos/%@/%@", userId, accessToken];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    
+    //obtain the json data
+    NSError *err;
+    videoData = [NSJSONSerialization JSONObjectWithData:responseData
+                                                options:NSJSONReadingMutableContainers
+                                                  error:&err];
+    
+    NSLog(@"videoData: %@", videoData);
+}
+
+- (void) getStatuses{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/getPhotos/%@/%@", userId, accessToken];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    
+    //obtain the json data
+    NSError *err;
+    statusData = [NSJSONSerialization JSONObjectWithData:responseData
+                                                options:NSJSONReadingMutableContainers
+                                                  error:&err];
+    
+    NSLog(@"statusData: %@", statusData);
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{

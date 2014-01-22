@@ -12,4 +12,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *countLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *smallIconPicture;
+@property NSString *urlPath;
+
 @end

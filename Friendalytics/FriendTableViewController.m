@@ -18,7 +18,6 @@
 @synthesize friendObject;
 @synthesize searchBar;
 @synthesize filteredResults;
-@synthesize urlPath;
 @synthesize cellDownload;
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -87,7 +86,7 @@
 }
 
 - (void)downloadAndLoadImageWithCell{
-    NSURL *url = [NSURL URLWithString:urlPath];
+    NSURL *url = [NSURL URLWithString:cellDownload.urlPath];
     NSData *data = [[NSData alloc] initWithContentsOfURL:url];
     UIImage *tmpImage = [[UIImage alloc] initWithData:data];
     cellDownload.smallIconPicture.image = tmpImage;
@@ -128,17 +127,20 @@
     NSString *lastName = [[element objectForKey:@"User"] objectForKey:@"lastName"];
     NSString *fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
     NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
+    NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
     
     //load the small icon on the list of friends
-    urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
-    cellDownload = cell;
-    [self performSelectorInBackground:@selector(downloadAndLoadImageWithCell) withObject:nil];
-    
     //setup the cell
     cell.nameLabel.text = fullName;
     cell.countLabel.text = totalLikes;
     cell.countLabel.textColor = self.navigationController.navigationBar.tintColor;
+    cell.urlPath = urlPath;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cellDownload = cell;
+    
+    //bug with loading small images...
+    //[NSThread detachNewThreadSelector:@selector(downloadAndLoadImageWithCell) toTarget:self withObject:nil];
+    //[self performSelectorInBackground:@selector(downloadAndLoadImageWithCell) withObject:nil];
     return cell;
 }
 

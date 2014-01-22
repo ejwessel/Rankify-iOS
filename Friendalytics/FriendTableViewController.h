@@ -17,7 +17,6 @@
 @property NSMutableDictionary *friendObject;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property NSMutableArray *filteredResults;
-@property NSString *urlPath;
 @property CustomCell *cellDownload;
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
