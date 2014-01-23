@@ -98,8 +98,10 @@
     
     //==========================================================================
     
+    [statusFriends startAnimating];
+    statusFriends.hidden = false;
     [self startPhase1];
-    [retryButton addTarget:self action:@selector(startPhase1) forControlEvents:UIControlEventTouchUpInside];
+    [retryButton addTarget:self action:@selector(restartPhases) forControlEvents:UIControlEventTouchUpInside];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(allDataReady)
                                                  name:nil
@@ -184,8 +186,6 @@
 - (void) pullFriends{
     
     gatheringFriendsColor.backgroundColor = [UIColor yellowColor];
-    [statusFriends startAnimating];
-    statusFriends.hidden = false;
     
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/pullFriends/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
@@ -357,7 +357,7 @@
         NSLog(@"obtained friendData successfully");
         retrievingDataColor.backgroundColor = [UIColor greenColor];
         continueButton.hidden = false;
-        retryButton.hidden = true;
+        //retryButton.hidden = true;
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
@@ -383,6 +383,29 @@
     retrievingDataColor.backgroundColor = [UIColor yellowColor];
     [retrievingStatus startAnimating];
     retrievingStatus.hidden = false;
+}
+
+- (void) restartPhases{
+    gatheringFriendsColor.backgroundColor = [UIColor lightGrayColor];
+    gatheringAlbumsColor.backgroundColor = [UIColor lightGrayColor];
+    gatheringPhotosColor.backgroundColor = [UIColor lightGrayColor];
+    gatheringVideosColor.backgroundColor = [UIColor lightGrayColor];
+    gatheringStatusColor.backgroundColor = [UIColor lightGrayColor];
+    retrievingDataColor.backgroundColor = [UIColor lightGrayColor];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(allDataReady)
+                                                 name:nil
+                                               object:nil];
+    pullFriendsFlag = false;
+    pullPhotosFlag = false;
+    pullAlbumsFlag = false;
+    pullStatusFlag = false;
+    pullVideosFlag = false;
+    
+    statusFriends.hidden = false;
+    [statusFriends startAnimating];
+    [self startPhase1];
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
