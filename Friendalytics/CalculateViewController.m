@@ -31,6 +31,7 @@
 @synthesize statusVideos;
 @synthesize statusStatus;
 @synthesize continueButton;
+@synthesize retryButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -67,17 +68,21 @@
     gatheringStatusColor.layer.cornerRadius = 10;
     gatheringStatusColor.layer.borderWidth = .5;
     
-    [self.statusFriends startAnimating];
-    [self.statusAlbums startAnimating];
-    [self.statusPhotos startAnimating];
-    [self.statusVideos startAnimating];
-    [self.statusStatus startAnimating];
+    continueButton.layer.cornerRadius = 5;
+    continueButton.layer.borderWidth = 1;
+    continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
-    [self performSelectorInBackground:@selector(getFriends) withObject:nil];
-    [self performSelectorInBackground:@selector(getPhotos) withObject:nil];
-    [self performSelectorInBackground:@selector(getAlbums) withObject:nil];
-    [self performSelectorInBackground:@selector(getVideos) withObject:nil];
-    [self performSelectorInBackground:@selector(getStatuses) withObject:nil];
+    retryButton.layer.cornerRadius = 5;
+    retryButton.layer.borderWidth = 1;
+    retryButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    
+    [self startGatheringData];
+    [retryButton addTarget:self action:@selector(startGatheringData) forControlEvents:UIControlEventTouchUpInside];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(allDataReady)
+//                                                 name:nil
+//                                               object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -123,8 +128,31 @@
     }
 }
 
-- (void) addNewFriends{
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/newFriends/%@/%@", userId, accessToken];
+- (void) startGatheringData{
+    
+    continueButton.hidden = true;
+    
+    self.statusFriends.hidden = false;
+    self.statusAlbums.hidden = false;
+    self.statusPhotos.hidden = false;
+    self.statusVideos.hidden = false;
+    self.statusStatus.hidden = false;
+    
+    [self.statusFriends startAnimating];
+    [self.statusAlbums startAnimating];
+    [self.statusPhotos startAnimating];
+    [self.statusVideos startAnimating];
+    [self.statusStatus startAnimating];
+    
+    [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
+    [self performSelectorInBackground:@selector(pullPhotos) withObject:nil];
+    [self performSelectorInBackground:@selector(pullAlbums) withObject:nil];
+    [self performSelectorInBackground:@selector(pullVideos) withObject:nil];
+    [self performSelectorInBackground:@selector(pullStatuses) withObject:nil];
+}
+
+- (void) pullFriends{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/pullFriends/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -132,39 +160,19 @@
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
     NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
-    NSLog(@"addNewFriends: %@", responseString);
+    NSLog(@"pullFriends: %@", responseString);
+
+    NSLog(@"obtained friends successfully");
+    [statusFriends stopAnimating];
+    statusFriends.hidden = true;
+    gatheringFriendsColor.backgroundColor = [UIColor greenColor];
+    
+    //still need to make a check if pulling friends was successful
+    
 }
 
-- (void) getFriends {
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/getFriends/%@", userId];
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    NSURLResponse *response = NULL;
-    NSError *requestError = NULL;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    
-    //obtain the json data
-    NSError *err;
-    friendData = [NSJSONSerialization JSONObjectWithData:responseData
-                                                 options:NSJSONReadingMutableContainers
-                                                   error:&err];
-    
-    if(friendData != nil){
-        [statusFriends stopAnimating];
-        statusFriends.hidden = true;
-        gatheringFriendsColor.backgroundColor = [UIColor greenColor];
-    }
-    else{
-        [statusFriends stopAnimating];
-        statusFriends.hidden = true;
-        gatheringFriendsColor.backgroundColor = [UIColor redColor];
-    }
-    
-    NSLog(@"friendData: %@", friendData);
-}
-
-- (void) getPhotos{
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/getPhotos/%@/%@", userId, accessToken];
+- (void) pullPhotos{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/pullPhotos/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -178,21 +186,23 @@
                                                    error:&err];
     
     if(photoData != nil){
+        NSLog(@"obtained photoData successfully");
         [statusPhotos stopAnimating];
         statusPhotos.hidden = true;
         gatheringPhotosColor.backgroundColor = [UIColor greenColor];
     }
     else{
+        NSLog(@"unable to obtain photo successfully");
         [statusPhotos stopAnimating];
         statusPhotos.hidden = true;
         gatheringPhotosColor.backgroundColor = [UIColor redColor];
     }
 
-    NSLog(@"photoData: %@", photoData);
+    //NSLog(@"photoData: %@", photoData);
 }
 
-- (void) getAlbums{
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/albums/getAlbums/%@/%@", userId, accessToken];
+- (void) pullAlbums{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/albums/pullAlbums/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -205,21 +215,23 @@
                                                 options:NSJSONReadingMutableContainers
                                                   error:&err];
     if(albumData != nil){
+        NSLog(@"obtained albumData successfully");
         [statusAlbums stopAnimating];
         statusAlbums.hidden = true;
         gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
     }
     else{
+        NSLog(@"unable to obtain albumData successfully");
         [statusPhotos stopAnimating];
         statusAlbums.hidden = true;
         gatheringAlbumsColor.backgroundColor = [UIColor redColor];
     }
     
-    NSLog(@"albumData: %@", albumData);
+    //NSLog(@"albumData: %@", albumData);
 }
 
-- (void) getVideos{
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/videos/getVideos/%@/%@", userId, accessToken];
+- (void) pullVideos{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/videos/pullVideos/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -233,21 +245,23 @@
                                                   error:&err];
     
     if(videoData != nil){
+        NSLog(@"obtained videoData successfully");
         [statusVideos stopAnimating];
         statusVideos.hidden = true;
         gatheringVideosColor.backgroundColor = [UIColor greenColor];
     }
     else{
+        NSLog(@"unable to obtain friendData successfully");
         [statusVideos stopAnimating];
         statusVideos.hidden = true;
         gatheringVideosColor.backgroundColor = [UIColor redColor];
     }
     
-    NSLog(@"videoData: %@", videoData);
+    //NSLog(@"videoData: %@", videoData);
 }
 
-- (void) getStatuses{
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/getPhotos/%@/%@", userId, accessToken];
+- (void) pullStatuses{
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/pullPhotos/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -261,17 +275,78 @@
                                                   error:&err];
    
     if(statusData != nil){
+        NSLog(@"obtained friendData successfully");
         [statusStatus stopAnimating];
         statusStatus.hidden = true;
         gatheringStatusColor.backgroundColor = [UIColor greenColor];
     }
     else{
+        NSLog(@"unable to obtain friendData successfully");
         [statusStatus stopAnimating];
         statusStatus.hidden = true;
         gatheringStatusColor.backgroundColor = [UIColor redColor];
     }
     
-    NSLog(@"statusData: %@", statusData);
+    //NSLog(@"statusData: %@", statusData);
+}
+
+- (void) getFriendData {
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/getFriendData/%@", userId];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    
+    //obtain the json data
+    NSError *err;
+    friendData = [NSJSONSerialization JSONObjectWithData:responseData
+                                                 options:NSJSONReadingMutableContainers
+                                                   error:&err];
+    
+    if(friendData != nil){
+        NSLog(@"obtained friendData successfully");
+        [statusFriends stopAnimating];
+        statusFriends.hidden = true;
+        gatheringFriendsColor.backgroundColor = [UIColor greenColor];
+    }
+    else{
+        NSLog(@"unable to obtain friendData successfully");
+        [statusFriends stopAnimating];
+        statusFriends.hidden = true;
+        gatheringFriendsColor.backgroundColor = [UIColor redColor];
+    }
+    
+    //NSLog(@"friendData: %@", friendData);
+}
+
+- (void) allDataReady{
+//    if(friendData != nil
+//       && photoData != nil
+//       && albumData != nil
+//       && videoData != nil
+//       && statusData != nil){
+//        NSLog(@"ALL ARE READY!");
+//        [[NSNotificationCenter defaultCenter] removeObserver:self];
+//        [self performSelectorOnMainThread:@selector(updateUI) withObject:nil waitUntilDone:YES];
+//    }
+//    else{
+//        NSLog(@"at least one failed keep waiting");
+//    }
+    
+    if(friendData != nil){
+        NSLog(@"friendData IS READY!");
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self performSelectorOnMainThread:@selector(updateUI) withObject:nil waitUntilDone:YES];
+    }
+    else{
+        NSLog(@"friendData not ready");
+    }
+}
+
+- (void) updateUI{
+    continueButton.hidden = false;
+    retryButton.hidden = true;
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{

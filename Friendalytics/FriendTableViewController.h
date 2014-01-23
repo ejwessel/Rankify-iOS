@@ -19,9 +19,9 @@
 @property NSMutableArray *filteredResults;
 @property CustomCell *cellDownload;
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 
 - (void)downloadAndLoadImageWithCell;
 

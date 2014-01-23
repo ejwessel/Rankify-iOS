@@ -29,20 +29,25 @@
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusVideos;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusStatus;
 @property (strong, nonatomic) IBOutlet UIButton *continueButton;
+@property (strong, nonatomic) IBOutlet UIButton *retryButton;
 
 - (void) requestUsers;
 
-- (void) addNewFriends;
+- (void) pullFriends;
 
-- (void) getFriends;
+- (void) startGatheringData;
 
-- (void) getPhotos;
+- (void) getFriendData;
 
-- (void) getAlbums;
+- (void) pullPhotos;
 
-- (void) getVideos;
+- (void) pullAlbums;
 
-- (void) getStatuses;
+- (void) pullVideos;
+
+- (void) pullStatuses;
+
+- (void) allDataReady;
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
