@@ -18,26 +18,36 @@
 @property NSArray *albumData;
 @property NSArray *videoData;
 @property NSArray *statusData;
+@property Boolean pullFriendsFlag;
+@property Boolean pullPhotosFlag;
+@property Boolean pullAlbumsFlag;
+@property Boolean pullVideosFlag;
+@property Boolean pullStatusFlag;
+@property Boolean retrieveStatusFlag;
 @property (strong, nonatomic) IBOutlet UILabel *gatheringFriendsColor;
 @property (strong, nonatomic) IBOutlet UILabel *gatheringAlbumsColor;
 @property (strong, nonatomic) IBOutlet UILabel *gatheringPhotosColor;
 @property (strong, nonatomic) IBOutlet UILabel *gatheringVideosColor;
 @property (strong, nonatomic) IBOutlet UILabel *gatheringStatusColor;
+@property (strong, nonatomic) IBOutlet UILabel *retrievingDataColor;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusFriends;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusAlbums;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusPhotos;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusVideos;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusStatus;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *retrievingStatus;
 @property (strong, nonatomic) IBOutlet UIButton *continueButton;
 @property (strong, nonatomic) IBOutlet UIButton *retryButton;
 
 - (void) requestUsers;
 
+- (void) startPhase1;
+
+- (void) startPhase2;
+
+- (void) startPhase3;
+
 - (void) pullFriends;
-
-- (void) startGatheringData;
-
-- (void) getFriendData;
 
 - (void) pullPhotos;
 
@@ -46,6 +56,8 @@
 - (void) pullVideos;
 
 - (void) pullStatuses;
+
+- (void) getFriendData;
 
 - (void) allDataReady;
 

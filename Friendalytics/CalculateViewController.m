@@ -32,6 +32,14 @@
 @synthesize statusStatus;
 @synthesize continueButton;
 @synthesize retryButton;
+@synthesize pullFriendsFlag;
+@synthesize pullPhotosFlag;
+@synthesize pullAlbumsFlag;
+@synthesize pullVideosFlag;
+@synthesize pullStatusFlag;
+@synthesize retrievingDataColor;
+@synthesize retrievingStatus;
+@synthesize retrieveStatusFlag;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -41,32 +49,36 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (void) viewDidLoad {
     [super viewDidLoad];
     
     continueButton.layer.borderWidth = 1;
     continueButton.layer.cornerRadius = 5;
     continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
-    gatheringFriendsColor.backgroundColor = [UIColor yellowColor];
+    gatheringFriendsColor.backgroundColor = [UIColor lightGrayColor];
     gatheringFriendsColor.layer.cornerRadius = 10;
     gatheringFriendsColor.layer.borderWidth = .5;
     
-    gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
+    gatheringAlbumsColor.backgroundColor = [UIColor lightGrayColor];
     gatheringAlbumsColor.layer.cornerRadius = 10;
     gatheringAlbumsColor.layer.borderWidth = .5;
     
-    gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
+    gatheringPhotosColor.backgroundColor = [UIColor lightGrayColor];
     gatheringPhotosColor.layer.cornerRadius = 10;
     gatheringPhotosColor.layer.borderWidth = .5;
     
-    gatheringVideosColor.backgroundColor = [UIColor yellowColor];
+    gatheringVideosColor.backgroundColor = [UIColor lightGrayColor];
     gatheringVideosColor.layer.cornerRadius = 10;
     gatheringVideosColor.layer.borderWidth = .5;
     
-    gatheringStatusColor.backgroundColor = [UIColor yellowColor];
+    gatheringStatusColor.backgroundColor = [UIColor lightGrayColor];
     gatheringStatusColor.layer.cornerRadius = 10;
     gatheringStatusColor.layer.borderWidth = .5;
+    
+    retrievingDataColor.backgroundColor = [UIColor lightGrayColor];
+    retrievingDataColor.layer.cornerRadius = 10;
+    retrievingDataColor.layer.borderWidth = .5;
     
     continueButton.layer.cornerRadius = 5;
     continueButton.layer.borderWidth = 1;
@@ -76,16 +88,26 @@
     retryButton.layer.borderWidth = 1;
     retryButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
-    [self startGatheringData];
-    [retryButton addTarget:self action:@selector(startGatheringData) forControlEvents:UIControlEventTouchUpInside];
+    continueButton.hidden = true;
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(allDataReady)
-//                                                 name:nil
-//                                               object:nil];
+    self.statusAlbums.hidden = true;
+    self.statusPhotos.hidden = true;
+    self.statusVideos.hidden = true;
+    self.statusStatus.hidden = true;
+    self.retrievingStatus.hidden = true;
+    
+    //==========================================================================
+    
+    [self startPhase1];
+    [retryButton addTarget:self action:@selector(startPhase1) forControlEvents:UIControlEventTouchUpInside];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(allDataReady)
+                                                 name:nil
+                                               object:nil];
+
 }
 
-- (void)didReceiveMemoryWarning {
+- (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -128,30 +150,43 @@
     }
 }
 
-- (void) startGatheringData{
-    
-    continueButton.hidden = true;
-    
-    self.statusFriends.hidden = false;
-    self.statusAlbums.hidden = false;
-    self.statusPhotos.hidden = false;
-    self.statusVideos.hidden = false;
-    self.statusStatus.hidden = false;
-    
-    [self.statusFriends startAnimating];
-    [self.statusAlbums startAnimating];
-    [self.statusPhotos startAnimating];
-    [self.statusVideos startAnimating];
-    [self.statusStatus startAnimating];
-    
+- (void) startPhase1{
     [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
+}
+
+- (void) startPhase2{
+    
+    gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
+    [statusPhotos startAnimating];
+    statusPhotos.hidden = false;
     [self performSelectorInBackground:@selector(pullPhotos) withObject:nil];
+
+    gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
+    [statusAlbums startAnimating];
+    statusAlbums.hidden = false;
     [self performSelectorInBackground:@selector(pullAlbums) withObject:nil];
+    
+    gatheringVideosColor.backgroundColor = [UIColor yellowColor];
+    [statusVideos startAnimating];
+    statusVideos.hidden = false;
     [self performSelectorInBackground:@selector(pullVideos) withObject:nil];
+    
+    gatheringStatusColor.backgroundColor = [UIColor yellowColor];
+    [statusStatus startAnimating];
+    statusStatus.hidden = false;
     [self performSelectorInBackground:@selector(pullStatuses) withObject:nil];
 }
 
+- (void) startPhase3{
+    [self getFriendData];
+}
+
 - (void) pullFriends{
+    
+    gatheringFriendsColor.backgroundColor = [UIColor yellowColor];
+    [statusFriends startAnimating];
+    statusFriends.hidden = false;
+    
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/pullFriends/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -161,17 +196,24 @@
     NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
     NSLog(@"pullFriends: %@", responseString);
-
     NSLog(@"obtained friends successfully");
+  
+    pullFriendsFlag = true; //will return based on response from server
     [statusFriends stopAnimating];
     statusFriends.hidden = true;
-    gatheringFriendsColor.backgroundColor = [UIColor greenColor];
     
-    //still need to make a check if pulling friends was successful
+    if(pullFriendsFlag){
+        gatheringFriendsColor.backgroundColor = [UIColor greenColor];
+        [self startPhase2];
+    }
+    else{
+        gatheringFriendsColor.backgroundColor = [UIColor redColor];
+    }
     
 }
 
 - (void) pullPhotos{
+
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/pullPhotos/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -181,20 +223,18 @@
     
     //obtain the json data
     NSError *err;
-    photoData = [NSJSONSerialization JSONObjectWithData:responseData
-                                                 options:NSJSONReadingMutableContainers
-                                                   error:&err];
+    photoData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&err];
     
-    if(photoData != nil){
+    pullPhotosFlag = true;  //will return based on response from server
+    [statusPhotos stopAnimating];
+    statusPhotos.hidden = true;
+    
+    if(pullPhotosFlag){
         NSLog(@"obtained photoData successfully");
-        [statusPhotos stopAnimating];
-        statusPhotos.hidden = true;
         gatheringPhotosColor.backgroundColor = [UIColor greenColor];
     }
     else{
         NSLog(@"unable to obtain photo successfully");
-        [statusPhotos stopAnimating];
-        statusPhotos.hidden = true;
         gatheringPhotosColor.backgroundColor = [UIColor redColor];
     }
 
@@ -202,6 +242,7 @@
 }
 
 - (void) pullAlbums{
+    
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/albums/pullAlbums/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -211,19 +252,18 @@
     
     //obtain the json data
     NSError *err;
-    albumData = [NSJSONSerialization JSONObjectWithData:responseData
-                                                options:NSJSONReadingMutableContainers
-                                                  error:&err];
-    if(albumData != nil){
+    albumData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&err];
+    
+    pullAlbumsFlag = true; //will return based on response from server
+    [statusAlbums stopAnimating];
+    statusAlbums.hidden = true;
+
+    if(pullAlbumsFlag){
         NSLog(@"obtained albumData successfully");
-        [statusAlbums stopAnimating];
-        statusAlbums.hidden = true;
         gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
     }
     else{
         NSLog(@"unable to obtain albumData successfully");
-        [statusPhotos stopAnimating];
-        statusAlbums.hidden = true;
         gatheringAlbumsColor.backgroundColor = [UIColor redColor];
     }
     
@@ -231,6 +271,7 @@
 }
 
 - (void) pullVideos{
+    
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/videos/pullVideos/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -243,17 +284,16 @@
     videoData = [NSJSONSerialization JSONObjectWithData:responseData
                                                 options:NSJSONReadingMutableContainers
                                                   error:&err];
-    
-    if(videoData != nil){
+    pullVideosFlag = true;  //will return based on response from server
+    [statusVideos stopAnimating];
+    statusVideos.hidden = true;
+
+    if(pullVideosFlag){
         NSLog(@"obtained videoData successfully");
-        [statusVideos stopAnimating];
-        statusVideos.hidden = true;
         gatheringVideosColor.backgroundColor = [UIColor greenColor];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        [statusVideos stopAnimating];
-        statusVideos.hidden = true;
         gatheringVideosColor.backgroundColor = [UIColor redColor];
     }
     
@@ -261,6 +301,7 @@
 }
 
 - (void) pullStatuses{
+    
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/pullPhotos/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -274,16 +315,16 @@
                                                 options:NSJSONReadingMutableContainers
                                                   error:&err];
    
-    if(statusData != nil){
+    pullStatusFlag = true; //will return based on response from server
+    [statusStatus stopAnimating];
+    statusStatus.hidden = true;
+
+    if(pullStatusFlag){
         NSLog(@"obtained friendData successfully");
-        [statusStatus stopAnimating];
-        statusStatus.hidden = true;
         gatheringStatusColor.backgroundColor = [UIColor greenColor];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        [statusStatus stopAnimating];
-        statusStatus.hidden = true;
         gatheringStatusColor.backgroundColor = [UIColor redColor];
     }
     
@@ -291,7 +332,8 @@
 }
 
 - (void) getFriendData {
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/getFriendData/%@", userId];
+    
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/getFriendsData/%@", userId];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -303,50 +345,44 @@
     friendData = [NSJSONSerialization JSONObjectWithData:responseData
                                                  options:NSJSONReadingMutableContainers
                                                    error:&err];
+    [retrievingStatus stopAnimating];
+    retrievingStatus.hidden = true;
     
+    //check returned data
     if(friendData != nil){
+        retrieveStatusFlag = true;
+    }
+    
+    if(retrieveStatusFlag){
         NSLog(@"obtained friendData successfully");
-        [statusFriends stopAnimating];
-        statusFriends.hidden = true;
-        gatheringFriendsColor.backgroundColor = [UIColor greenColor];
+        retrievingDataColor.backgroundColor = [UIColor greenColor];
+        continueButton.hidden = false;
+        retryButton.hidden = true;
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        [statusFriends stopAnimating];
-        statusFriends.hidden = true;
-        gatheringFriendsColor.backgroundColor = [UIColor redColor];
+        retrievingDataColor.backgroundColor = [UIColor redColor];
     }
     
     //NSLog(@"friendData: %@", friendData);
 }
 
 - (void) allDataReady{
-//    if(friendData != nil
-//       && photoData != nil
-//       && albumData != nil
-//       && videoData != nil
-//       && statusData != nil){
-//        NSLog(@"ALL ARE READY!");
-//        [[NSNotificationCenter defaultCenter] removeObserver:self];
-//        [self performSelectorOnMainThread:@selector(updateUI) withObject:nil waitUntilDone:YES];
-//    }
-//    else{
-//        NSLog(@"at least one failed keep waiting");
-//    }
-    
-    if(friendData != nil){
-        NSLog(@"friendData IS READY!");
+    if(pullFriendsFlag && pullAlbumsFlag && pullPhotosFlag && pullVideosFlag && pullStatusFlag){
+        NSLog(@"All flags are set and ready to go!");
         [[NSNotificationCenter defaultCenter] removeObserver:self];
-        [self performSelectorOnMainThread:@selector(updateUI) withObject:nil waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(updateRetrieveUI) withObject:nil waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(getFriendData) withObject:nil waitUntilDone:YES];
     }
     else{
-        NSLog(@"friendData not ready");
+        NSLog(@"at least one failed cannot continue");
     }
 }
 
-- (void) updateUI{
-    continueButton.hidden = false;
-    retryButton.hidden = true;
+- (void) updateRetrieveUI{
+    retrievingDataColor.backgroundColor = [UIColor yellowColor];
+    [retrievingStatus startAnimating];
+    retrievingStatus.hidden = false;
 }
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
