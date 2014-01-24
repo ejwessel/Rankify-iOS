@@ -14,10 +14,6 @@
 @property NSString *userId;
 @property NSString *accessToken;
 @property NSArray *friendData;
-@property NSArray *photoData;
-@property NSArray *albumData;
-@property NSArray *videoData;
-@property NSArray *statusData;
 @property Boolean pullFriendsFlag;
 @property Boolean pullPhotosFlag;
 @property Boolean pullAlbumsFlag;
