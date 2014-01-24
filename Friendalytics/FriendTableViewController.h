@@ -13,15 +13,17 @@
 @interface FriendTableViewController : UITableViewController <UIScrollViewDelegate,UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property NSArray *friendData;
+@property NSMutableArray *filteredResults; //filtered results of friend data
 @property NSString *friendName;
 @property NSMutableDictionary *friendObject;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
-@property NSMutableArray *filteredResults;
 @property CustomCell *cellDownload;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
+- (NSString*) makeFullName:(NSDictionary*) element;
 
 - (void)downloadAndLoadImageWithCell;
 

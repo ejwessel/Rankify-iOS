@@ -56,11 +56,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    int indexClicked = [indexPath indexAtPosition:[indexPath length] - 1];
-    
-    friendObject = [[friendData objectAtIndex:indexClicked] objectForKey:@"User"];
-    
     self.navigationController.navigationBarHidden = false;
+    //determine if we are using the search bar or the table view
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        friendObject = [[filteredResults objectAtIndex:indexPath.row] objectForKey:@"User"];
+    }
+    else{
+        friendObject = [[friendData objectAtIndex:indexPath.row] objectForKey:@"User"];
+    }
+    
     CustomCell *cell = [tableView cellForRowAtIndexPath:indexPath]; //warning shouldn't be a problem
     friendName = cell.nameLabel.text;
     NSLog(@"clicked on: %@", friendName);
@@ -98,8 +102,20 @@
     // Remove all objects from the filtered search array
     [self.filteredResults removeAllObjects];
     // Filter the array using NSPredicate
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.name contains[c] %@",searchText];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"User.firstName CONTAINS[c] %@",searchText];
     filteredResults = [NSMutableArray arrayWithArray:[friendData filteredArrayUsingPredicate:predicate]];
+    //NSLog(@"filteredResults: %@", filteredResults);
+    //NSLog(@"filteredResults: %i", filteredResults.count);
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar
+                                                     selectedScopeButtonIndex]]];
+    
+    return YES;
 }
 
 #pragma mark - Table view data source
@@ -111,21 +127,31 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return friendData.count;
+    if(tableView == self.searchDisplayController.searchResultsTableView){
+        return filteredResults.count;
+    }
+    else{
+        return friendData.count;
+    }
 }
 
-- (CustomCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     static NSString *CellIdentifier = @"CustomCell";
+    CustomCell *cell;
+    NSDictionary *element = nil;
     
-    CustomCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    //determine if we are using the tableview or search display controller
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];   //must go here
+        element = [filteredResults objectAtIndex:indexPath.row];
+    }
+    else{
+        cell = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];   //must go here
+        element = [friendData objectAtIndex:indexPath.row];
+    }
     
-    int index = [indexPath indexAtPosition:[indexPath length] - 1];
-    NSDictionary *element = [friendData objectAtIndex:index];
-    
-    //make full name to display
-    NSString *firstName = [[element objectForKey:@"User"] objectForKey:@"firstName"];
-    NSString *lastName = [[element objectForKey:@"User"] objectForKey:@"lastName"];
-    NSString *fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
+    NSString *fullName = [self makeFullName:element];
     NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
     NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
     
@@ -136,12 +162,18 @@
     cell.countLabel.textColor = self.navigationController.navigationBar.tintColor;
     cell.urlPath = urlPath;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cellDownload = cell;
+    //cellDownload = cell;
     
     //bug with loading small images...
     //[NSThread detachNewThreadSelector:@selector(downloadAndLoadImageWithCell) toTarget:self withObject:nil];
     //[self performSelectorInBackground:@selector(downloadAndLoadImageWithCell) withObject:nil];
     return cell;
+}
+
+- (NSString*) makeFullName:(NSDictionary*) element{
+    NSString *firstName = [[element objectForKey:@"User"] objectForKey:@"firstName"];
+    NSString *lastName = [[element objectForKey:@"User"] objectForKey:@"lastName"];
+    return [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 }
 
 /*
