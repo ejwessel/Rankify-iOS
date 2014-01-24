@@ -17,6 +17,7 @@
 @property NSString *userId;
 @property NSString *accessToken;
 @property (strong, nonatomic) IBOutlet UIButton *calculateButton;
+@property (strong, nonatomic) IBOutlet UIButton *aboutButton;
 
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
 

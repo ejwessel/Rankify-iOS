@@ -83,8 +83,8 @@
     retryButton.layer.cornerRadius = 5;
     retryButton.layer.borderWidth = 1;
     retryButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-    
-    continueButton.hidden = true;
+
+    continueButton.enabled = false;
     
     self.statusAlbums.hidden = true;
     self.statusPhotos.hidden = true;
@@ -98,10 +98,7 @@
     statusFriends.hidden = false;
     [self startPhase1];
     [retryButton addTarget:self action:@selector(restartPhases) forControlEvents:UIControlEventTouchUpInside];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(allDataReady)
-                                                 name:nil
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
 
 }
 
@@ -199,6 +196,7 @@
     if([responseString isEqualToString:@"success"]){
         pullFriendsFlag = true;
         gatheringFriendsColor.backgroundColor = [UIColor greenColor];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"allDataReadyNotification" object:nil]; //startes the notification for listenting
         [self startPhase2];
     }
     else{
@@ -305,6 +303,7 @@
 }
 
 - (void) getFriendData {
+    
     NSLog(@"getFriendData Started");
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/getFriendsData/%@", userId];
     NSURL *url = [NSURL URLWithString:urlString];
@@ -326,7 +325,8 @@
         retrieveStatusFlag = true;
         NSLog(@"obtained friendData successfully");
         retrievingDataColor.backgroundColor = [UIColor greenColor];
-        continueButton.hidden = false;
+        continueButton.enabled = true;
+        //retryButton.enabled = false;
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
@@ -338,7 +338,7 @@
 - (void) allDataReady{
     if(pullFriendsFlag && pullAlbumsFlag && pullPhotosFlag && pullVideosFlag && pullStatusFlag){
         NSLog(@"All flags are set and ready to go!");
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [[NSNotificationCenter defaultCenter] removeObserver:@"allDataReadyNotification"];  //removes notification from listenting
         [self performSelectorOnMainThread:@selector(updateRetrieveUI) withObject:nil waitUntilDone:YES];
         [self performSelectorOnMainThread:@selector(getFriendData) withObject:nil waitUntilDone:YES];
     }
@@ -361,10 +361,7 @@
     gatheringStatusColor.backgroundColor = [UIColor lightGrayColor];
     retrievingDataColor.backgroundColor = [UIColor lightGrayColor];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(allDataReady)
-                                                 name:nil
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
     pullFriendsFlag = false;
     pullPhotosFlag = false;
     pullAlbumsFlag = false;

@@ -19,9 +19,17 @@
 @synthesize userId;
 @synthesize accessToken;
 @synthesize calculateButton;
+@synthesize aboutButton;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    UIColor *navColor = self.navigationController.navigationBar.tintColor;
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: navColor};
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
 	// Do any additional setup after loading the view, typically from a nib.
     NSArray *permissions = @[@"user_birthday",
                              @"user_videos",
@@ -42,6 +50,10 @@
     calculateButton.layer.cornerRadius = 5;
     calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
+    aboutButton.layer.borderWidth = 1.0;
+    aboutButton.layer.cornerRadius = 5;
+    aboutButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    
 //    loginView.frame = CGRectOffset(loginView.frame, 5, 5);
 //#ifdef __IPHONE_7_0
 //#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
@@ -55,6 +67,10 @@
 //    [self.view addSubview:loginView];
 //    [loginView sizeToFit];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = true;
 }
 
 - (void) loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
