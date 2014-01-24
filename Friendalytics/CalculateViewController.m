@@ -85,6 +85,7 @@
     retryButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
 
     continueButton.enabled = false;
+    retryButton.enabled = false;
     
     self.statusAlbums.hidden = true;
     self.statusPhotos.hidden = true;
@@ -92,12 +93,20 @@
     self.statusStatus.hidden = true;
     self.retrievingStatus.hidden = true;
     
+    pullFriendsFlag = false;
+    pullAlbumsFlag = false;
+    pullPhotosFlag = false;
+    pullVideosFlag = false;
+    pullStatusFlag = false;
+    
     //==========================================================================
     
     [statusFriends startAnimating];
     statusFriends.hidden = false;
-    [self startPhase1];
-    [retryButton addTarget:self action:@selector(restartPhases) forControlEvents:UIControlEventTouchUpInside];
+    gatheringFriendsColor.backgroundColor = [UIColor yellowColor];
+    [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
+//    [self startPhase1];
+    [retryButton addTarget:self action:@selector(viewDidLoad) forControlEvents:UIControlEventTouchUpInside];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
 
 }
@@ -145,42 +154,41 @@
     }
 }
 
-- (void) startPhase1{
-    [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
-}
-
-- (void) startPhase2{
-    
-    gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
-    [statusPhotos startAnimating];
-    statusPhotos.hidden = false;
-    [self performSelectorInBackground:@selector(pullPhotos) withObject:nil];
-
-    gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
-    [statusAlbums startAnimating];
-    statusAlbums.hidden = false;
-    [self performSelectorInBackground:@selector(pullAlbums) withObject:nil];
-    
-    gatheringVideosColor.backgroundColor = [UIColor yellowColor];
-    [statusVideos startAnimating];
-    statusVideos.hidden = false;
-    [self performSelectorInBackground:@selector(pullVideos) withObject:nil];
-    
-    gatheringStatusColor.backgroundColor = [UIColor yellowColor];
-    [statusStatus startAnimating];
-    statusStatus.hidden = false;
-    [self performSelectorInBackground:@selector(pullStatuses) withObject:nil];
-    
-}
-
-- (void) startPhase3{
-    [self getFriendData];
-}
+//- (void) startPhase1{
+//    [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
+//}
+//
+//- (void) startPhase2{
+//    
+//    gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
+//    [statusAlbums startAnimating];
+//    statusAlbums.hidden = false;
+//    [self performSelectorInBackground:@selector(pullAlbums) withObject:nil];
+//    
+//    gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
+//    [statusPhotos startAnimating];
+//    statusPhotos.hidden = false;
+//    [self performSelectorInBackground:@selector(pullPhotos) withObject:nil];
+//    
+//    gatheringVideosColor.backgroundColor = [UIColor yellowColor];
+//    [statusVideos startAnimating];
+//    statusVideos.hidden = false;
+//    [self performSelectorInBackground:@selector(pullVideos) withObject:nil];
+//    
+//    gatheringStatusColor.backgroundColor = [UIColor yellowColor];
+//    [statusStatus startAnimating];
+//    statusStatus.hidden = false;
+//    [self performSelectorInBackground:@selector(pullStatuses) withObject:nil];
+//    
+//}
+//
+//- (void) startPhase3{
+//    [self getFriendData];
+//}
 
 - (void) pullFriends{
     
     NSLog(@"pullFriends Started");
-    gatheringFriendsColor.backgroundColor = [UIColor yellowColor];
     NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/pullFriends/%@/%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -196,13 +204,48 @@
     if([responseString isEqualToString:@"success"]){
         pullFriendsFlag = true;
         gatheringFriendsColor.backgroundColor = [UIColor greenColor];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"allDataReadyNotification" object:nil]; //startes the notification for listenting
-        [self startPhase2];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"allDataReadyNotification" object:nil]; //startes the notification for listenting
+//        [self startPhase2];
+        gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
+        [statusAlbums startAnimating];
+        statusAlbums.hidden = false;
+        [self performSelectorInBackground:@selector(pullAlbums) withObject:nil];
     }
     else{
         gatheringFriendsColor.backgroundColor = [UIColor redColor];
+        retryButton.enabled = true;
     }
     NSLog(@"pullFriends Finished");
+}
+
+- (void) pullAlbums{
+    NSLog(@"pullAlbums Started");
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/albums/pullAlbums/%@/%@", userId, accessToken];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    
+    [statusAlbums stopAnimating];
+    statusAlbums.hidden = true;
+    if([responseString isEqualToString:@"success"]){
+        pullAlbumsFlag = true;
+        NSLog(@"obtained albumData successfully");
+        gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
+        
+        gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
+        [statusPhotos startAnimating];
+        statusPhotos.hidden = false;
+        [self performSelectorInBackground:@selector(pullPhotos) withObject:nil];
+    }
+    else{
+        NSLog(@"unable to obtain albumData successfully");
+        gatheringAlbumsColor.backgroundColor = [UIColor redColor];
+        retryButton.enabled = true;
+    }
+    NSLog(@"pullAlbums Finished");
 }
 
 - (void) pullPhotos{
@@ -222,36 +265,18 @@
         pullPhotosFlag = true;
         NSLog(@"obtained photoData successfully");
         gatheringPhotosColor.backgroundColor = [UIColor greenColor];
+        
+        gatheringVideosColor.backgroundColor = [UIColor yellowColor];
+        [statusVideos startAnimating];
+        statusVideos.hidden = false;
+        [self performSelectorInBackground:@selector(pullVideos) withObject:nil];
     }
     else{
         NSLog(@"unable to obtain photo successfully");
         gatheringPhotosColor.backgroundColor = [UIColor redColor];
+        retryButton.enabled = true;
     }
     NSLog(@"pullPhotos Finished");
-}
-
-- (void) pullAlbums{
-    NSLog(@"pullAlbums Started");
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/albums/pullAlbums/%@/%@", userId, accessToken];
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    NSURLResponse *response = NULL;
-    NSError *requestError = NULL;
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-    
-    [statusAlbums stopAnimating];
-    statusAlbums.hidden = true;
-    if([responseString isEqualToString:@"success"]){
-        pullAlbumsFlag = true;
-        NSLog(@"obtained albumData successfully");
-        gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
-    }
-    else{
-        NSLog(@"unable to obtain albumData successfully");
-        gatheringAlbumsColor.backgroundColor = [UIColor redColor];
-    }
-    NSLog(@"pullAlbums Finished");
 }
 
 - (void) pullVideos{
@@ -270,10 +295,16 @@
         pullVideosFlag = true;
         NSLog(@"obtained videoData successfully");
         gatheringVideosColor.backgroundColor = [UIColor greenColor];
+        
+        gatheringStatusColor.backgroundColor = [UIColor yellowColor];
+        [statusStatus startAnimating];
+        statusStatus.hidden = false;
+        [self performSelectorInBackground:@selector(pullStatuses) withObject:nil];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
         gatheringVideosColor.backgroundColor = [UIColor redColor];
+        retryButton.enabled = true;
     }
     NSLog(@"pullVideos Finished");
  }
@@ -294,10 +325,16 @@
         pullStatusFlag = true; //will return based on response from server
         NSLog(@"obtained friendData successfully");
         gatheringStatusColor.backgroundColor = [UIColor greenColor];
+        
+        retrievingDataColor.backgroundColor = [UIColor yellowColor];
+        [retrievingStatus startAnimating];
+        retrievingStatus.hidden = false;
+        [self performSelectorInBackground:@selector(getFriendData) withObject:nil];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
         gatheringStatusColor.backgroundColor = [UIColor redColor];
+        retryButton.enabled = true;
     }
     NSLog(@"pullStatuses Finished");
 }
@@ -326,52 +363,55 @@
         NSLog(@"obtained friendData successfully");
         retrievingDataColor.backgroundColor = [UIColor greenColor];
         continueButton.enabled = true;
-        //retryButton.enabled = false;
+        retryButton.enabled = false;
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
         retrievingDataColor.backgroundColor = [UIColor redColor];
+        retryButton.enabled = true;
     }
     NSLog(@"getFriendData Finished");
 }
 
-- (void) allDataReady{
-    if(pullFriendsFlag && pullAlbumsFlag && pullPhotosFlag && pullVideosFlag && pullStatusFlag){
-        NSLog(@"All flags are set and ready to go!");
-        [[NSNotificationCenter defaultCenter] removeObserver:@"allDataReadyNotification"];  //removes notification from listenting
-        [self performSelectorOnMainThread:@selector(updateRetrieveUI) withObject:nil waitUntilDone:YES];
-        [self performSelectorOnMainThread:@selector(getFriendData) withObject:nil waitUntilDone:YES];
-    }
-    else{
-        //NSLog(@"at least one failed cannot continue");
-    }
-}
+//- (void) allDataReady{
+//    if(pullFriendsFlag && pullAlbumsFlag && pullPhotosFlag && pullVideosFlag && pullStatusFlag){
+//        NSLog(@"All flags are set and ready to go!");
+//        [[NSNotificationCenter defaultCenter] removeObserver:@"allDataReadyNotification"];  //removes notification from listenting
+//        [self performSelectorOnMainThread:@selector(updateRetrieveUI) withObject:nil waitUntilDone:YES];
+//        [self performSelectorOnMainThread:@selector(getFriendData) withObject:nil waitUntilDone:YES];
+//    }
+//    else{
+//        //NSLog(@"at least one failed cannot continue");
+//    }
+//}
 
-- (void) updateRetrieveUI{
-    retrievingDataColor.backgroundColor = [UIColor yellowColor];
-    [retrievingStatus startAnimating];
-    retrievingStatus.hidden = false;
-}
+//- (void) updateRetrieveUI{
+//    retrievingDataColor.backgroundColor = [UIColor yellowColor];
+//    [retrievingStatus startAnimating];
+//    retrievingStatus.hidden = false;
+//}
 
-- (void) restartPhases{
-    gatheringFriendsColor.backgroundColor = [UIColor lightGrayColor];
-    gatheringAlbumsColor.backgroundColor = [UIColor lightGrayColor];
-    gatheringPhotosColor.backgroundColor = [UIColor lightGrayColor];
-    gatheringVideosColor.backgroundColor = [UIColor lightGrayColor];
-    gatheringStatusColor.backgroundColor = [UIColor lightGrayColor];
-    retrievingDataColor.backgroundColor = [UIColor lightGrayColor];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
-    pullFriendsFlag = false;
-    pullPhotosFlag = false;
-    pullAlbumsFlag = false;
-    pullStatusFlag = false;
-    pullVideosFlag = false;
-    
-    statusFriends.hidden = false;
-    [statusFriends startAnimating];
-    [self startPhase1];
-}
+//- (void) restartPhases{
+//    gatheringFriendsColor.backgroundColor = [UIColor lightGrayColor];
+//    gatheringAlbumsColor.backgroundColor = [UIColor lightGrayColor];
+//    gatheringPhotosColor.backgroundColor = [UIColor lightGrayColor];
+//    gatheringVideosColor.backgroundColor = [UIColor lightGrayColor];
+//    gatheringStatusColor.backgroundColor = [UIColor lightGrayColor];
+//    retrievingDataColor.backgroundColor = [UIColor lightGrayColor];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
+//    pullFriendsFlag = false;
+//    pullPhotosFlag = false;
+//    pullAlbumsFlag = false;
+//    pullStatusFlag = false;
+//    pullVideosFlag = false;
+//    
+//    statusFriends.hidden = false;
+//    [statusFriends startAnimating];
+//    
+//    
+//    //[self startPhase1];
+//}
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"segueToFriendList"]){
