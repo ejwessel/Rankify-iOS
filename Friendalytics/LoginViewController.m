@@ -15,7 +15,6 @@
 @implementation LoginViewController
 
 @synthesize friendList;
-@synthesize loginView;
 @synthesize userId;
 @synthesize accessToken;
 @synthesize calculateButton;
@@ -43,28 +42,25 @@
                              @"read_stream",
                              @"export_stream"];
     
-    loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
-    // Align the button in the center horizontally
-    loginView.frame = CGRectMake(0, 0, 280.0, 100.0);
+    FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
+    loginView.delegate = self;
+    loginView.frame = CGRectMake(0,0, 280, 100);
     loginView.frame = CGRectOffset(loginView.frame,
-                                   self.view.center.x - (loginView.frame.size.width / 2),
-                                   self.view.center.y - (loginView.frame.size.height / 2));
-    
-    
+                                   (self.view.center.x - (loginView.frame.size.width / 2)),
+                                   (self.view.center.y - (loginView.frame.size.height / 2)));
     
     [self.view addSubview:loginView];
-//    [loginView sizeToFit];
     
     calculateButton.enabled = false;
     calculateButton.layer.borderWidth = 1.0;
     calculateButton.layer.cornerRadius = 5;
     calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-    
+
     aboutButton.layer.borderWidth = 1.0;
     aboutButton.layer.cornerRadius = 5;
     aboutButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
-
+    loginView.frame = CGRectOffset(loginView.frame, 5, 5);
 //#ifdef __IPHONE_7_0
 //#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 //#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
@@ -74,14 +70,21 @@
 //#endif
 //#endif
 //#endif
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = true;
 }
 
-- (void) loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
+- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
+    calculateButton.enabled = true;
+}
+
+- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
+    calculateButton.enabled = false;
+}
+
+- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
 //    // here we use helper properties of FBGraphUser to dot-through to first_name and
 //    // id properties of the json response from the server; alternatively we could use
 //    // NSDictionary methods such as objectForKey to get values from the my json object
@@ -99,14 +102,19 @@
                                   FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
                                   accessToken = (NSString*)token;
                                   [self sendAccessToken:accessToken withUserID:userId];
-                                  calculateButton.enabled = true;
-                                  calculateButton.layer.borderColor = calculateButton.titleLabel.textColor.CGColor;
                               } else {
                                   // An error occurred, we need to handle the error
                                   // See: https://developers.facebook.com/docs/ios/errors
                                   NSLog(@"data not retrieved");
                               }
                           }];
+    
+}
+
+- (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error {
+    // see https://developers.facebook.com/docs/reference/api/errors/ for general guidance on error handling for Facebook API
+    // our policy here is to let the login view handle errors, but to log the results
+    NSLog(@"FBLoginView encountered an error=%@", error);
 }
 
 - (void) didReceiveMemoryWarning {

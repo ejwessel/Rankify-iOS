@@ -13,7 +13,6 @@
 @interface LoginViewController : UIViewController
 
 @property NSMutableDictionary *friendList;
-@property (strong, nonatomic) FBLoginView *loginView;
 @property NSString *userId;
 @property NSString *accessToken;
 @property (strong, nonatomic) IBOutlet UIButton *calculateButton;
