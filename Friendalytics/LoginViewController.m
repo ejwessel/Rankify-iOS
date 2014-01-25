@@ -44,7 +44,17 @@
                              @"export_stream"];
     
     loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
-    loginView.delegate = self;
+    // Align the button in the center horizontally
+    loginView.frame = CGRectMake(0, 0, 280.0, 100.0);
+    loginView.frame = CGRectOffset(loginView.frame,
+                                   self.view.center.x - (loginView.frame.size.width / 2),
+                                   self.view.center.y - (loginView.frame.size.height / 2));
+    
+    
+    
+    [self.view addSubview:loginView];
+//    [loginView sizeToFit];
+    
     calculateButton.enabled = false;
     calculateButton.layer.borderWidth = 1.0;
     calculateButton.layer.cornerRadius = 5;
@@ -54,7 +64,7 @@
     aboutButton.layer.cornerRadius = 5;
     aboutButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
-//    loginView.frame = CGRectOffset(loginView.frame, 5, 5);
+
 //#ifdef __IPHONE_7_0
 //#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 //#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
@@ -64,8 +74,6 @@
 //#endif
 //#endif
 //#endif
-//    [self.view addSubview:loginView];
-//    [loginView sizeToFit];
     
 }
 
