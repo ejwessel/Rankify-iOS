@@ -33,15 +33,15 @@
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *statusStatus;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *retrievingStatus;
 @property (strong, nonatomic) IBOutlet UIButton *continueButton;
-@property (strong, nonatomic) IBOutlet UIButton *retryButton;
+@property (strong, nonatomic) IBOutlet UIButton *recomputeButton;
 
 - (void) requestUsers;
 
-- (void) startPhase1;
-
-- (void) startPhase2;
-
-- (void) startPhase3;
+//- (void) startPhase1;
+//
+//- (void) startPhase2;
+//
+//- (void) startPhase3;
 
 - (void) pullFriends;
 
@@ -55,7 +55,7 @@
 
 - (void) getFriendData;
 
-- (void) allDataReady;
+//- (void) allDataReady;
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 

@@ -41,12 +41,19 @@
     //set the back button here so that it doesn't show "back"
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
+    
+//    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStyleBordered target:self action:@selector(shareContent)];
+    
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareContent)];
+    self.navigationItem.rightBarButtonItem = shareButton;
+    
+    
     filteredResults = [[NSMutableArray alloc] initWithCapacity:friendData.count];
 
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    self.navigationController.navigationBarHidden = true;
+//    self.navigationController.navigationBarHidden = true;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,7 +63,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    self.navigationController.navigationBarHidden = false;
+//    self.navigationController.navigationBarHidden = false;
     //determine if we are using the search bar or the table view
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         friendObject = [[filteredResults objectAtIndex:indexPath.row] objectForKey:@"User"];
@@ -65,8 +72,8 @@
         friendObject = [[friendData objectAtIndex:indexPath.row] objectForKey:@"User"];
     }
     
-    CustomCell *cell = [tableView cellForRowAtIndexPath:indexPath]; //warning shouldn't be a problem
-    friendName = cell.nameLabel.text;
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath]; //warning shouldn't be a problem
+    friendName = cell.textLabel.text;
     NSLog(@"clicked on: %@", friendName);
     
     //this calls "prepareForSegue" since prepare for segue has has priority over this function
@@ -90,11 +97,31 @@
 }
 
 - (void)downloadAndLoadImageWithCell{
-    NSURL *url = [NSURL URLWithString:cellDownload.urlPath];
-    NSData *data = [[NSData alloc] initWithContentsOfURL:url];
-    UIImage *tmpImage = [[UIImage alloc] initWithData:data];
-    cellDownload.smallIconPicture.image = tmpImage;
+//    NSURL *url = [NSURL URLWithString:cellDownload.urlPath];
+//    NSData *data = [[NSData alloc] initWithContentsOfURL:url];
+//    UIImage *tmpImage = [[UIImage alloc] initWithData:data];
+//    cellDownload.imageView.image = tmpImage;
+    for (CustomCell *c in [self.tableView visibleCells]) {
+        NSURL *url = [NSURL URLWithString:c.urlPath];
+        NSData *data = [[NSData alloc] initWithContentsOfURL:url];
+        UIImage *tmpImage = [[UIImage alloc] initWithData:data];
+        c.imageView.image = tmpImage;
+    }
 }
+
+- (void)shareContent{
+    NSLog(@"you would share content, but you CANT!");
+}
+
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+//    NSLog(@"did end scrolling");
+//    [self downloadAndLoadImageWithCell];
+//}
+//
+//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+//    NSLog(@"did end dragging");
+//    [self downloadAndLoadImageWithCell];
+//}
 
 #pragma mark Content Filtering
 -(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
@@ -151,18 +178,20 @@
         element = [friendData objectAtIndex:indexPath.row];
     }
     
+    cell.imageView.image = nil;
+    
     NSString *fullName = [self makeFullName:element];
     NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
     NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
     
     //load the small icon on the list of friends
     //setup the cell
-    cell.nameLabel.text = fullName;
+    //cell.nameLabel.text = fullName;
+    cell.textLabel.text = fullName;
     cell.countLabel.text = totalLikes;
     cell.countLabel.textColor = self.navigationController.navigationBar.tintColor;
     cell.urlPath = urlPath;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    //cellDownload = cell;
     
     //bug with loading small images...
     //[NSThread detachNewThreadSelector:@selector(downloadAndLoadImageWithCell) toTarget:self withObject:nil];

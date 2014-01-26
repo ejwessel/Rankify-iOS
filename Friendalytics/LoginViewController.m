@@ -73,7 +73,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated{
-    self.navigationController.navigationBarHidden = true;
+//    self.navigationController.navigationBarHidden = true;
 }
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
@@ -122,10 +122,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) sendAccessToken:(NSString *)token withUserID:(NSString *)userId {
+- (void) sendAccessToken:(NSString *)token withUserID:(NSString *)idNumber {
     //make url request
     //send url request to israel's database
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/login/%@/%@", userId, token];
+    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/login/%@/%@", idNumber, token];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;

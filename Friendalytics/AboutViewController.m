@@ -28,14 +28,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.navigationController.navigationBarHidden = false;
+//    self.navigationController.navigationBarHidden = false;
     
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
     NSString *version = [info objectForKey:@"CFBundleShortVersionString"];
     version = [NSString stringWithFormat:@"Version %@", version];
-    versionLabel.text = version;
-    
-    self.title = @"About";
+    versionLabel.text = version;    
 }
 
 - (void)didReceiveMemoryWarning

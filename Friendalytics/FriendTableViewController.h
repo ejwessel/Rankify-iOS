@@ -25,6 +25,8 @@
 
 - (NSString*) makeFullName:(NSDictionary*) element;
 
+- (void)shareContent;
+
 - (void)downloadAndLoadImageWithCell;
 
 @end

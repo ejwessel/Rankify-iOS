@@ -27,7 +27,7 @@
 @synthesize statusVideos;
 @synthesize statusStatus;
 @synthesize continueButton;
-@synthesize retryButton;
+@synthesize recomputeButton;
 @synthesize pullFriendsFlag;
 @synthesize pullPhotosFlag;
 @synthesize pullAlbumsFlag;
@@ -48,6 +48,8 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
     continueButton.layer.borderWidth = 1;
     continueButton.layer.cornerRadius = 5;
     continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
@@ -80,12 +82,12 @@
     continueButton.layer.borderWidth = 1;
     continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
-    retryButton.layer.cornerRadius = 5;
-    retryButton.layer.borderWidth = 1;
-    retryButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    recomputeButton.layer.cornerRadius = 5;
+    recomputeButton.layer.borderWidth = 1;
+    recomputeButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
 
     continueButton.enabled = false;
-    retryButton.enabled = false;
+    recomputeButton.enabled = false;
     
     self.statusAlbums.hidden = true;
     self.statusPhotos.hidden = true;
@@ -106,8 +108,8 @@
     gatheringFriendsColor.backgroundColor = [UIColor yellowColor];
     [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
 //    [self startPhase1];
-    [retryButton addTarget:self action:@selector(viewDidLoad) forControlEvents:UIControlEventTouchUpInside];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
+    [recomputeButton addTarget:self action:@selector(viewDidLoad) forControlEvents:UIControlEventTouchUpInside];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
 
 }
 
@@ -213,7 +215,7 @@
     }
     else{
         gatheringFriendsColor.backgroundColor = [UIColor redColor];
-        retryButton.enabled = true;
+        recomputeButton.enabled = true;
     }
     NSLog(@"pullFriends Finished");
 }
@@ -243,7 +245,7 @@
     else{
         NSLog(@"unable to obtain albumData successfully");
         gatheringAlbumsColor.backgroundColor = [UIColor redColor];
-        retryButton.enabled = true;
+        recomputeButton.enabled = true;
     }
     NSLog(@"pullAlbums Finished");
 }
@@ -274,7 +276,7 @@
     else{
         NSLog(@"unable to obtain photo successfully");
         gatheringPhotosColor.backgroundColor = [UIColor redColor];
-        retryButton.enabled = true;
+        recomputeButton.enabled = true;
     }
     NSLog(@"pullPhotos Finished");
 }
@@ -304,7 +306,7 @@
     else{
         NSLog(@"unable to obtain friendData successfully");
         gatheringVideosColor.backgroundColor = [UIColor redColor];
-        retryButton.enabled = true;
+        recomputeButton.enabled = true;
     }
     NSLog(@"pullVideos Finished");
  }
@@ -334,7 +336,7 @@
     else{
         NSLog(@"unable to obtain friendData successfully");
         gatheringStatusColor.backgroundColor = [UIColor redColor];
-        retryButton.enabled = true;
+        recomputeButton.enabled = true;
     }
     NSLog(@"pullStatuses Finished");
 }
@@ -363,12 +365,12 @@
         NSLog(@"obtained friendData successfully");
         retrievingDataColor.backgroundColor = [UIColor greenColor];
         continueButton.enabled = true;
-        retryButton.enabled = false;
+        recomputeButton.enabled = true;
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
         retrievingDataColor.backgroundColor = [UIColor redColor];
-        retryButton.enabled = true;
+        recomputeButton.enabled = true;
     }
     NSLog(@"getFriendData Finished");
 }
