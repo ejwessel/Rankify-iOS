@@ -122,12 +122,11 @@
         
         for (int i = 0; i < count; i++) {
             NSMutableDictionary *friend = [[friendData objectAtIndex:i] objectForKey:@"User"];
-            NSString *firstName = [friend objectForKey:@"firstName"];
-            NSString *lastName = [friend objectForKey:@"lastName"];
+            NSString *name = [friend objectForKey:@"name"];
             NSString *username = [friend objectForKey:@"userName"];
             NSString *total = [friend objectForKey:@"totalLikes"];
             int index = i + 1;
-            topTenFriends = [NSString stringWithFormat:@"%@\n %i. %@ %@ : %@ Likes", topTenFriends, index, firstName, lastName, total];
+            topTenFriends = [NSString stringWithFormat:@"%@\n %i. %@ : %@ Likes", topTenFriends, index, name, total];
         }
         
         [FBRequestConnection startForPostStatusUpdate:topTenFriends
@@ -155,11 +154,13 @@
                                         }
                                     }];
     }
-    [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook - no top 10 friends"
-                                                    message:@""
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil] show];
+    else{
+        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook - no top 10 friends"
+                                                        message:@""
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil] show];
+    }
 }
 
 //- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -178,7 +179,7 @@
     // Remove all objects from the filtered search array
     [self.filteredResults removeAllObjects];
     // Filter the array using NSPredicate
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"User.firstName CONTAINS[c] %@",searchText];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"User.name CONTAINS[c] %@", searchText];
     filteredResults = [NSMutableArray arrayWithArray:[friendData filteredArrayUsingPredicate:predicate]];
     //NSLog(@"filteredResults: %@", filteredResults);
     //NSLog(@"filteredResults: %i", filteredResults.count);
@@ -229,7 +230,7 @@
     
     cell.imageView.image = nil;
     
-    NSString *fullName = [self makeFullName:element];
+    NSString *fullName = [[element objectForKey:@"User"] objectForKey:@"name"];//[self makeFullName:element];
     NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
     NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
     
