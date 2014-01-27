@@ -47,7 +47,7 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-    
+
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     continueButton.layer.borderWidth = 1;
@@ -191,19 +191,19 @@
 - (void) pullFriends{
     
     NSLog(@"pullFriends Started");
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/pullFriends/%@/%@", userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@users/pullFriends/%@/%@", sitePath, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    //NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
   
-    NSLog(@"responseString:%@", responseString);
+    //NSLog(@"responseString:%@", responseString);
     
     [statusFriends stopAnimating];
     statusFriends.hidden = true;
-    if([responseString isEqualToString:@"success"]){
+    if(responseData != nil){
         pullFriendsFlag = true;
         gatheringFriendsColor.backgroundColor = [UIColor greenColor];
 //        [[NSNotificationCenter defaultCenter] postNotificationName:@"allDataReadyNotification" object:nil]; //startes the notification for listenting
@@ -222,17 +222,16 @@
 
 - (void) pullAlbums{
     NSLog(@"pullAlbums Started");
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/albums/pullAlbums/%@/%@", userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@/albums/pullAlbums/%@/%@", sitePath, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
     [statusAlbums stopAnimating];
     statusAlbums.hidden = true;
-    if([responseString isEqualToString:@"success"]){
+    if(responseData != nil){
         pullAlbumsFlag = true;
         NSLog(@"obtained albumData successfully");
         gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
@@ -253,17 +252,16 @@
 - (void) pullPhotos{
     
     NSLog(@"pullPhotos Started");
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/pullPhotos/%@/%@", userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@photos/pullPhotos/%@/%@", sitePath, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
     [statusPhotos stopAnimating];
     statusPhotos.hidden = true;
-    if([responseString isEqualToString:@"success"]){
+    if(responseData != nil){
         pullPhotosFlag = true;
         NSLog(@"obtained photoData successfully");
         gatheringPhotosColor.backgroundColor = [UIColor greenColor];
@@ -283,17 +281,16 @@
 
 - (void) pullVideos{
     NSLog(@"pullVideos Started");
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/videos/pullVideos/%@/%@", userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@videos/pullVideos/%@/%@", sitePath, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
     [statusVideos stopAnimating];
     statusVideos.hidden = true;
-    if([responseString isEqualToString:@"success"]){
+    if(responseData != nil){
         pullVideosFlag = true;
         NSLog(@"obtained videoData successfully");
         gatheringVideosColor.backgroundColor = [UIColor greenColor];
@@ -313,17 +310,16 @@
 
 - (void) pullStatuses{
     NSLog(@"pullStatuses Started");
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/photos/pullPhotos/%@/%@", userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@statuses/pullStatuses/%@/%@", sitePath, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
     [statusStatus stopAnimating];
     statusStatus.hidden = true;
-    if([responseString isEqualToString:@"success"]){
+    if(responseData != nil){
         pullStatusFlag = true; //will return based on response from server
         NSLog(@"obtained friendData successfully");
         gatheringStatusColor.backgroundColor = [UIColor greenColor];
@@ -344,7 +340,7 @@
 - (void) getFriendData {
     
     NSLog(@"getFriendData Started");
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/getFriendsData/%@", userId];
+    NSString *urlString = [NSString stringWithFormat:@"%@users/getFriendsData/%@", sitePath, userId];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -418,6 +414,7 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"segueToFriendList"]){
         FriendTableViewController *controller = (FriendTableViewController *)segue.destinationViewController;
+        controller.friendData = nil; //need to clear data before we pass new data
         controller.friendData = friendData;
     }
 }

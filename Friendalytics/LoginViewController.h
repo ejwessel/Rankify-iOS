@@ -10,6 +10,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "CalculateViewController.h"
 
+extern NSString const *sitePath;
 @interface LoginViewController : UIViewController
 
 @property NSMutableDictionary *friendList;

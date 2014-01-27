@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FriendTableViewController.h"
+#import "LoginViewController.h"
 
 @interface CalculateViewController : UIViewController
 

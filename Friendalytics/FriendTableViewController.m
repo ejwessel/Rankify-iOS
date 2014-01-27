@@ -110,7 +110,18 @@
 }
 
 - (void)shareContent{
-    NSLog(@"you would share content, but you CANT!");
+    
+    [FBRequestConnection startForPostStatusUpdate:@"User-generated status update."
+                                completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                    if (!error) {
+                                        // Status update posted successfully to Facebook
+                                        NSLog([NSString stringWithFormat:@"result: %@", result]);
+                                    } else {
+                                        // An error occurred, we need to handle the error
+                                        // See: https://developers.facebook.com/docs/ios/errors
+                                        NSLog([NSString stringWithFormat:@"%@", error.description]);
+                                    }
+                                }];
 }
 
 //- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{

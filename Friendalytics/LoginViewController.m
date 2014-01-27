@@ -7,9 +7,13 @@
 //
 
 #import "LoginViewController.h"
+#import "AppDelegate.h"
+
+NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
+//leovander.com
+//e-wit.co.uk
 
 @interface LoginViewController () <FBLoginViewDelegate>
-
 @end
 
 @implementation LoginViewController
@@ -22,7 +26,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
+        
     UIColor *navColor = self.navigationController.navigationBar.tintColor;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: navColor};
     
@@ -43,6 +47,8 @@
                              @"export_stream"];
     
     FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
+    loginView.publishPermissions = @[@"publish_actions"];
+    loginView.defaultAudience = FBSessionDefaultAudienceFriends;
     loginView.delegate = self;
     loginView.frame = CGRectMake(0,0, 280, 100);
     loginView.frame = CGRectOffset(loginView.frame,
@@ -108,7 +114,6 @@
                                   NSLog(@"data not retrieved");
                               }
                           }];
-    
 }
 
 - (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error {
@@ -125,7 +130,7 @@
 - (void) sendAccessToken:(NSString *)token withUserID:(NSString *)idNumber {
     //make url request
     //send url request to israel's database
-    NSString *urlString = [NSString stringWithFormat:@"http://leovander.com/friendalytics/users/login/%@/%@", idNumber, token];
+    NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", sitePath, idNumber, token];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;

@@ -33,7 +33,7 @@
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
     NSString *version = [info objectForKey:@"CFBundleShortVersionString"];
     version = [NSString stringWithFormat:@"Version %@", version];
-    versionLabel.text = version;    
+    versionLabel.text = version;
 }
 
 - (void)didReceiveMemoryWarning

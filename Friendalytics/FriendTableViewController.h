@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SpecificsViewController.h"
 #import "CustomCell.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface FriendTableViewController : UITableViewController <UIScrollViewDelegate,UISearchBarDelegate, UISearchDisplayDelegate>
 
