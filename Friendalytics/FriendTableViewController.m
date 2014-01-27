@@ -111,15 +111,47 @@
 
 - (void)shareContent{
     
-    [FBRequestConnection startForPostStatusUpdate:@"User-generated status update."
+    NSString *topTenFriends = @"Top 10 Friends:";
+    
+    int count = 10;
+    //if the friendData is smaller than top 10, adjust
+    if(friendData.count < count){
+        count = friendData.count;
+    }
+    
+    for (int i = 0; i < count; i++) {
+        NSMutableDictionary *friend = [[friendData objectAtIndex:i] objectForKey:@"User"];
+        NSString *firstName = [friend objectForKey:@"firstName"];
+        NSString *lastName = [friend objectForKey:@"lastName"];
+        NSString *total = [friend objectForKey:@"totalLikes"];
+        int index = i + 1;
+        topTenFriends = [NSString stringWithFormat:@"%@\n %i. %@ %@ : %@ Likes", topTenFriends, index, firstName, lastName, total];
+    }
+    
+    
+    [FBRequestConnection startForPostStatusUpdate:topTenFriends
                                 completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                                     if (!error) {
                                         // Status update posted successfully to Facebook
-                                        NSLog([NSString stringWithFormat:@"result: %@", result]);
-                                    } else {
+                                        NSLog(@"Top 10 Friends published");
+                                        
+                                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                                                        message:@"Posted to Facebook"
+                                                                                       delegate:nil
+                                                                              cancelButtonTitle:@"Ok"
+                                                                              otherButtonTitles:nil];
+                                        [alert show];
+                                    }
+                                    else {
                                         // An error occurred, we need to handle the error
                                         // See: https://developers.facebook.com/docs/ios/errors
                                         NSLog([NSString stringWithFormat:@"%@", error.description]);
+                                        
+                                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+                                                                                        message:@"Error posting to Facebook" delegate:nil
+                                                                              cancelButtonTitle:@"Ok"
+                                                                              otherButtonTitles:nil];
+                                        [alert show];
                                     }
                                 }];
 }
