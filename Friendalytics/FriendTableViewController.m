@@ -72,8 +72,9 @@
         friendObject = [[friendData objectAtIndex:indexPath.row] objectForKey:@"User"];
     }
     
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath]; //warning shouldn't be a problem
-    friendName = cell.textLabel.text;
+    CustomCell *cell = (CustomCell*)[tableView cellForRowAtIndexPath:indexPath]; //warning shouldn't be a problem
+    //friendName = cell.nameLabel.text;
+    friendName = cell.nameLabel.text;
     NSLog(@"clicked on: %@", friendName);
     
     //this calls "prepareForSegue" since prepare for segue has has priority over this function
@@ -126,6 +127,7 @@
         [self shareContent];
     }
 }
+
 - (void)shareContent{
     
     //if there are at least some friends
@@ -251,15 +253,16 @@
     
     NSString *fullName = [[element objectForKey:@"User"] objectForKey:@"name"];//[self makeFullName:element];
     NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
-    NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
+    NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureLarge"];
     
     //load the small icon on the list of friends
     //setup the cell
-    //cell.nameLabel.text = fullName;
-    cell.textLabel.text = fullName;
+    cell.nameLabel.text = fullName;
+    //cell.textLabel.text = fullName;
     cell.countLabel.text = totalLikes;
     cell.countLabel.textColor = self.navigationController.navigationBar.tintColor;
-    cell.urlPath = urlPath;
+    //cell.urlPath = urlPath;
+    cell.smallImageView.imageURL = [NSURL URLWithString:urlPath];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     //bug with loading small images...

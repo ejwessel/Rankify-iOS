@@ -23,6 +23,7 @@
 		230846431883A77B0056A6A7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 230846411883A77B0056A6A7 /* InfoPlist.strings */; };
 		230846451883A77B0056A6A7 /* FriendalyticsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 230846441883A77B0056A6A7 /* FriendalyticsTests.m */; };
 		2308464F1883A8F60056A6A7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308464E1883A8F60056A6A7 /* FacebookSDK.framework */; };
+		231E1C9418973B3800DB394A /* AsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 231E1C9318973B3800DB394A /* AsyncImageView.m */; };
 		2338ABC6188E5F1A00C9D1D1 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2338ABC4188E5F1A00C9D1D1 /* license.txt */; };
 		2338ABC7188E5F1B00C9D1D1 /* userIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2338ABC5188E5F1A00C9D1D1 /* userIcon.png */; };
 		2338ABC9188E621900C9D1D1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2338ABC8188E621900C9D1D1 /* QuartzCore.framework */; };
@@ -66,6 +67,8 @@
 		230846421883A77B0056A6A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		230846441883A77B0056A6A7 /* FriendalyticsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendalyticsTests.m; sourceTree = "<group>"; };
 		2308464E1883A8F60056A6A7 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		231E1C9218973B3800DB394A /* AsyncImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncImageView.h; sourceTree = "<group>"; };
+		231E1C9318973B3800DB394A /* AsyncImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncImageView.m; sourceTree = "<group>"; };
 		2338ABC4188E5F1A00C9D1D1 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		2338ABC5188E5F1A00C9D1D1 /* userIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userIcon.png; sourceTree = "<group>"; };
 		2338ABC8188E621900C9D1D1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -161,6 +164,8 @@
 				23D83365188D123100091022 /* CustomCell.m */,
 				23EB40CB1891ED1E004F8121 /* AboutViewController.h */,
 				23EB40CC1891ED1E004F8121 /* AboutViewController.m */,
+				231E1C9218973B3800DB394A /* AsyncImageView.h */,
+				231E1C9318973B3800DB394A /* AsyncImageView.m */,
 				2338ABC3188E5EFA00C9D1D1 /* pictures */,
 				230846311883A77B0056A6A7 /* Images.xcassets */,
 				2308461D1883A77B0056A6A7 /* Supporting Files */,
@@ -316,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23EB40CD1891ED1E004F8121 /* AboutViewController.m in Sources */,
+				231E1C9418973B3800DB394A /* AsyncImageView.m in Sources */,
 				230846301883A77B0056A6A7 /* LoginViewController.m in Sources */,
 				23771CC0188B6DFA00C3652F /* FriendData.m in Sources */,
 				23D83366188D123100091022 /* CustomCell.m in Sources */,
