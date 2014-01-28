@@ -54,27 +54,27 @@
     continueButton.layer.cornerRadius = 5;
     continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
-    gatheringFriendsColor.backgroundColor = [UIColor lightGrayColor];
+    gatheringFriendsColor.backgroundColor = [UIColor grayColor];
     gatheringFriendsColor.layer.cornerRadius = 10;
     gatheringFriendsColor.layer.borderWidth = .5;
     
-    gatheringAlbumsColor.backgroundColor = [UIColor lightGrayColor];
+    gatheringAlbumsColor.backgroundColor = [UIColor grayColor];
     gatheringAlbumsColor.layer.cornerRadius = 10;
     gatheringAlbumsColor.layer.borderWidth = .5;
     
-    gatheringPhotosColor.backgroundColor = [UIColor lightGrayColor];
+    gatheringPhotosColor.backgroundColor = [UIColor grayColor];
     gatheringPhotosColor.layer.cornerRadius = 10;
     gatheringPhotosColor.layer.borderWidth = .5;
     
-    gatheringVideosColor.backgroundColor = [UIColor lightGrayColor];
+    gatheringVideosColor.backgroundColor = [UIColor grayColor];
     gatheringVideosColor.layer.cornerRadius = 10;
     gatheringVideosColor.layer.borderWidth = .5;
     
-    gatheringStatusColor.backgroundColor = [UIColor lightGrayColor];
+    gatheringStatusColor.backgroundColor = [UIColor grayColor];
     gatheringStatusColor.layer.cornerRadius = 10;
     gatheringStatusColor.layer.borderWidth = .5;
     
-    retrievingDataColor.backgroundColor = [UIColor lightGrayColor];
+    retrievingDataColor.backgroundColor = [UIColor grayColor];
     retrievingDataColor.layer.cornerRadius = 10;
     retrievingDataColor.layer.borderWidth = .5;
     
