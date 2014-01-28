@@ -124,11 +124,41 @@
     //if the post button was clicked
     if (buttonIndex == 1){
         NSLog(@"post was clicked");
-        [self shareContent];
+        [FBSession.activeSession requestNewPublishPermissions:[NSArray arrayWithObject:@"publish_actions"]
+                                              defaultAudience:FBSessionDefaultAudienceFriends
+                                            completionHandler:^(FBSession *session, NSError *error) {
+                                                __block NSString *alertText;
+                                                __block NSString *alertTitle;
+                                                if (!error) {
+                                                    if ([FBSession.activeSession.permissions
+                                                         indexOfObject:@"publish_actions"] == NSNotFound){
+                                                        // Permission not granted, tell the user we will not publish
+                                                        alertTitle = @"Permission not granted";
+                                                        alertText = @"Your action will not be published to Facebook.";
+                                                        [[[UIAlertView alloc] initWithTitle:alertTitle
+                                                                                    message:alertText
+                                                                                   delegate:self
+                                                                          cancelButtonTitle:@"Ok"
+                                                                          otherButtonTitles:nil] show];
+                                                    }
+                                                    else {
+                                                        // Permission granted, publish the OG story
+                                                        NSLog(@"permissions granted");
+                                                        [self shareContent];
+                                                    }
+                                                    
+                                                }
+                                                else {
+                                                    // There was an error, handle it
+                                                    // See https://developers.facebook.com/docs/ios/errors/
+                                                    NSLog(@"There was an error with publishing");
+                                                }
+                                            }];
     }
 }
 
 - (void)shareContent{
+    
     
     //if there are at least some friends
     if(friendData.count > 0){
@@ -167,7 +197,7 @@
                                             NSLog([NSString stringWithFormat:@"%@", error.description]);
                                             
                                             [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
-                                                                        message:@"Note: If you hit \"Skip\" on allowing Friendalytics to post to Facebook, you given invalid permissions and will need to clear them by going to Facebook > Settings > Apps > Click \'X\' to remove Friendalytics > Logout of the Friendalytics App and then Log back into the Friendalytics App."
+                                                                        message:@"Facebook disallows pushing of redundant content"
                                                                        delegate:nil
                                                               cancelButtonTitle:@"Ok"
                                                               otherButtonTitles:nil] show];
@@ -176,23 +206,13 @@
     }
     //if there happens to be no friends
     else{
-        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook - no friends to post"
-                                                        message:@""
+        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
+                                                        message:@"No friends to post"
                                                        delegate:nil
                                               cancelButtonTitle:@"Ok"
                                               otherButtonTitles:nil] show];
     }
 }
-
-//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-//    NSLog(@"did end scrolling");
-//    [self downloadAndLoadImageWithCell];
-//}
-//
-//- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-//    NSLog(@"did end dragging");
-//    [self downloadAndLoadImageWithCell];
-//}
 
 #pragma mark Content Filtering
 -(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
@@ -253,7 +273,7 @@
     
     NSString *fullName = [[element objectForKey:@"User"] objectForKey:@"name"];//[self makeFullName:element];
     NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
-    NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureLarge"];
+    NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
     
     //load the small icon on the list of friends
     //setup the cell

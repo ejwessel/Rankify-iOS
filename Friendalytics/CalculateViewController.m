@@ -161,38 +161,6 @@
     }
 }
 
-//- (void) startPhase1{
-//    [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
-//}
-//
-//- (void) startPhase2{
-//    
-//    gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
-//    [statusAlbums startAnimating];
-//    statusAlbums.hidden = false;
-//    [self performSelectorInBackground:@selector(pullAlbums) withObject:nil];
-//    
-//    gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
-//    [statusPhotos startAnimating];
-//    statusPhotos.hidden = false;
-//    [self performSelectorInBackground:@selector(pullPhotos) withObject:nil];
-//    
-//    gatheringVideosColor.backgroundColor = [UIColor yellowColor];
-//    [statusVideos startAnimating];
-//    statusVideos.hidden = false;
-//    [self performSelectorInBackground:@selector(pullVideos) withObject:nil];
-//    
-//    gatheringStatusColor.backgroundColor = [UIColor yellowColor];
-//    [statusStatus startAnimating];
-//    statusStatus.hidden = false;
-//    [self performSelectorInBackground:@selector(pullStatuses) withObject:nil];
-//    
-//}
-//
-//- (void) startPhase3{
-//    [self getFriendData];
-//}
-
 - (void) enabledRecomputeColor{
     recomputeButton.backgroundColor = [UIColor whiteColor];
     recomputeButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
@@ -392,46 +360,6 @@
     }
     NSLog(@"getFriendData Finished");
 }
-
-//- (void) allDataReady{
-//    if(pullFriendsFlag && pullAlbumsFlag && pullPhotosFlag && pullVideosFlag && pullStatusFlag){
-//        NSLog(@"All flags are set and ready to go!");
-//        [[NSNotificationCenter defaultCenter] removeObserver:@"allDataReadyNotification"];  //removes notification from listenting
-//        [self performSelectorOnMainThread:@selector(updateRetrieveUI) withObject:nil waitUntilDone:YES];
-//        [self performSelectorOnMainThread:@selector(getFriendData) withObject:nil waitUntilDone:YES];
-//    }
-//    else{
-//        //NSLog(@"at least one failed cannot continue");
-//    }
-//}
-
-//- (void) updateRetrieveUI{
-//    retrievingDataColor.backgroundColor = [UIColor yellowColor];
-//    [retrievingStatus startAnimating];
-//    retrievingStatus.hidden = false;
-//}
-
-//- (void) restartPhases{
-//    gatheringFriendsColor.backgroundColor = [UIColor lightGrayColor];
-//    gatheringAlbumsColor.backgroundColor = [UIColor lightGrayColor];
-//    gatheringPhotosColor.backgroundColor = [UIColor lightGrayColor];
-//    gatheringVideosColor.backgroundColor = [UIColor lightGrayColor];
-//    gatheringStatusColor.backgroundColor = [UIColor lightGrayColor];
-//    retrievingDataColor.backgroundColor = [UIColor lightGrayColor];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
-//    pullFriendsFlag = false;
-//    pullPhotosFlag = false;
-//    pullAlbumsFlag = false;
-//    pullStatusFlag = false;
-//    pullVideosFlag = false;
-//    
-//    statusFriends.hidden = false;
-//    [statusFriends startAnimating];
-//    
-//    
-//    //[self startPhase1];
-//}
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"segueToFriendList"]){

@@ -319,7 +319,7 @@ NSString *const AsyncImageErrorKey = @"error";
 	{
         self.cache = [[self class] defaultCache];
         _concurrentLoads = 2;
-        _loadingTimeout = 60.0;
+        _loadingTimeout = 10.0;
 		_connections = [[NSMutableArray alloc] init];
         [[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(imageLoaded:)
@@ -601,7 +601,7 @@ NSString *const AsyncImageErrorKey = @"error";
 {
 	self.showActivityIndicator = (self.image == nil);
 	self.activityIndicatorStyle = UIActivityIndicatorViewStyleGray;
-	self.crossfadeDuration = 0.4;
+	self.crossfadeDuration = 0.2;//0.4;
 }
 
 - (id)initWithFrame:(CGRect)frame

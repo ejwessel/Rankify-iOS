@@ -47,8 +47,8 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
                              @"export_stream"];
     
     FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
-    loginView.publishPermissions = @[@"publish_actions"];
-    loginView.defaultAudience = FBSessionDefaultAudienceFriends;
+    //loginView.publishPermissions = @[@"publish_actions"];
+    //loginView.defaultAudience = FBSessionDefaultAudienceFriends;
     loginView.delegate = self;
     loginView.frame = CGRectMake(0,0, 280, 100);
     loginView.frame = CGRectOffset(loginView.frame,

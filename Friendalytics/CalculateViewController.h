@@ -38,12 +38,6 @@
 
 - (void) requestUsers;
 
-//- (void) startPhase1;
-//
-//- (void) startPhase2;
-//
-//- (void) startPhase3;
-
 - (void) pullFriends;
 
 - (void) pullPhotos;
@@ -55,8 +49,6 @@
 - (void) pullStatuses;
 
 - (void) getFriendData;
-
-//- (void) allDataReady;
 
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
