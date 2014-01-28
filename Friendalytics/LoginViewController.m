@@ -60,7 +60,7 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
     calculateButton.enabled = false;
     calculateButton.layer.borderWidth = 1.0;
     calculateButton.layer.cornerRadius = 5;
-    calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    calculateButton.layer.borderColor = [UIColor lightGrayColor].CGColor;//self.navigationController.navigationBar.tintColor.CGColor;
 
     aboutButton.layer.borderWidth = 1.0;
     aboutButton.layer.cornerRadius = 5;
@@ -84,10 +84,16 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
     calculateButton.enabled = true;
+    calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
+    calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    [calculateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }
 
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
     calculateButton.enabled = false;
+    calculateButton.backgroundColor = [UIColor whiteColor];
+    calculateButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    [calculateButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
 }
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {

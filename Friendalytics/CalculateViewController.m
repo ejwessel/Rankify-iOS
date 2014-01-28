@@ -80,11 +80,16 @@
     
     continueButton.layer.cornerRadius = 5;
     continueButton.layer.borderWidth = 1;
-    continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    continueButton.backgroundColor = [UIColor whiteColor];
+    continueButton.layer.borderColor = [UIColor lightGrayColor].CGColor;//self.navigationController.navigationBar.tintColor.CGColor;
+    [continueButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     recomputeButton.layer.cornerRadius = 5;
     recomputeButton.layer.borderWidth = 1;
-    recomputeButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    recomputeButton.backgroundColor = [UIColor whiteColor];
+    recomputeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;//self.navigationController.navigationBar.tintColor.CGColor;
+    [recomputeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    
 
     continueButton.enabled = false;
     recomputeButton.enabled = false;
@@ -188,6 +193,12 @@
 //    [self getFriendData];
 //}
 
+- (void) enabledRecomputeColor{
+    recomputeButton.backgroundColor = [UIColor whiteColor];
+    recomputeButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    [recomputeButton setTitleColor:self.navigationController.navigationBar.tintColor forState:UIControlStateNormal];
+}
+
 - (void) pullFriends{
     
     NSLog(@"pullFriends Started");
@@ -216,6 +227,7 @@
     else{
         gatheringFriendsColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
+        [self enabledRecomputeColor];
     }
     NSLog(@"pullFriends Finished");
 }
@@ -245,6 +257,7 @@
         NSLog(@"unable to obtain albumData successfully");
         gatheringAlbumsColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
+        [self enabledRecomputeColor];
     }
     NSLog(@"pullAlbums Finished");
 }
@@ -275,6 +288,7 @@
         NSLog(@"unable to obtain photo successfully");
         gatheringPhotosColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
+        [self enabledRecomputeColor];
     }
     NSLog(@"pullPhotos Finished");
 }
@@ -304,6 +318,7 @@
         NSLog(@"unable to obtain friendData successfully");
         gatheringVideosColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
+        [self enabledRecomputeColor];
     }
     NSLog(@"pullVideos Finished");
  }
@@ -333,6 +348,7 @@
         NSLog(@"unable to obtain friendData successfully");
         gatheringStatusColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
+        [self enabledRecomputeColor];
     }
     NSLog(@"pullStatuses Finished");
 }
@@ -360,8 +376,14 @@
         retrieveStatusFlag = true;
         NSLog(@"obtained friendData successfully");
         retrievingDataColor.backgroundColor = [UIColor greenColor];
+        
         continueButton.enabled = true;
+        continueButton.backgroundColor = self.navigationController.navigationBar.tintColor;
+        continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+        [continueButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
         recomputeButton.enabled = true;
+        [self enabledRecomputeColor];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");

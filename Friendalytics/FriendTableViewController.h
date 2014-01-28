@@ -11,7 +11,7 @@
 #import "CustomCell.h"
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface FriendTableViewController : UITableViewController <UIScrollViewDelegate,UISearchBarDelegate, UISearchDisplayDelegate>
+@interface FriendTableViewController : UITableViewController <UIScrollViewDelegate,UISearchBarDelegate, UISearchDisplayDelegate, UIAlertViewDelegate>
 
 @property NSArray *friendData;
 @property NSMutableArray *filteredResults; //filtered results of friend data
@@ -27,6 +27,8 @@
 - (NSString*) makeFullName:(NSDictionary*) element;
 
 - (void)shareContent;
+
+- (void)post;
 
 - (void)downloadAndLoadImageWithCell;
 

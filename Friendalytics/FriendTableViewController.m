@@ -36,7 +36,7 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    NSLog(@"total friends: %i",friendData.count);
+    NSLog(@"total friends: %i",(int)friendData.count);
     
     //set the back button here so that it doesn't show "back"
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -44,7 +44,7 @@
     
 //    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStyleBordered target:self action:@selector(shareContent)];
     
-    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(shareContent)];
+    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(post)];
     self.navigationItem.rightBarButtonItem = shareButton;
     
     
@@ -109,15 +109,33 @@
     }
 }
 
+- (void)post{
+    [[[UIAlertView alloc] initWithTitle:@"Post to Facebook"
+                                message:@"This will post the top 10 people to your facebook. Click \"Post\" below to post to your wall!"
+                               delegate:self
+                      cancelButtonTitle:@"Cancel"
+                      otherButtonTitles:@"Post", nil] show];
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    //if the post button was clicked
+    if (buttonIndex == 1){
+        NSLog(@"post was clicked");
+        [self shareContent];
+    }
+}
 - (void)shareContent{
     
+    //if there are at least some friends
     if(friendData.count > 0){
         NSString *topTenFriends = @"Top 10 Friends:";
         
         int count = 10;
         //if the friendData is smaller than top 10, adjust
         if(friendData.count < count){
-            count = friendData.count;
+            count = (int)friendData.count;
         }
         
         for (int i = 0; i < count; i++) {
@@ -147,15 +165,16 @@
                                             NSLog([NSString stringWithFormat:@"%@", error.description]);
                                             
                                             [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
-                                                                        message:@""
+                                                                        message:@"Note: If you hit \"Skip\" on allowing Friendalytics to post to Facebook, you given invalid permissions and will need to clear them by going to Facebook > Settings > Apps > Click \'X\' to remove Friendalytics > Logout of the Friendalytics App and then Log back into the Friendalytics App."
                                                                        delegate:nil
                                                               cancelButtonTitle:@"Ok"
                                                               otherButtonTitles:nil] show];
                                         }
                                     }];
     }
+    //if there happens to be no friends
     else{
-        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook - no top 10 friends"
+        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook - no friends to post"
                                                         message:@""
                                                        delegate:nil
                                               cancelButtonTitle:@"Ok"
