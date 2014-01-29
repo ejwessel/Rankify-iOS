@@ -26,6 +26,8 @@
 @synthesize totalStatusLikes;
 @synthesize profilePictureURL;
 @synthesize profilePicture;
+@synthesize fbButton;
+@synthesize profileId;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -50,9 +52,20 @@
     
     //load the profile picture in the background to prevent blocking main thread
     [self performSelectorInBackground:@selector(downloadAndLoadImage) withObject:nil];
-    //[NSThread detachNewThreadSelector:@selector(downloadAndLoadImage) toTarget:self withObject:nil];
     
+    UIImage *fbImage = [UIImage imageNamed:@"fb_image"];
+    [fbButton setImage:fbImage forState:UIControlStateNormal];
+    [fbButton setTintColor:[UIColor blackColor]];
+    [fbButton addTarget:self action:@selector(visitFBButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:totalLikes style:UIBarButtonItemStyleDone target:self action:nil];
+}
+
+- (void)visitFBButtonPressed{
+    NSLog(@"visit FB Button pressed");
+    NSString *urlString = [NSString stringWithFormat:@"fb://profile/%@", profileId];
+    NSURL *theURL = [NSURL URLWithString:urlString];
+    [[UIApplication sharedApplication] openURL:theURL];
 }
 
 - (void)didReceiveMemoryWarning {

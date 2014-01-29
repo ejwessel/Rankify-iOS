@@ -42,14 +42,24 @@
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
-//    UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStyleBordered target:self action:@selector(shareContent)];
-    
     UIBarButtonItem *shareButton = [[UIBarButtonItem alloc] initWithTitle:@"Share" style:UIBarButtonItemStylePlain target:self action:@selector(post)];
     self.navigationItem.rightBarButtonItem = shareButton;
     
-    
     filteredResults = [[NSMutableArray alloc] initWithCapacity:friendData.count];
 
+    //multiple ways to hide the search bar, but this was one was the most direct,
+    //I originally wanted to show the search bar and then scroll up and hide it, but ios is being a fucktard
+    [self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)];
+//    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+//    self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height);
+//    [UIView animateWithDuration:0.1
+//                          delay:0.5
+//                        options:UIViewAnimationOptionTransitionNone
+//                     animations:^{ self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height); }
+//                     completion:nil];
+
+   
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -94,19 +104,7 @@
         controller.totalVideoLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"videoLikes"]];
         controller.totalStatusLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"statusLikes"]];
         controller.profilePictureURL = [friendObject objectForKey:@"profilePictureLarge"];
-    }
-}
-
-- (void)downloadAndLoadImageWithCell{
-//    NSURL *url = [NSURL URLWithString:cellDownload.urlPath];
-//    NSData *data = [[NSData alloc] initWithContentsOfURL:url];
-//    UIImage *tmpImage = [[UIImage alloc] initWithData:data];
-//    cellDownload.imageView.image = tmpImage;
-    for (CustomCell *c in [self.tableView visibleCells]) {
-        NSURL *url = [NSURL URLWithString:c.urlPath];
-        NSData *data = [[NSData alloc] initWithContentsOfURL:url];
-        UIImage *tmpImage = [[UIImage alloc] initWithData:data];
-        c.imageView.image = tmpImage;
+        controller.profileId = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"userId"]];
     }
 }
 
@@ -215,7 +213,7 @@
 }
 
 #pragma mark Content Filtering
--(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
     // Update the filtered array based on the search text and scope.
     // Remove all objects from the filtered search array
     [self.filteredResults removeAllObjects];
@@ -226,8 +224,7 @@
     //NSLog(@"filteredResults: %i", filteredResults.count);
 }
 
--(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     [self filterContentForSearchText:searchString
                                scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
                                       objectAtIndex:[self.searchDisplayController.searchBar
@@ -271,30 +268,17 @@
     
     cell.imageView.image = nil;
     
-    NSString *fullName = [[element objectForKey:@"User"] objectForKey:@"name"];//[self makeFullName:element];
+    NSString *fullName = [[element objectForKey:@"User"] objectForKey:@"name"];
     NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
     NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
     
-    //load the small icon on the list of friends
-    //setup the cell
     cell.nameLabel.text = fullName;
-    //cell.textLabel.text = fullName;
     cell.countLabel.text = totalLikes;
     cell.countLabel.textColor = self.navigationController.navigationBar.tintColor;
-    //cell.urlPath = urlPath;
     cell.smallImageView.imageURL = [NSURL URLWithString:urlPath];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    //bug with loading small images...
-    //[NSThread detachNewThreadSelector:@selector(downloadAndLoadImageWithCell) toTarget:self withObject:nil];
-    //[self performSelectorInBackground:@selector(downloadAndLoadImageWithCell) withObject:nil];
     return cell;
-}
-
-- (NSString*) makeFullName:(NSDictionary*) element{
-    NSString *firstName = [[element objectForKey:@"User"] objectForKey:@"firstName"];
-    NSString *lastName = [[element objectForKey:@"User"] objectForKey:@"lastName"];
-    return [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 }
 
 /*
