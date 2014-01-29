@@ -122,36 +122,44 @@
     //if the post button was clicked
     if (buttonIndex == 1){
         NSLog(@"post was clicked");
-        [FBSession.activeSession requestNewPublishPermissions:[NSArray arrayWithObject:@"publish_actions"]
-                                              defaultAudience:FBSessionDefaultAudienceFriends
-                                            completionHandler:^(FBSession *session, NSError *error) {
-                                                __block NSString *alertText;
-                                                __block NSString *alertTitle;
-                                                if (!error) {
-                                                    if ([FBSession.activeSession.permissions
-                                                         indexOfObject:@"publish_actions"] == NSNotFound){
-                                                        // Permission not granted, tell the user we will not publish
-                                                        alertTitle = @"Permission not granted";
-                                                        alertText = @"Your action will not be published to Facebook.";
-                                                        [[[UIAlertView alloc] initWithTitle:alertTitle
-                                                                                    message:alertText
-                                                                                   delegate:self
-                                                                          cancelButtonTitle:@"Ok"
-                                                                          otherButtonTitles:nil] show];
+        
+        //if there are no publish permissions then we need to authorize first
+        if(![FBSession.activeSession.permissions containsObject:@"publish_actions"]){
+            [FBSession.activeSession requestNewPublishPermissions:[NSArray arrayWithObject:@"publish_actions"]
+                                                  defaultAudience:FBSessionDefaultAudienceFriends
+                                                completionHandler:^(FBSession *session, NSError *error) {
+                                                    __block NSString *alertText;
+                                                    __block NSString *alertTitle;
+                                                    if (!error) {
+                                                        if ([FBSession.activeSession.permissions
+                                                             indexOfObject:@"publish_actions"] == NSNotFound){
+                                                            // Permission not granted, tell the user we will not publish
+                                                            alertTitle = @"Permission not granted";
+                                                            alertText = @"Your action will not be published to Facebook.";
+                                                            [[[UIAlertView alloc] initWithTitle:alertTitle
+                                                                                        message:alertText
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"Ok"
+                                                                              otherButtonTitles:nil] show];
+                                                        }
+                                                        else {
+                                                            // Permission granted, publish the OG story
+                                                            NSLog(@"permissions granted");
+                                                            [self shareContent];
+                                                        }
+                                                        
                                                     }
                                                     else {
-                                                        // Permission granted, publish the OG story
-                                                        NSLog(@"permissions granted");
-                                                        [self shareContent];
+                                                        // There was an error, handle it
+                                                        // See https://developers.facebook.com/docs/ios/errors/
+                                                        NSLog(@"There was an error with publishing");
                                                     }
-                                                    
-                                                }
-                                                else {
-                                                    // There was an error, handle it
-                                                    // See https://developers.facebook.com/docs/ios/errors/
-                                                    NSLog(@"There was an error with publishing");
-                                                }
-                                            }];
+                                                }];
+        }
+        else{
+            //if we already have publish permissions then go ahead and publish
+            [self shareContent];
+        }
     }
 }
 

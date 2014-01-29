@@ -185,8 +185,6 @@
     if(responseData != nil){
         pullFriendsFlag = true;
         gatheringFriendsColor.backgroundColor = [UIColor greenColor];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"allDataReadyNotification" object:nil]; //startes the notification for listenting
-//        [self startPhase2];
         gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
         [statusAlbums startAnimating];
         statusAlbums.hidden = false;
@@ -215,7 +213,6 @@
         pullAlbumsFlag = true;
         NSLog(@"obtained albumData successfully");
         gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
-        
         gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
         [statusPhotos startAnimating];
         statusPhotos.hidden = false;
@@ -246,7 +243,6 @@
         pullPhotosFlag = true;
         NSLog(@"obtained photoData successfully");
         gatheringPhotosColor.backgroundColor = [UIColor greenColor];
-        
         gatheringVideosColor.backgroundColor = [UIColor yellowColor];
         [statusVideos startAnimating];
         statusVideos.hidden = false;
@@ -276,7 +272,6 @@
         pullVideosFlag = true;
         NSLog(@"obtained videoData successfully");
         gatheringVideosColor.backgroundColor = [UIColor greenColor];
-        
         gatheringStatusColor.backgroundColor = [UIColor yellowColor];
         [statusStatus startAnimating];
         statusStatus.hidden = false;
@@ -303,10 +298,9 @@
     [statusStatus stopAnimating];
     statusStatus.hidden = true;
     if(responseData != nil){
-        pullStatusFlag = true; //will return based on response from server
+        pullStatusFlag = true;
         NSLog(@"obtained friendData successfully");
         gatheringStatusColor.backgroundColor = [UIColor greenColor];
-        
         retrievingDataColor.backgroundColor = [UIColor yellowColor];
         [retrievingStatus startAnimating];
         retrievingStatus.hidden = false;
