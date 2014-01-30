@@ -23,11 +23,13 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
 @synthesize accessToken;
 @synthesize calculateButton;
 @synthesize aboutButton;
+@synthesize facebookAccount;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
     
     NSArray *permissions = @[@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos"];
+    NSString *facebookAppIdValue = @"1397650163819409"; //this MUST match Friendalytics-Info.plist value for FacebookAppId
     
     BOOL haveIntegratedFacebookAtAll = ([SLComposeViewController class] != nil);
     BOOL userHaveIntegrataedFacebookAccountSetup = haveIntegratedFacebookAtAll && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
@@ -38,7 +40,7 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
         ACAccountStore *accountStore = [[ACAccountStore alloc] init];
         ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
         
-        NSDictionary *options = @{ACFacebookAppIdKey: @"1397650163819409",
+        NSDictionary *options = @{ACFacebookAppIdKey: facebookAppIdValue,
                                   ACFacebookPermissionsKey: permissions,
                                   ACFacebookAudienceKey:ACFacebookAudienceFriends};
         
@@ -49,8 +51,12 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
                                            completion:^(BOOL granted, NSError *error) {
                                                     if (granted) {
                                                         NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
-                                                        // Optionally save the account
-                                                        [accountStore saveAccount:[accounts lastObject] withCompletionHandler:nil];
+                                                        facebookAccount = [accounts lastObject];
+                                                        
+                                                        //need to set userId
+                                                        accessToken = [[facebookAccount credential] oauthToken];        //this sets the access token
+                                                        [self getUserInfo]; //this will set the user id
+                                                        [self enableComputeButton];
                                                     }
                                                     else{
                                                         NSLog(@"Failed to grant access\n%@", error);
@@ -68,7 +74,6 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
         loginView.frame = CGRectOffset(loginView.frame,
                                        (self.view.center.x - (loginView.frame.size.width / 2)),
                                        (self.view.center.y - (loginView.frame.size.height / 2)));
-        
         [self.view addSubview:loginView];
     }
     
@@ -98,15 +103,33 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
 //#endif
 }
 
+- (void) getUserInfo{
+    NSURL *userURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
+    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                              requestMethod:SLRequestMethodGET
+                                                        URL:userURL
+                                                 parameters:nil];
+    request.account = facebookAccount;
+    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *response, NSError *error) {
+        NSMutableDictionary * jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
+        userId = [jsonData objectForKey:@"id"];
+        NSLog(@"userId: %@", userId);       //this sets the user id
+    }];
+}
+
+- (void)enableComputeButton{
+    calculateButton.enabled = true;
+    calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
+    calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    [calculateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+}
+
 - (void)viewDidAppear:(BOOL)animated{
 //    self.navigationController.navigationBarHidden = true;
 }
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
-    calculateButton.enabled = true;
-    calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
-    calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-    [calculateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self enableComputeButton];
 }
 
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {

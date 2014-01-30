@@ -19,6 +19,7 @@ extern NSString const *sitePath;
 @property NSString *accessToken;
 @property (strong, nonatomic) IBOutlet UIButton *calculateButton;
 @property (strong, nonatomic) IBOutlet UIButton *aboutButton;
+@property ACAccount *facebookAccount;
 
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
 
