@@ -264,6 +264,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = test;
 				TargetAttributes = {
+					230846121883A77B0056A6A7 = {
+						DevelopmentTeam = 5376U5Y3CW;
+					};
 					230846361883A77B0056A6A7 = {
 						TestTargetID = 230846121883A77B0056A6A7;
 					};
@@ -462,6 +465,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/ejwessel/friendalytics,
@@ -470,6 +475,7 @@
 				GCC_PREFIX_HEADER = "Friendalytics/Friendalytics-Prefix.pch";
 				INFOPLIST_FILE = "Friendalytics/Friendalytics-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -479,6 +485,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/ejwessel/friendalytics,
@@ -487,6 +495,7 @@
 				GCC_PREFIX_HEADER = "Friendalytics/Friendalytics-Prefix.pch";
 				INFOPLIST_FILE = "Friendalytics/Friendalytics-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

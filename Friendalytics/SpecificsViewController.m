@@ -53,7 +53,7 @@
     //load the profile picture in the background to prevent blocking main thread
     [self performSelectorInBackground:@selector(downloadAndLoadImage) withObject:nil];
     
-    UIImage *fbImage = [UIImage imageNamed:@"fb_image"];
+    UIImage *fbImage = [UIImage imageNamed:@"fb_image.png"];
     [fbButton setImage:fbImage forState:UIControlStateNormal];
     [fbButton setTintColor:[UIColor blackColor]];
     [fbButton addTarget:self action:@selector(visitFBButtonPressed) forControlEvents:UIControlEventTouchUpInside];
