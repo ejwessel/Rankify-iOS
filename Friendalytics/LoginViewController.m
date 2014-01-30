@@ -26,36 +26,57 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    NSArray *permissions = @[@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos"];
+    
+    BOOL haveIntegratedFacebookAtAll = ([SLComposeViewController class] != nil);
+    BOOL userHaveIntegrataedFacebookAccountSetup = haveIntegratedFacebookAtAll && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
+    
+    //If the user has the integrated facebook account set up
+    if(userHaveIntegrataedFacebookAccountSetup){
+        NSLog(@"Integrated Account is set up");
+        ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+        ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
         
+        NSDictionary *options = @{ACFacebookAppIdKey: @"1397650163819409",
+                                  ACFacebookPermissionsKey: permissions,
+                                  ACFacebookAudienceKey:ACFacebookAudienceFriends};
+        
+        // Request access to the Facebook account.
+        // The user will see an alert view when you perform this method.
+        [accountStore requestAccessToAccountsWithType:facebookAccountType
+                                              options:options
+                                           completion:^(BOOL granted, NSError *error) {
+                                                    if (granted) {
+                                                        NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
+                                                        // Optionally save the account
+                                                        [accountStore saveAccount:[accounts lastObject] withCompletionHandler:nil];
+                                                    }
+                                                    else{
+                                                        NSLog(@"Failed to grant access\n%@", error);
+                                                    }
+                                            }];
+    }
+    //If the user doesn't have the integrated facebook account set up
+    else{
+         NSLog(@"Integrated Account is not set up");
+        FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
+        //loginView.publishPermissions = @[@"publish_actions"];
+        //loginView.defaultAudience = FBSessionDefaultAudienceFriends;
+        loginView.delegate = self;
+        loginView.frame = CGRectMake(0,0, 280, 100);
+        loginView.frame = CGRectOffset(loginView.frame,
+                                       (self.view.center.x - (loginView.frame.size.width / 2)),
+                                       (self.view.center.y - (loginView.frame.size.height / 2)));
+        
+        [self.view addSubview:loginView];
+    }
+    
+    
     UIColor *navColor = self.navigationController.navigationBar.tintColor;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: navColor};
-    
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
-    
-	// Do any additional setup after loading the view, typically from a nib.
-    NSArray *permissions = @[@"user_birthday",
-                             @"user_videos",
-                             @"user_status",
-                             @"user_photos",
-                             @"user_friends",
-                             @"friends_birthday",
-                             @"friends_videos",
-                             @"friends_status",
-                             @"friends_photos",
-                             @"read_stream",
-                             @"export_stream"];
-    
-    FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
-    //loginView.publishPermissions = @[@"publish_actions"];
-    //loginView.defaultAudience = FBSessionDefaultAudienceFriends;
-    loginView.delegate = self;
-    loginView.frame = CGRectMake(0,0, 280, 100);
-    loginView.frame = CGRectOffset(loginView.frame,
-                                   (self.view.center.x - (loginView.frame.size.width / 2)),
-                                   (self.view.center.y - (loginView.frame.size.height / 2)));
-    
-    [self.view addSubview:loginView];
     
     calculateButton.enabled = false;
     calculateButton.layer.borderWidth = 1.0;
@@ -66,7 +87,6 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
     aboutButton.layer.cornerRadius = 5;
     aboutButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
-    loginView.frame = CGRectOffset(loginView.frame, 5, 5);
 //#ifdef __IPHONE_7_0
 //#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 //#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0

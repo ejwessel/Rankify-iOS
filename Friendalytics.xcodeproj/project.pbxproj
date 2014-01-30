@@ -28,6 +28,7 @@
 		2338ABC9188E621900C9D1D1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2338ABC8188E621900C9D1D1 /* QuartzCore.framework */; };
 		2352E2BB188B9B57001B805F /* FriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2352E2BA188B9B57001B805F /* FriendTableViewController.m */; };
 		2352E2BE188BA06C001B805F /* CalculateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2352E2BD188BA06C001B805F /* CalculateViewController.m */; };
+		2372BCA4189A24F800E59716 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2372BCA3189A24F800E59716 /* Social.framework */; };
 		23771CC0188B6DFA00C3652F /* FriendData.m in Sources */ = {isa = PBXBuildFile; fileRef = 23771CBF188B6DFA00C3652F /* FriendData.m */; };
 		23794ACC188C855400EA7A74 /* SpecificsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23794ACB188C855400EA7A74 /* SpecificsViewController.m */; };
 		23D83366188D123100091022 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D83365188D123100091022 /* CustomCell.m */; };
@@ -74,6 +75,7 @@
 		2352E2BA188B9B57001B805F /* FriendTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendTableViewController.m; sourceTree = "<group>"; };
 		2352E2BC188BA06C001B805F /* CalculateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculateViewController.h; sourceTree = "<group>"; };
 		2352E2BD188BA06C001B805F /* CalculateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculateViewController.m; sourceTree = "<group>"; };
+		2372BCA3189A24F800E59716 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		23771CBE188B6DFA00C3652F /* FriendData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendData.h; sourceTree = "<group>"; };
 		23771CBF188B6DFA00C3652F /* FriendData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendData.m; sourceTree = "<group>"; };
 		23794ACA188C855400EA7A74 /* SpecificsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecificsViewController.h; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2372BCA4189A24F800E59716 /* Social.framework in Frameworks */,
 				2338ABC9188E621900C9D1D1 /* QuartzCore.framework in Frameworks */,
 				2308464F1883A8F60056A6A7 /* FacebookSDK.framework in Frameworks */,
 				230846191883A77B0056A6A7 /* CoreGraphics.framework in Frameworks */,
@@ -132,6 +135,7 @@
 		230846151883A77B0056A6A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2372BCA3189A24F800E59716 /* Social.framework */,
 				2338ABC8188E621900C9D1D1 /* QuartzCore.framework */,
 				2308464E1883A8F60056A6A7 /* FacebookSDK.framework */,
 				230846161883A77B0056A6A7 /* Foundation.framework */,
