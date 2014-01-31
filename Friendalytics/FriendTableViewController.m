@@ -133,103 +133,130 @@
         
         //if the user has integrated facebook set up we will post using it
         if(userHaveIntegrataedFacebookAccountSetup){
-            ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-            ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-            NSArray *accounts = [accountStore accountsWithAccountType:accountType];
-            ACAccount *account = [accounts lastObject];
-            
-            //NEED TO ASK FOR PUBLISH PERMISSIONS HERE!!!!!!!!!!
-            NSDictionary *options = @{ACFacebookAppIdKey: facebookAppIdValue,
-                                      ACFacebookPermissionsKey: permissions,
-                                      ACFacebookAudienceKey:ACFacebookAudienceFriends};
-            
-            [accountStore requestAccessToAccountsWithType:accountType
-                                                  options:options
-                                               completion:^(BOOL granted, NSError *error){
-                                                   if (granted){
-                                                       NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-                                                       NSLog(@"%@",accountsArray);
-                                                       
-                                                       // Create the parameters dictionary and the URL (!use HTTPS!)
-                                                       NSDictionary *parameters = @{@"message" : @"test post"};
-                                                       NSURL *URL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
-                                                       
-                                                       // Create request
-                                                       SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook
-                                                                                               requestMethod:SLRequestMethodPOST
-                                                                                                         URL:URL
-                                                                                                  parameters:parameters];
-                                                       
-                                                       // Since we are performing a method that requires authorization we can simply
-                                                       // add the ACAccount to the SLRequest
-                                                       [request setAccount:account];
-                                                       
-                                                       // Perform request
-                                                       [request performRequestWithHandler:^(NSData *respData, NSHTTPURLResponse *urlResp, NSError *error) {
-                                                           NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:respData
-                                                                                                                              options:kNilOptions
-                                                                                                                                error:&error];
-                                                           
-                                                           // Check for errors in the responseDictionary
-                                                       }];
-
-                                                   }
-                                                   else {
-                                                       NSLog(@"Error accessing account: %@", [error localizedDescription]);
-                                                   }
-                                               }];
-            
-           
-            NSLog(@"integated post finished");
+            [self integratedFacebookRequest];
         }
         //else if the user doesn't have integrated facebook set up we will post using the other method
         else{
-            //if there are no publish permissions then we need to authorize first
-            if(![FBSession.activeSession.permissions containsObject:@"publish_actions"]){
-                [FBSession.activeSession requestNewPublishPermissions:[NSArray arrayWithObject:@"publish_actions"]
-                                                      defaultAudience:FBSessionDefaultAudienceFriends
-                                                    completionHandler:^(FBSession *session, NSError *error) {
-                                                        __block NSString *alertText;
-                                                        __block NSString *alertTitle;
-                                                        if (!error) {
-                                                            if ([FBSession.activeSession.permissions
-                                                                 indexOfObject:@"publish_actions"] == NSNotFound){
-                                                                // Permission not granted, tell the user we will not publish
-                                                                alertTitle = @"Permission not granted";
-                                                                alertText = @"Your action will not be published to Facebook.";
-                                                                [[[UIAlertView alloc] initWithTitle:alertTitle
-                                                                                            message:alertText
-                                                                                           delegate:self
-                                                                                  cancelButtonTitle:@"Ok"
-                                                                                  otherButtonTitles:nil] show];
-                                                            }
-                                                            else {
-                                                                // Permission granted, publish the OG story
-                                                                NSLog(@"permissions granted");
-                                                                [self shareContent];
-                                                            }
-                                                            
-                                                        }
-                                                        else {
-                                                            // There was an error, handle it
-                                                            // See https://developers.facebook.com/docs/ios/errors/
-                                                            NSLog(@"There was an error with publishing");
-                                                        }
-                                                    }];
-            }
-            else{
-                //if we already have publish permissions then go ahead and publish
-                [self shareContent];
-            }
+            [self facebookAppRequest];
         }
     }
 }
 
-//the actual sharing of content after post button authentication is clicked
-- (void)shareContent{
+- (void)integratedFacebookRequest{
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    NSArray *accounts = [accountStore accountsWithAccountType:accountType];
+    ACAccount *account = [accounts lastObject];
+    
+    //NEED TO ASK FOR PUBLISH PERMISSIONS HERE!!!!!!!!!!
+    NSDictionary *options = @{ACFacebookAppIdKey: facebookAppIdValue,
+                              ACFacebookPermissionsKey: permissions,
+                              ACFacebookAudienceKey:ACFacebookAudienceFriends};
+    
+    [accountStore requestAccessToAccountsWithType:accountType
+                                          options:options
+                                       completion:^(BOOL granted, NSError *error){
+                                           if (granted){
+                                               NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
+                                               NSLog(@"%@",accountsArray);
+                                               
+                                               // Create the parameters dictionary and the URL (!use HTTPS!)
+                                               NSDictionary *parameters = @{@"message" : [self getTopFriends]};
+                                               NSURL *URL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
+                                               
+                                               // Create request
+                                               SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                                                                       requestMethod:SLRequestMethodPOST
+                                                                                                 URL:URL
+                                                                                          parameters:parameters];
+                                               
+                                               // Since we are performing a method that requires authorization we can simply
+                                               // add the ACAccount to the SLRequest
+                                               [request setAccount:account];
+                                               
+                                               // Perform request
+                                               [request performRequestWithHandler:^(NSData *respData, NSHTTPURLResponse *urlResp, NSError *error) {
+                                                   NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:respData
+                                                                                                                      options:kNilOptions
+                                                                                                                        error:&error];
+                                                   
+                                                   // Check for errors in the responseDictionary
+                                                   if ([responseDictionary objectForKey:@"error"] == nil) {
+                                                       // Status update posted successfully to Facebook
+                                                       NSLog(@"Top 10 Friends published");
+                                                       
+                                                       [[[UIAlertView alloc] initWithTitle:@"Posted to Facebook"
+                                                                                   message:@""
+                                                                                  delegate:nil
+                                                                         cancelButtonTitle:@"Ok"
+                                                                         otherButtonTitles:nil] show];
+                                                   }
+                                                   else {
+                                                       // An error occurred, we need to handle the error
+                                                       // See: https://developers.facebook.com/docs/ios/errors
+                                                       NSLog([NSString stringWithFormat:@"%@", [responseDictionary objectForKey:@"error"]]);
+                                                       
+                                                       [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
+                                                                                   message:@"Facebook disallows pushing of redundant content"
+                                                                                  delegate:nil
+                                                                         cancelButtonTitle:@"Ok"
+                                                                         otherButtonTitles:nil] show];
+                                                   }
+                                               }];
+                                               
+                                           }
+                                           else {
+                                               NSLog(@"Error accessing account: %@", [error localizedDescription]);
+                                           }
+                                       }];
+}
+
+- (void)facebookAppRequest{
+    //if there are no publish permissions then we need to authorize first
+    if(![FBSession.activeSession.permissions containsObject:@"publish_actions"]){
+        [FBSession.activeSession requestNewPublishPermissions:[NSArray arrayWithObject:@"publish_actions"]
+                                              defaultAudience:FBSessionDefaultAudienceFriends
+                                            completionHandler:^(FBSession *session, NSError *error) {
+                                                __block NSString *alertText;
+                                                __block NSString *alertTitle;
+                                                if (!error) {
+                                                    if ([FBSession.activeSession.permissions
+                                                         indexOfObject:@"publish_actions"] == NSNotFound){
+                                                        // Permission not granted, tell the user we will not publish
+                                                        alertTitle = @"Permission not granted";
+                                                        alertText = @"Your action will not be published to Facebook.";
+                                                        [[[UIAlertView alloc] initWithTitle:alertTitle
+                                                                                    message:alertText
+                                                                                   delegate:self
+                                                                          cancelButtonTitle:@"Ok"
+                                                                          otherButtonTitles:nil] show];
+                                                    }
+                                                    else {
+                                                        // Permission granted, publish the OG story
+                                                        NSLog(@"permissions granted");
+                                                        [self facebookAppShare:[self getTopFriends]];
+                                                    }
+                                                }
+                                                else {
+                                                    // There was an error, handle it
+                                                    // See https://developers.facebook.com/docs/ios/errors/
+                                                    NSLog(@"There was an error with publishing");
+                                                }
+                                            }];
+    }
+    else{
+        //if we already have publish permissions then go ahead and publish
+        [self shareContent];
+    }
+}
+
+- (NSString*)getTopFriends{
+    
+    NSString *topFriends = @"";
     //if there are at least some friends
     if(friendData.count > 0){
-        NSString *topTenFriends = @"Top 10 Friends:";
+        
+        topFriends = @"Top 10 Friends:";
         
         int count = 10;
         //if the friendData is smaller than top 10, adjust
@@ -240,45 +267,49 @@
         for (int i = 0; i < count; i++) {
             NSMutableDictionary *friend = [[friendData objectAtIndex:i] objectForKey:@"User"];
             NSString *name = [friend objectForKey:@"name"];
-            NSString *username = [friend objectForKey:@"userName"];
             NSString *total = [friend objectForKey:@"totalLikes"];
             int index = i + 1;
-            topTenFriends = [NSString stringWithFormat:@"%@\n %i. %@ : %@ Likes", topTenFriends, index, name, total];
+            topFriends = [NSString stringWithFormat:@"%@\n %i. %@ : %@ Likes", topFriends, index, name, total];
         }
-        
-        [FBRequestConnection startForPostStatusUpdate:topTenFriends
-                                    completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                        if (!error) {
-                                            // Status update posted successfully to Facebook
-                                            NSLog(@"Top 10 Friends published");
-                                            
-                                            [[[UIAlertView alloc] initWithTitle:@"Posted to Facebook"
-                                                                        message:@""
-                                                                       delegate:nil
-                                                              cancelButtonTitle:@"Ok"
-                                                              otherButtonTitles:nil] show];
-                                        }
-                                        else {
-                                            // An error occurred, we need to handle the error
-                                            // See: https://developers.facebook.com/docs/ios/errors
-                                            NSLog([NSString stringWithFormat:@"%@", error.description]);
-                                            
-                                            [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
-                                                                        message:@"Facebook disallows pushing of redundant content"
-                                                                       delegate:nil
-                                                              cancelButtonTitle:@"Ok"
-                                                              otherButtonTitles:nil] show];
-                                        }
-                                    }];
     }
     //if there happens to be no friends
     else{
         [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
-                                                        message:@"No friends to post"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil] show];
+                                    message:@"No friends to post"
+                                   delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
     }
+    
+    return topFriends;
+}
+
+//the actual sharing of content after post button authentication is clicked
+- (void)facebookAppShare:(NSString*)topTenFriends{
+    [FBRequestConnection startForPostStatusUpdate:topTenFriends
+                                completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                                    if (!error) {
+                                        // Status update posted successfully to Facebook
+                                        NSLog(@"Top 10 Friends published");
+                                        
+                                        [[[UIAlertView alloc] initWithTitle:@"Posted to Facebook"
+                                                                    message:@""
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Ok"
+                                                          otherButtonTitles:nil] show];
+                                    }
+                                    else {
+                                        // An error occurred, we need to handle the error
+                                        // See: https://developers.facebook.com/docs/ios/errors
+                                        NSLog([NSString stringWithFormat:@"%@", error.description]);
+                                        
+                                        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
+                                                                    message:@"Facebook disallows pushing of redundant content"
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Ok"
+                                                          otherButtonTitles:nil] show];
+                                    }
+                                }];
 }
 
 #pragma mark Content Filtering

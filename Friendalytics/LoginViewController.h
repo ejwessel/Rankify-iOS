@@ -22,6 +22,7 @@ extern NSString const *facebookAppIdValue;
 @property (strong, nonatomic) IBOutlet UIButton *calculateButton;
 @property (strong, nonatomic) IBOutlet UIButton *aboutButton;
 @property ACAccount *facebookAccount;
+@property NSArray *permissions;
 
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
 

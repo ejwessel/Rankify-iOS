@@ -25,11 +25,12 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
 @synthesize calculateButton;
 @synthesize aboutButton;
 @synthesize facebookAccount;
+@synthesize permissions;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    NSArray *permissions = @[@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos"];
+    permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
     
     BOOL haveIntegratedFacebookAtAll = ([SLComposeViewController class] != nil);
     BOOL userHaveIntegrataedFacebookAccountSetup = haveIntegratedFacebookAtAll && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
@@ -37,45 +38,13 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
     //If the user has the integrated facebook account set up
     if(userHaveIntegrataedFacebookAccountSetup){
         NSLog(@"Integrated Account is set up");
-        ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-        ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-        
-        NSDictionary *options = @{ACFacebookAppIdKey: facebookAppIdValue,
-                                  ACFacebookPermissionsKey: permissions,
-                                  ACFacebookAudienceKey:ACFacebookAudienceFriends};
-        
-        // Request access to the Facebook account.
-        // The user will see an alert view when you perform this method.
-        [accountStore requestAccessToAccountsWithType:facebookAccountType
-                                              options:options
-                                           completion:^(BOOL granted, NSError *error) {
-                                                    if (granted) {
-                                                        NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
-                                                        facebookAccount = [accounts lastObject];
-                                                        
-                                                        //need to set userId
-                                                        accessToken = [[facebookAccount credential] oauthToken];        //this sets the access token
-                                                        [self getUserInfo]; //this will set the user id
-                                                        [self enableComputeButton];
-                                                    }
-                                                    else{
-                                                        NSLog(@"Failed to grant access\n%@", error);
-                                                    }
-                                            }];
-    }
+        [self integratedFacebookRequest];
+      }
     //If the user doesn't have the integrated facebook account set up
     else{
          NSLog(@"Integrated Account is not set up");
-        FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
-        //loginView.publishPermissions = @[@"publish_actions"];
-        //loginView.defaultAudience = FBSessionDefaultAudienceFriends;
-        loginView.delegate = self;
-        loginView.frame = CGRectMake(0,0, 280, 100);
-        loginView.frame = CGRectOffset(loginView.frame,
-                                       (self.view.center.x - (loginView.frame.size.width / 2)),
-                                       (self.view.center.y - (loginView.frame.size.height / 2)));
-        [self.view addSubview:loginView];
-    }
+        [self facebookAppRequest];
+     }
     
     
     UIColor *navColor = self.navigationController.navigationBar.tintColor;
@@ -103,7 +72,48 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
 //#endif
 }
 
-- (void) getUserInfo{
+- (void)integratedFacebookRequest{
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    
+    NSDictionary *options = @{ACFacebookAppIdKey: facebookAppIdValue,
+                              ACFacebookPermissionsKey: permissions,
+                              ACFacebookAudienceKey:ACFacebookAudienceFriends};
+    
+    // Request access to the Facebook account.
+    // The user will see an alert view when you perform this method.
+    [accountStore requestAccessToAccountsWithType:facebookAccountType
+                                          options:options
+                                       completion:^(BOOL granted, NSError *error) {
+                                           if (granted) {
+                                               NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
+                                               facebookAccount = [accounts lastObject];
+                                               
+                                               //need to set userId
+                                               accessToken = [[facebookAccount credential] oauthToken];        //this sets the access token
+                                               [self getUserInfo]; //this will set the user id
+                                               [self enableComputeButton];
+                                           }
+                                           else{
+                                               NSLog(@"Failed to grant access\n%@", error);
+                                           }
+                                       }];
+}
+
+- (void)facebookAppRequest{
+    FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
+    //loginView.publishPermissions = @[@"publish_actions"];
+    //loginView.defaultAudience = FBSessionDefaultAudienceFriends;
+    loginView.delegate = self;
+    loginView.frame = CGRectMake(0,0, 280, 100);
+    loginView.frame = CGRectOffset(loginView.frame,
+                                   (self.view.center.x - (loginView.frame.size.width / 2)),
+                                   (self.view.center.y - (loginView.frame.size.height / 2)));
+    [self.view addSubview:loginView];
+
+}
+
+- (void)getUserInfo{
     NSURL *userURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
     SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook
                                               requestMethod:SLRequestMethodGET
