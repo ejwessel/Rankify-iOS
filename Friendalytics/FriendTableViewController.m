@@ -171,8 +171,6 @@
                                           options:options
                                        completion:^(BOOL granted, NSError *error){
                                            if (granted){
-                                               NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-                                               //NSLog(@"%@",accountsArray);
                                                
                                                // Create the parameters dictionary and the URL (!use HTTPS!)
                                                NSDictionary *parameters = @{@"message" : [self getTopFriends]};
@@ -252,7 +250,7 @@
     }
     else{
         //if we already have publish permissions then go ahead and publish
-        [self shareContent];
+        [self facebookAppShare:[self getTopFriends]];
     }
 }
 

@@ -26,7 +26,6 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
-- (void)shareContent;
 - (void)post;
 
 @end
