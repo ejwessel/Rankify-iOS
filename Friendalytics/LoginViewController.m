@@ -92,7 +92,7 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
                                                //need to set userId
                                                accessToken = [[facebookAccount credential] oauthToken];        //this sets the access token
                                                [self getUserInfo]; //this will set the user id
-                                               [self enableComputeButton];
+                                               [self performSelectorOnMainThread:@selector(enableComputeButton) withObject:nil waitUntilDone:YES];
                                            }
                                            else{
                                                NSLog(@"Failed to grant access\n%@", error);

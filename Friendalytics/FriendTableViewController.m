@@ -61,8 +61,6 @@
 //                     animations:^{ self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height); }
 //                     completion:nil];
 
-   
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -121,6 +119,22 @@
     
 }
 
+- (void)postSuccessful {
+    [[[UIAlertView alloc] initWithTitle:@"Posted to Facebook"
+                                message:@""
+                               delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil] show];
+}
+
+- (void)postUnsuccessful {
+    [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
+                                message:@"Facebook disallows pushing of redundant content"
+                               delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil] show];
+}
+
 //what happens when the Post button is clicked
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
@@ -158,7 +172,7 @@
                                        completion:^(BOOL granted, NSError *error){
                                            if (granted){
                                                NSArray *accountsArray = [accountStore accountsWithAccountType:accountType];
-                                               NSLog(@"%@",accountsArray);
+                                               //NSLog(@"%@",accountsArray);
                                                
                                                // Create the parameters dictionary and the URL (!use HTTPS!)
                                                NSDictionary *parameters = @{@"message" : [self getTopFriends]};
@@ -181,26 +195,18 @@
                                                                                                                         error:&error];
                                                    
                                                    // Check for errors in the responseDictionary
-                                                   if ([responseDictionary objectForKey:@"error"] == nil) {
+                                                   if ([responseDictionary objectForKey:@"id"] != nil) {
                                                        // Status update posted successfully to Facebook
                                                        NSLog(@"Top 10 Friends published");
                                                        
-                                                       [[[UIAlertView alloc] initWithTitle:@"Posted to Facebook"
-                                                                                   message:@""
-                                                                                  delegate:nil
-                                                                         cancelButtonTitle:@"Ok"
-                                                                         otherButtonTitles:nil] show];
+                                                       [self performSelectorOnMainThread:@selector(postSuccessful) withObject:nil waitUntilDone:YES];
                                                    }
                                                    else {
                                                        // An error occurred, we need to handle the error
                                                        // See: https://developers.facebook.com/docs/ios/errors
                                                        NSLog([NSString stringWithFormat:@"%@", [responseDictionary objectForKey:@"error"]]);
                                                        
-                                                       [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
-                                                                                   message:@"Facebook disallows pushing of redundant content"
-                                                                                  delegate:nil
-                                                                         cancelButtonTitle:@"Ok"
-                                                                         otherButtonTitles:nil] show];
+                                                       [self performSelectorOnMainThread:@selector(postUnsuccessful) withObject:nil waitUntilDone:YES];
                                                    }
                                                }];
                                                
