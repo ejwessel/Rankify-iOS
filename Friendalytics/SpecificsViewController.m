@@ -62,11 +62,20 @@
 }
 
 - (void)visitFBButtonPressed{
-    // Check to see if Facebook is installed
     NSLog(@"visit FB Button pressed");
-    NSString *urlString = [NSString stringWithFormat:@"fb://profile/%@", profileId];
-    NSURL *theURL = [NSURL URLWithString:urlString];
-    [[UIApplication sharedApplication] openURL:theURL];
+    BOOL isInstalled = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"fb://"]];
+    
+    if (isInstalled) {
+        NSString *urlString = [NSString stringWithFormat:@"fb://profile/%@", profileId];
+        NSURL *theURL = [NSURL URLWithString:urlString];
+        [[UIApplication sharedApplication] openURL:theURL];
+    } else {
+        NSString *urlString = [NSString stringWithFormat:@"https://www.facebook.com/%@", profileId];
+        NSURL *url = [NSURL URLWithString:urlString];
+        
+        if (![[UIApplication sharedApplication] openURL:url])
+            NSLog(@"%@%@",@"Failed to open url:",[url description]);
+    }
 }
 
 - (void)didReceiveMemoryWarning {

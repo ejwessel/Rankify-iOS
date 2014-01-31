@@ -22,7 +22,6 @@
 		2308463B1883A77B0056A6A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308461A1883A77B0056A6A7 /* UIKit.framework */; };
 		230846431883A77B0056A6A7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 230846411883A77B0056A6A7 /* InfoPlist.strings */; };
 		230846451883A77B0056A6A7 /* FriendalyticsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 230846441883A77B0056A6A7 /* FriendalyticsTests.m */; };
-		2308464F1883A8F60056A6A7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308464E1883A8F60056A6A7 /* FacebookSDK.framework */; };
 		231E1C9418973B3800DB394A /* AsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 231E1C9318973B3800DB394A /* AsyncImageView.m */; };
 		231E1C961898421000DB394A /* fb_Image.png in Resources */ = {isa = PBXBuildFile; fileRef = 231E1C951898421000DB394A /* fb_Image.png */; };
 		2338ABC9188E621900C9D1D1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2338ABC8188E621900C9D1D1 /* QuartzCore.framework */; };
@@ -33,6 +32,7 @@
 		23794ACC188C855400EA7A74 /* SpecificsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23794ACB188C855400EA7A74 /* SpecificsViewController.m */; };
 		23D83366188D123100091022 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D83365188D123100091022 /* CustomCell.m */; };
 		23EB40CD1891ED1E004F8121 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23EB40CC1891ED1E004F8121 /* AboutViewController.m */; };
+		47AAA3F1189B4C9500F59BDE /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308464E1883A8F60056A6A7 /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,9 +91,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47AAA3F1189B4C9500F59BDE /* FacebookSDK.framework in Frameworks */,
 				2372BCA4189A24F800E59716 /* Social.framework in Frameworks */,
 				2338ABC9188E621900C9D1D1 /* QuartzCore.framework in Frameworks */,
-				2308464F1883A8F60056A6A7 /* FacebookSDK.framework in Frameworks */,
 				230846191883A77B0056A6A7 /* CoreGraphics.framework in Frameworks */,
 				2308461B1883A77B0056A6A7 /* UIKit.framework in Frameworks */,
 				230846171883A77B0056A6A7 /* Foundation.framework in Frameworks */,
@@ -474,6 +474,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/ejwessel/friendalytics,
+					/Users/itorres/Documents/friendalytics,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Friendalytics/Friendalytics-Prefix.pch";
@@ -494,6 +495,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/ejwessel/friendalytics,
+					/Users/itorres/Documents/friendalytics,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Friendalytics/Friendalytics-Prefix.pch";
