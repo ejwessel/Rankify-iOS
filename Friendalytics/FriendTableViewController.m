@@ -19,6 +19,7 @@
 @synthesize searchBar;
 @synthesize filteredResults;
 @synthesize cellDownload;
+@synthesize permissions;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -31,6 +32,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", @"publish_actions", nil];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -136,8 +139,8 @@
             ACAccount *account = [accounts lastObject];
             
             //NEED TO ASK FOR PUBLISH PERMISSIONS HERE!!!!!!!!!!
-            NSDictionary *options = @{ACFacebookAppIdKey: @"1397650163819409",
-                                      ACFacebookPermissionsKey: @[@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", @"publish_actions"],
+            NSDictionary *options = @{ACFacebookAppIdKey: facebookAppIdValue,
+                                      ACFacebookPermissionsKey: permissions,
                                       ACFacebookAudienceKey:ACFacebookAudienceFriends};
             
             [accountStore requestAccessToAccountsWithType:accountType

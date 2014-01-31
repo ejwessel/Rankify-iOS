@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SpecificsViewController.h"
-#import "CustomCell.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import <Social/Social.h>
+#import "SpecificsViewController.h"
+#import "CustomCell.h"
+#import "LoginViewController.h"
 
 
 @interface FriendTableViewController : UITableViewController <UIScrollViewDelegate,UISearchBarDelegate, UISearchDisplayDelegate, UIAlertViewDelegate>
@@ -21,6 +22,7 @@
 @property NSMutableDictionary *friendObject;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property CustomCell *cellDownload;
+@property NSArray *permissions;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;

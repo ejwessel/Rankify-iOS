@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 
 NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
+NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Friendalytics-Info.plist value for FacebookAppId
 //leovander.com
 //e-wit.co.uk
 
@@ -29,7 +30,6 @@ NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
     [super viewDidLoad];
     
     NSArray *permissions = @[@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos"];
-    NSString *facebookAppIdValue = @"1397650163819409"; //this MUST match Friendalytics-Info.plist value for FacebookAppId
     
     BOOL haveIntegratedFacebookAtAll = ([SLComposeViewController class] != nil);
     BOOL userHaveIntegrataedFacebookAccountSetup = haveIntegratedFacebookAtAll && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);

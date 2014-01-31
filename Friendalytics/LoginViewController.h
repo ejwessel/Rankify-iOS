@@ -12,6 +12,8 @@
 #import "CalculateViewController.h"
 
 extern NSString const *sitePath;
+extern NSString const *facebookAppIdValue;
+
 @interface LoginViewController : UIViewController
 
 @property NSMutableDictionary *friendList;
