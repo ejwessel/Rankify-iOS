@@ -62,6 +62,7 @@
 }
 
 - (void)visitFBButtonPressed{
+    // Check to see if Facebook is installed
     NSLog(@"visit FB Button pressed");
     NSString *urlString = [NSString stringWithFormat:@"fb://profile/%@", profileId];
     NSURL *theURL = [NSURL URLWithString:urlString];
