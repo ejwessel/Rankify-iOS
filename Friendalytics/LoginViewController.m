@@ -26,9 +26,12 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
 @synthesize aboutButton;
 @synthesize facebookAccount;
 @synthesize permissions;
+@synthesize integratedLoginLabel;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    integratedLoginLabel.hidden = true;
     
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
     
@@ -128,6 +131,8 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
 }
 
 - (void)enableComputeButton{
+    integratedLoginLabel.hidden = false;
+    
     calculateButton.enabled = true;
     calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
     calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
