@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <FacebookSDK/FacebookSDK.h>
 #import <Social/Social.h>
+#import <iAd/iAd.h>
 #import "CalculateViewController.h"
 
 extern NSString const *sitePath;
 extern NSString const *facebookAppIdValue;
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : UIViewController <ADBannerViewDelegate>
 
 @property NSMutableDictionary *friendList;
 @property NSString *userId;
@@ -24,6 +25,7 @@ extern NSString const *facebookAppIdValue;
 @property ACAccount *facebookAccount;
 @property NSArray *permissions;
 @property (strong, nonatomic) IBOutlet UILabel *integratedLoginLabel;
+@property ADBannerView *banner;
 
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
 

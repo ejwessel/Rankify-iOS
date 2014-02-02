@@ -27,12 +27,18 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
 @synthesize facebookAccount;
 @synthesize permissions;
 @synthesize integratedLoginLabel;
+@synthesize banner;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    integratedLoginLabel.hidden = true;
+    banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
+    banner.layer.borderWidth = .5;
+    banner.delegate = self;
+    banner.AutoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:banner];
     
+    integratedLoginLabel.hidden = true;
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
     
     BOOL haveIntegratedFacebookAtAll = ([SLComposeViewController class] != nil);
@@ -73,6 +79,45 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
 //#endif
 //#endif
 //#endif
+}
+
+- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error{
+    //NSLog(@"bannerview did not receive any banner due to %@", error);
+    
+    switch ([error code]) {
+        case 1:
+            NSLog(@"Error Code %i, Server Failure", [error code]);
+            break;
+        case 2:
+            NSLog(@"Error Code %i, Loading Throttled", [error code]);
+            break;
+        case 3:
+            NSLog(@"Error Code %i, Inventory Unavailable", [error code]);
+            break;
+        case 4:
+            NSLog(@"Error Code %i, Configuration Error", [error code]);
+            break;
+        case 5:
+            NSLog(@"Error Code %i, Banner Visible Without Content", [error code]);
+            break;
+        case 6:
+            NSLog(@"Error Code %i, Application Inactive", [error code]);
+            break;
+        case 7:
+            NSLog(@"Error Code %i, Ad Unloaded", [error code]);
+            break;
+        default:
+            break;
+    }
+    
+//    if (banner.isHidden)
+//    {
+//        [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+//        // assumes the banner view is at the top of the screen.
+//        banner.frame = CGRectOffset(banner.frame, 0, -50);
+//        [UIView commitAnimations];
+//        banner.hidden = NO;
+//    }
 }
 
 - (void)integratedFacebookRequest{
