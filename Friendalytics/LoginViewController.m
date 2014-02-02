@@ -93,6 +93,10 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
             break;
         case 3:
             NSLog(@"Error Code %i, Inventory Unavailable", [error code]);
+            [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+            banner.frame = CGRectOffset(banner.frame, 0, -50);
+            [UIView commitAnimations];
+//            banner.hidden = YES;
             break;
         case 4:
             NSLog(@"Error Code %i, Configuration Error", [error code]);
