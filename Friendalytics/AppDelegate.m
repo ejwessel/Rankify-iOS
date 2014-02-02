@@ -55,4 +55,4 @@
 
 @end
 
-NSString *sitePath;
+NSString *SITE_PATH;

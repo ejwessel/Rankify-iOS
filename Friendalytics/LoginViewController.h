@@ -12,8 +12,9 @@
 #import <iAd/iAd.h>
 #import "CalculateViewController.h"
 
-extern NSString const *sitePath;
-extern NSString const *facebookAppIdValue;
+extern NSString const *SITE_PATH;
+extern NSString const *FACEBOOK_APP_ID_VALUE;
+extern BOOL const ADS_ACTIVATED;
 
 @interface LoginViewController : UIViewController <ADBannerViewDelegate>
 
@@ -28,7 +29,6 @@ extern NSString const *facebookAppIdValue;
 @property ADBannerView *banner;
 
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
-
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
 @end

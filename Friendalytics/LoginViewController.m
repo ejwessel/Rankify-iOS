@@ -9,8 +9,10 @@
 #import "LoginViewController.h"
 #import "AppDelegate.h"
 
-NSString const *sitePath = @"http://e-wit.co.uk/friendalytics/";
-NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Friendalytics-Info.plist value for FacebookAppId
+NSString const *SITE_PATH = @"http://e-wit.co.uk/friendalytics/";
+NSString const *FACEBOOK_APP_ID_VALUE = @"1397650163819409"; //this MUST match Friendalytics-Info.plist value for FacebookAppId
+BOOL const ADS_ACTIVATED = 1;
+
 //leovander.com
 //e-wit.co.uk
 
@@ -32,12 +34,14 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
-    banner.backgroundColor = [UIColor redColor];
-    banner.layer.borderWidth = .5;
-    banner.delegate = self;
-    banner.AutoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:banner];
+    if(ADS_ACTIVATED){
+        banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
+        banner.backgroundColor = [UIColor redColor];
+        banner.layer.borderWidth = .5;
+        banner.delegate = self;
+        banner.AutoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [self.view addSubview:banner];
+    }
     
     integratedLoginLabel.hidden = true;
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
@@ -133,7 +137,7 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
     
-    NSDictionary *options = @{ACFacebookAppIdKey: facebookAppIdValue,
+    NSDictionary *options = @{ACFacebookAppIdKey: FACEBOOK_APP_ID_VALUE,
                               ACFacebookPermissionsKey: permissions,
                               ACFacebookAudienceKey:ACFacebookAudienceFriends};
     
@@ -248,7 +252,7 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
 - (void) sendAccessToken:(NSString *)token withUserID:(NSString *)idNumber {
     //make url request
     //send url request to israel's database
-    NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", sitePath, idNumber, token];
+    NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, idNumber, token];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;

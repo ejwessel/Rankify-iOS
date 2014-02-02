@@ -163,7 +163,7 @@
     ACAccount *account = [accounts lastObject];
     
     //NEED TO ASK FOR PUBLISH PERMISSIONS HERE!!!!!!!!!!
-    NSDictionary *options = @{ACFacebookAppIdKey: facebookAppIdValue,
+    NSDictionary *options = @{ACFacebookAppIdKey: FACEBOOK_APP_ID_VALUE,
                               ACFacebookPermissionsKey: permissions,
                               ACFacebookAudienceKey:ACFacebookAudienceFriends};
     

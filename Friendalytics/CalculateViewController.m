@@ -170,7 +170,7 @@
 - (void) pullFriends{
     
     NSLog(@"pullFriends Started");
-    NSString *urlString = [NSString stringWithFormat:@"%@users/pullFriends/%@/%@", sitePath, userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@users/pullFriends/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -200,7 +200,7 @@
 
 - (void) pullAlbums{
     NSLog(@"pullAlbums Started");
-    NSString *urlString = [NSString stringWithFormat:@"%@/albums/pullAlbums/%@/%@", sitePath, userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@/albums/pullAlbums/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -230,7 +230,7 @@
 - (void) pullPhotos{
     
     NSLog(@"pullPhotos Started");
-    NSString *urlString = [NSString stringWithFormat:@"%@photos/pullPhotos/%@/%@", sitePath, userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@photos/pullPhotos/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -259,7 +259,7 @@
 
 - (void) pullVideos{
     NSLog(@"pullVideos Started");
-    NSString *urlString = [NSString stringWithFormat:@"%@videos/pullVideos/%@/%@", sitePath, userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@videos/pullVideos/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -288,7 +288,7 @@
 
 - (void) pullStatuses{
     NSLog(@"pullStatuses Started");
-    NSString *urlString = [NSString stringWithFormat:@"%@statuses/pullStatuses/%@/%@", sitePath, userId, accessToken];
+    NSString *urlString = [NSString stringWithFormat:@"%@statuses/pullStatuses/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
@@ -318,7 +318,7 @@
 - (void) getFriendData {
     
     NSLog(@"getFriendData Started");
-    NSString *urlString = [NSString stringWithFormat:@"%@users/getFriendsData/%@", sitePath, userId];
+    NSString *urlString = [NSString stringWithFormat:@"%@users/getFriendsData/%@", SITE_PATH, userId];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;
