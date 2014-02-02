@@ -33,6 +33,7 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
     [super viewDidLoad];
     
     banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
+    banner.backgroundColor = [UIColor redColor];
     banner.layer.borderWidth = .5;
     banner.delegate = self;
     banner.AutoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -81,7 +82,7 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
 //#endif
 }
 
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error{
+- (void)bannerView:(ADBannerView *)bannerAd didFailToReceiveAdWithError:(NSError *)error{
     //NSLog(@"bannerview did not receive any banner due to %@", error);
     
     switch ([error code]) {
@@ -94,7 +95,7 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
         case 3:
             NSLog(@"Error Code %i, Inventory Unavailable", [error code]);
             [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-            banner.frame = CGRectOffset(banner.frame, 0, -50);
+            banner.frame = CGRectOffset(bannerAd.frame, 0, -50);
             [UIView commitAnimations];
 //            banner.hidden = YES;
             break;
@@ -103,6 +104,10 @@ NSString const *facebookAppIdValue = @"1397650163819409"; //this MUST match Frie
             break;
         case 5:
             NSLog(@"Error Code %i, Banner Visible Without Content", [error code]);
+            [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+            banner.frame = CGRectOffset(bannerAd.frame, 0, -50);
+            bannerAd.hidden = YES;
+            [UIView commitAnimations];
             break;
         case 6:
             NSLog(@"Error Code %i, Application Inactive", [error code]);
