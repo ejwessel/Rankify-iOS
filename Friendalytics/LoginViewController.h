@@ -31,4 +31,5 @@ extern BOOL const ADS_ACTIVATED;
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 
+
 @end

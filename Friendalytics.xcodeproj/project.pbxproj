@@ -153,6 +153,7 @@
 		2308461C1883A77B0056A6A7 /* Friendalytics */ = {
 			isa = PBXGroup;
 			children = (
+				23B3EE9D18A03833009F183A /* iPad */,
 				23794AC9188C853C00EA7A74 /* Old Files */,
 				230846251883A77B0056A6A7 /* AppDelegate.h */,
 				230846261883A77B0056A6A7 /* AppDelegate.m */,
@@ -223,6 +224,13 @@
 				23771CBF188B6DFA00C3652F /* FriendData.m */,
 			);
 			name = "Old Files";
+			sourceTree = "<group>";
+		};
+		23B3EE9D18A03833009F183A /* iPad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iPad;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -484,8 +492,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Friendalytics/Friendalytics-Prefix.pch";
 				INFOPLIST_FILE = "Friendalytics/Friendalytics-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -506,8 +516,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Friendalytics/Friendalytics-Prefix.pch";
 				INFOPLIST_FILE = "Friendalytics/Friendalytics-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

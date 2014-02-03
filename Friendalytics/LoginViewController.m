@@ -36,7 +36,7 @@ BOOL const ADS_ACTIVATED = 1;
     
     if(ADS_ACTIVATED){
         banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
-        banner.backgroundColor = [UIColor redColor];
+        //banner.backgroundColor = [UIColor redColor];
         banner.layer.borderWidth = .5;
         banner.delegate = self;
         banner.AutoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -51,12 +51,12 @@ BOOL const ADS_ACTIVATED = 1;
     
     //If the user has the integrated facebook account set up
     if(userHaveIntegrataedFacebookAccountSetup){
-        NSLog(@"Integrated Account is set up");
+        NSLog(@"Facebook Integrated Account is set up");
         [self integratedFacebookRequest];
       }
     //If the user doesn't have the integrated facebook account set up
     else{
-         NSLog(@"Integrated Account is not set up");
+         NSLog(@"Facebook Integrated Account is not set up");
         [self facebookAppRequest];
      }
     
@@ -86,51 +86,58 @@ BOOL const ADS_ACTIVATED = 1;
 //#endif
 }
 
+- (void)hideBanner{
+    [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+    banner.frame = CGRectOffset(banner.frame, 0, -50);
+    banner.hidden = YES;
+    [UIView commitAnimations];
+}
+
+- (void)showBanner{
+    [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+    banner.frame = CGRectOffset(banner.frame, 0, 50);
+    banner.hidden = NO;
+    [UIView commitAnimations];
+}
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)bannerAd{
+    NSLog(@"Banner Loaded an Ad");
+    if(bannerAd.hidden){
+        [self showBanner];
+    }
+}
+
 - (void)bannerView:(ADBannerView *)bannerAd didFailToReceiveAdWithError:(NSError *)error{
-    //NSLog(@"bannerview did not receive any banner due to %@", error);
-    
+    NSLog(@"Banner Failed");
     switch ([error code]) {
         case 1:
             NSLog(@"Error Code %i, Server Failure", [error code]);
+            [self hideBanner];
             break;
         case 2:
             NSLog(@"Error Code %i, Loading Throttled", [error code]);
             break;
         case 3:
             NSLog(@"Error Code %i, Inventory Unavailable", [error code]);
-            [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-            banner.frame = CGRectOffset(bannerAd.frame, 0, -50);
-            [UIView commitAnimations];
-//            banner.hidden = YES;
+            [self hideBanner];
             break;
         case 4:
             NSLog(@"Error Code %i, Configuration Error", [error code]);
             break;
         case 5:
             NSLog(@"Error Code %i, Banner Visible Without Content", [error code]);
-            [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-            banner.frame = CGRectOffset(bannerAd.frame, 0, -50);
-            bannerAd.hidden = YES;
-            [UIView commitAnimations];
+            [self hideBanner];
             break;
         case 6:
             NSLog(@"Error Code %i, Application Inactive", [error code]);
             break;
         case 7:
             NSLog(@"Error Code %i, Ad Unloaded", [error code]);
+            [self hideBanner];
             break;
         default:
             break;
     }
-    
-//    if (banner.isHidden)
-//    {
-//        [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-//        // assumes the banner view is at the top of the screen.
-//        banner.frame = CGRectOffset(banner.frame, 0, -50);
-//        [UIView commitAnimations];
-//        banner.hidden = NO;
-//    }
 }
 
 - (void)integratedFacebookRequest{
