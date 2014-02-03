@@ -251,12 +251,12 @@ BOOL const ADS_ACTIVATED = 1;
     NSLog(@"FBLoginView encountered an error=%@", error);
 }
 
-- (void) didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void) sendAccessToken:(NSString *)token withUserID:(NSString *)idNumber {
+- (void)sendAccessToken:(NSString *)token withUserID:(NSString *)idNumber {
     //make url request
     //send url request to israel's database
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, idNumber, token];
@@ -270,7 +270,7 @@ BOOL const ADS_ACTIVATED = 1;
     NSLog(@"Token and userId sent? %@", responseString);
 }
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if([segue.identifier isEqualToString:@"segueToCompute"]){
         CalculateViewController *controller = (CalculateViewController *)segue.destinationViewController;
         //pass data to the next view controller
