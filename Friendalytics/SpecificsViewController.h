@@ -17,6 +17,12 @@
 @property (strong, nonatomic) IBOutlet UILabel *totalVideoLikesLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalStatusLikesLabel;
 @property (strong, nonatomic) IBOutlet UIButton *fbButton;
+@property (strong, nonatomic) IBOutlet UILabel *totalCommentsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *totalAlbumCommentsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *totalPhotoCommentsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *totalVideoCommentsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *totalStatusCommentsLabel;
+
 
 @property NSString *friendName;
 @property NSString *totalLikes;
@@ -26,6 +32,11 @@
 @property NSString *totalStatusLikes;
 @property NSString *profilePictureURL;
 @property NSString *profileId;
+@property NSString *totalComments;
+@property NSString *totalAlbumComments;
+@property NSString *totalPhotoComments;
+@property NSString *totalVideoComments;
+@property NSString *totalStatusComments;
 
 - (void)downloadAndLoadImage;
 

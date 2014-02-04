@@ -28,6 +28,16 @@
 @synthesize profilePicture;
 @synthesize fbButton;
 @synthesize profileId;
+@synthesize totalCommentsLabel;
+@synthesize totalAlbumCommentsLabel;
+@synthesize totalPhotoCommentsLabel;
+@synthesize totalVideoCommentsLabel;
+@synthesize totalStatusCommentsLabel;
+@synthesize totalComments;
+@synthesize totalAlbumComments;
+@synthesize totalPhotoComments;
+@synthesize totalVideoComments;
+@synthesize totalStatusComments;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -47,6 +57,11 @@
     totalVideoLikesLabel.text = totalVideoLikes;
     totalPhotoLikesLabel.text = totalPhotoLikes;
     totalAlbumLikesLabel.text = totalAlbumLikes;
+    totalCommentsLabel.text = totalComments;
+    totalAlbumCommentsLabel.text = totalAlbumComments;
+    totalPhotoCommentsLabel.text = totalPhotoComments;
+    totalVideoCommentsLabel.text = totalVideoComments;
+    totalStatusCommentsLabel.text = totalStatusComments;
     profilePicture.layer.cornerRadius = 10;
     profilePicture.layer.borderWidth = .5;
     
