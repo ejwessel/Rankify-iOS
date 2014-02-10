@@ -38,6 +38,7 @@
 @synthesize totalPhotoComments;
 @synthesize totalVideoComments;
 @synthesize totalStatusComments;
+@synthesize rank;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -73,7 +74,7 @@
     [fbButton setTintColor:[UIColor blackColor]];
     [fbButton addTarget:self action:@selector(visitFBButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:totalLikes style:UIBarButtonItemStyleDone target:self action:nil];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:rank style:UIBarButtonItemStyleDone target:self action:nil];
 }
 
 - (void)visitFBButtonPressed{

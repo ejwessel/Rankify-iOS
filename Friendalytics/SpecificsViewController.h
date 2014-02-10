@@ -37,6 +37,7 @@
 @property NSString *totalPhotoComments;
 @property NSString *totalVideoComments;
 @property NSString *totalStatusComments;
+@property NSString *rank;
 
 - (void)downloadAndLoadImage;
 

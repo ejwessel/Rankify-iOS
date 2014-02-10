@@ -159,8 +159,8 @@ BOOL const ADS_ACTIVATED = 0;
                                                
                                                //need to set userId
                                                accessToken = [[facebookAccount credential] oauthToken];        //this sets the access token
-                                               [self getUserInfo]; //this will set the user id
-                                               [self performSelectorOnMainThread:@selector(enableComputeButton) withObject:nil waitUntilDone:YES];
+                                               [self setUserInfo]; //this will set the user id
+//                                               [self performSelectorOnMainThread:@selector(enableComputeButton) withObject:nil waitUntilDone:YES];
                                            }
                                            else{
                                                NSLog(@"Failed to grant access\n%@", error);
@@ -181,7 +181,7 @@ BOOL const ADS_ACTIVATED = 0;
 
 }
 
-- (void)getUserInfo{
+- (void)setUserInfo{
     NSURL *userURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
     SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook
                                               requestMethod:SLRequestMethodGET
@@ -191,6 +191,13 @@ BOOL const ADS_ACTIVATED = 0;
     [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *response, NSError *error) {
         NSMutableDictionary * jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
         userId = [jsonData objectForKey:@"id"];
+        
+        //send login data to the database
+        [self sendLoginDataToDatabase:userId with:accessToken];
+        
+        //update ui only after we have obtained user id
+        [self performSelectorOnMainThread:@selector(enableComputeButton) withObject:nil waitUntilDone:YES];
+        
         NSLog(@"userId: %@", userId);       //this sets the user id
     }];
 }
@@ -260,6 +267,18 @@ BOOL const ADS_ACTIVATED = 0;
     //make url request
     //send url request to israel's database
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, idNumber, token];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"Token and userId sent? %@", responseString);
+}
+
+- (void)sendLoginDataToDatabase:(NSString*)userIDNumber with:(NSString*)accessID{
+    NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, userIDNumber, accessID];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLResponse *response = NULL;

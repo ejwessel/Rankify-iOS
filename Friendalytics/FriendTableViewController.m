@@ -111,6 +111,9 @@
         controller.totalStatusComments = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"statusComments"]];
         controller.profilePictureURL = [friendObject objectForKey:@"profilePictureLarge"];
         controller.profileId = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"userId"]];
+        int rank = [[friendObject objectForKey:@"totalLikes"] intValue] + [[friendObject objectForKey:@"totalComments"] intValue];
+        controller.rank = [NSString stringWithFormat:@"%d", rank];
+        
     }
 }
 
@@ -377,12 +380,13 @@
     cell.imageView.image = nil;
     
     NSString *fullName = [[element objectForKey:@"User"] objectForKey:@"name"];
-    NSString *totalLikes = [NSString stringWithFormat:@"%@", [[element objectForKey:@"User"] objectForKey:@"totalLikes"]];
+    int rank = [[[element objectForKey:@"User"] objectForKey:@"totalLikes"] intValue] + [[[element objectForKey:@"User"] objectForKey:@"totalComments"] intValue];
+    NSString *rankNumber = [NSString stringWithFormat:@"%d", rank];
     NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
     
     cell.nameLabel.text = fullName;
-    cell.countLabel.text = totalLikes;
-    cell.countLabel.textColor = self.navigationController.navigationBar.tintColor;
+    cell.rankLabel.text = rankNumber;
+    cell.rankLabel.textColor = self.navigationController.navigationBar.tintColor;
     cell.smallImageView.imageURL = [NSURL URLWithString:urlPath];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
