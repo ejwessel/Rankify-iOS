@@ -112,9 +112,7 @@
     statusFriends.hidden = false;
     gatheringFriendsColor.backgroundColor = [UIColor yellowColor];
     [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
-//    [self startPhase1];
     [recomputeButton addTarget:self action:@selector(viewDidLoad) forControlEvents:UIControlEventTouchUpInside];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
 
 }
 

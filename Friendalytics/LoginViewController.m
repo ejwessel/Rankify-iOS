@@ -46,7 +46,7 @@ BOOL const ADS_ACTIVATED = 1;
         [self.view addSubview:banner];
         [self hideBanner];
     }
-    
+
     integratedLoginLabel.hidden = true;
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
     userHaveIntegrataedFacebookAccountSetup = ([SLComposeViewController class] != nil) && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
@@ -148,7 +148,7 @@ BOOL const ADS_ACTIVATED = 1;
     
     //begin integrated request
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+    ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook]; //obtains the integrated account we have stored on the iphone
     NSDictionary *options = @{ACFacebookAppIdKey: FACEBOOK_APP_ID_VALUE,
                               ACFacebookPermissionsKey: permissions,
                               ACFacebookAudienceKey:ACFacebookAudienceFriends};
@@ -159,6 +159,8 @@ BOOL const ADS_ACTIVATED = 1;
                                           options:options
                                        completion:^(BOOL granted, NSError *error) {
                                            if (granted) {
+                                               
+                                               NSLog(@"Facebook Successfully granted access");
                                                NSArray *accounts = [accountStore accountsWithAccountType:facebookAccountType];
                                                facebookAccount = [accounts lastObject];
                                                
@@ -169,7 +171,7 @@ BOOL const ADS_ACTIVATED = 1;
                                            else{
                                                //update ui on a login fail
                                                [self performSelectorOnMainThread:@selector(updateUIFail) withObject:nil waitUntilDone:YES];
-                                               NSLog(@"Failed to grant access\n%@", error);
+                                               NSLog(@"Facebook Failed to grant access\n%@", error);
                                            }
                                        }];
 }
@@ -190,21 +192,22 @@ BOOL const ADS_ACTIVATED = 1;
 - (void)setUserInfo{
     NSURL *userURL = [NSURL URLWithString:@"https://graph.facebook.com/me"];
     SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook
-                                              requestMethod:SLRequestMethodGET
-                                                        URL:userURL
-                                                 parameters:nil];
+                                            requestMethod:SLRequestMethodGET
+                                                      URL:userURL
+                                               parameters:nil];
     request.account = facebookAccount;
     [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *response, NSError *error) {
         NSMutableDictionary * jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
+        
         userId = [jsonData objectForKey:@"id"];
         
         //send login data to the database
         [self sendLoginDataToDatabase:userId with:accessToken];
         
-        //update ui only after we have obtained user id
+        //update ui only after we have obtained user id inside of database
         [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:YES];
-        
         NSLog(@"userId: %@", userId);       //this sets the user id
+
     }];
 }
 
