@@ -39,6 +39,7 @@
 @synthesize totalVideoComments;
 @synthesize totalStatusComments;
 @synthesize rank;
+@synthesize banner;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -52,6 +53,16 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
+    if(ADS_ACTIVATED){
+        banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
+        //banner.backgroundColor = [UIColor redColor];
+        banner.layer.borderWidth = .5;
+        banner.delegate = self;
+        banner.AutoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [self.view addSubview:banner];
+        [self hideBanner];
+    }
+    
     self.title = friendName;
     totalLikesLabel.text = totalLikes;
     totalStatusLikesLabel.text = totalStatusLikes;
@@ -75,6 +86,60 @@
     [fbButton addTarget:self action:@selector(visitFBButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:rank style:UIBarButtonItemStyleDone target:self action:nil];
+}
+
+- (void)hideBanner{
+    [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+    banner.frame = CGRectOffset(banner.frame, 0, -50);
+    banner.hidden = YES;
+    [UIView commitAnimations];
+}
+
+- (void)showBanner{
+    [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+    banner.frame = CGRectOffset(banner.frame, 0, 50);
+    banner.hidden = NO;
+    [UIView commitAnimations];
+}
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)bannerAd{
+    NSLog(@"Banner Loaded an Ad");
+    if(bannerAd.hidden){
+        [self showBanner];
+    }
+}
+
+- (void)bannerView:(ADBannerView *)bannerAd didFailToReceiveAdWithError:(NSError *)error{
+    NSLog(@"Banner Failed");
+    switch ([error code]) {
+        case 1:
+            NSLog(@"Error Code %i, Server Failure", [error code]);
+            [self hideBanner];
+            break;
+        case 2:
+            NSLog(@"Error Code %i, Loading Throttled", [error code]);
+            break;
+        case 3:
+            NSLog(@"Error Code %i, Inventory Unavailable", [error code]);
+            [self hideBanner];
+            break;
+        case 4:
+            NSLog(@"Error Code %i, Configuration Error", [error code]);
+            break;
+        case 5:
+            NSLog(@"Error Code %i, Banner Visible Without Content", [error code]);
+            [self hideBanner];
+            break;
+        case 6:
+            NSLog(@"Error Code %i, Application Inactive", [error code]);
+            break;
+        case 7:
+            NSLog(@"Error Code %i, Ad Unloaded", [error code]);
+            [self hideBanner];
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)visitFBButtonPressed{

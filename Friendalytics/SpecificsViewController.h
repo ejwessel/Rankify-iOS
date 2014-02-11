@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <iAd/iAd.h>
+#import "LoginViewController.h"
 
-@interface SpecificsViewController : UIViewController
+@interface SpecificsViewController : UIViewController <ADBannerViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIImageView *profilePicture;
 @property (strong, nonatomic) IBOutlet UILabel *totalLikesLabel;
@@ -22,6 +24,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *totalPhotoCommentsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalVideoCommentsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalStatusCommentsLabel;
+@property ADBannerView *banner;
 
 
 @property NSString *friendName;
