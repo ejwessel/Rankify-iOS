@@ -36,6 +36,7 @@ BOOL const ADS_ACTIVATED = 1;
 - (void)viewDidLoad{
     [super viewDidLoad];
     
+    //ADS
     if(ADS_ACTIVATED){
         banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
         //banner.backgroundColor = [UIColor redColor];
@@ -48,9 +49,7 @@ BOOL const ADS_ACTIVATED = 1;
     
     integratedLoginLabel.hidden = true;
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
-    
-    BOOL haveIntegratedFacebookAtAll = ([SLComposeViewController class] != nil);
-    userHaveIntegrataedFacebookAccountSetup = haveIntegratedFacebookAtAll && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
+    userHaveIntegrataedFacebookAccountSetup = ([SLComposeViewController class] != nil) && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
     
     //If the user has the integrated facebook account set up
     if(userHaveIntegrataedFacebookAccountSetup){
@@ -64,6 +63,7 @@ BOOL const ADS_ACTIVATED = 1;
      }
     
     
+    //Other UI Setup
     UIColor *navColor = self.navigationController.navigationBar.tintColor;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: navColor};
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -136,6 +136,7 @@ BOOL const ADS_ACTIVATED = 1;
 
 - (void)integratedFacebookRequest{
     
+    //UI Setup if integrated is set
     integratedLoginLabel.hidden = false;
     integratedLoginLabel.text = @"Logging You In, Please Wait";
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -145,9 +146,9 @@ BOOL const ADS_ACTIVATED = 1;
     [self.view addSubview:activityIndicator];
     [activityIndicator startAnimating];
     
+    //begin integrated request
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-    
     NSDictionary *options = @{ACFacebookAppIdKey: FACEBOOK_APP_ID_VALUE,
                               ACFacebookPermissionsKey: permissions,
                               ACFacebookAudienceKey:ACFacebookAudienceFriends};
@@ -166,7 +167,8 @@ BOOL const ADS_ACTIVATED = 1;
                                                [self setUserInfo]; //this will set the user id
                                            }
                                            else{
-                                               [self performSelectorOnMainThread:@selector(updateUIFail) withObject:nil waitUntilDone:nil];
+                                               //update ui on a login fail
+                                               [self performSelectorOnMainThread:@selector(updateUIFail) withObject:nil waitUntilDone:YES];
                                                NSLog(@"Failed to grant access\n%@", error);
                                            }
                                        }];
@@ -280,7 +282,7 @@ BOOL const ADS_ACTIVATED = 1;
 
 - (void)sendAccessToken:(NSString *)token withUserID:(NSString *)idNumber {
     //make url request
-    //send url request to israel's database
+    //send url request to database
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, idNumber, token];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
