@@ -36,7 +36,6 @@
 @synthesize retrievingDataColor;
 @synthesize retrievingStatus;
 @synthesize retrieveStatusFlag;
-@synthesize banner;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -48,15 +47,6 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-
-    if(ADS_ACTIVATED){
-        banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
-        //banner.backgroundColor = [UIColor redColor];
-        banner.layer.borderWidth = .5;
-        banner.delegate = self;
-        banner.AutoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [self hideBanner];
-    }
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
@@ -126,60 +116,6 @@
     [recomputeButton addTarget:self action:@selector(viewDidLoad) forControlEvents:UIControlEventTouchUpInside];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allDataReady) name:@"allDataReadyNotification" object:nil];
 
-}
-
-- (void) hideBanner{
-    [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-    banner.frame = CGRectOffset(banner.frame, 0, -50);
-    banner.hidden = YES;
-    [UIView commitAnimations];
-}
-
-- (void) showBanner{
-    [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-    banner.frame = CGRectOffset(banner.frame, 0, 50);
-    banner.hidden = NO;
-    [UIView commitAnimations];
-}
-
-- (void) bannerViewDidLoadAd:(ADBannerView *)bannerAd{
-    NSLog(@"Banner Loaded an Ad");
-    if(bannerAd.hidden){
-        [self showBanner];
-    }
-}
-
-- (void) bannerView:(ADBannerView *)bannerAd didFailToReceiveAdWithError:(NSError *)error{
-    NSLog(@"Banner Failed");
-    switch ([error code]) {
-        case 1:
-            NSLog(@"Error Code %i, Server Failure", [error code]);
-            [self hideBanner];
-            break;
-        case 2:
-            NSLog(@"Error Code %i, Loading Throttled", [error code]);
-            break;
-        case 3:
-            NSLog(@"Error Code %i, Inventory Unavailable", [error code]);
-            [self hideBanner];
-            break;
-        case 4:
-            NSLog(@"Error Code %i, Configuration Error", [error code]);
-            break;
-        case 5:
-            NSLog(@"Error Code %i, Banner Visible Without Content", [error code]);
-            [self hideBanner];
-            break;
-        case 6:
-            NSLog(@"Error Code %i, Application Inactive", [error code]);
-            break;
-        case 7:
-            NSLog(@"Error Code %i, Ad Unloaded", [error code]);
-            [self hideBanner];
-            break;
-        default:
-            break;
-    }
 }
 
 - (void) didReceiveMemoryWarning {

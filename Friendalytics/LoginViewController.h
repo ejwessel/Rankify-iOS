@@ -27,6 +27,8 @@ extern BOOL const ADS_ACTIVATED;
 @property NSArray *permissions;
 @property (strong, nonatomic) IBOutlet UILabel *integratedLoginLabel;
 @property ADBannerView *banner;
+@property UIActivityIndicatorView *activityIndicator;
+@property BOOL userHaveIntegrataedFacebookAccountSetup;
 
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;

@@ -30,6 +30,8 @@ BOOL const ADS_ACTIVATED = 1;
 @synthesize permissions;
 @synthesize integratedLoginLabel;
 @synthesize banner;
+@synthesize activityIndicator;
+@synthesize userHaveIntegrataedFacebookAccountSetup;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -48,13 +50,13 @@ BOOL const ADS_ACTIVATED = 1;
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
     
     BOOL haveIntegratedFacebookAtAll = ([SLComposeViewController class] != nil);
-    BOOL userHaveIntegrataedFacebookAccountSetup = haveIntegratedFacebookAtAll && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
+    userHaveIntegrataedFacebookAccountSetup = haveIntegratedFacebookAtAll && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
     
     //If the user has the integrated facebook account set up
     if(userHaveIntegrataedFacebookAccountSetup){
         NSLog(@"Facebook Integrated Account is set up");
         [self integratedFacebookRequest];
-      }
+    }
     //If the user doesn't have the integrated facebook account set up
     else{
          NSLog(@"Facebook Integrated Account is not set up");
@@ -75,16 +77,7 @@ BOOL const ADS_ACTIVATED = 1;
     aboutButton.layer.borderWidth = 1.0;
     aboutButton.layer.cornerRadius = 5;
     aboutButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-    
-//#ifdef __IPHONE_7_0
-//#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_7_0
-//    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-//        loginView.frame = CGRectOffset(loginView.frame, 5, 25);
-//    }
-//#endif
-//#endif
-//#endif
+
 }
 
 - (void)hideBanner{
@@ -142,6 +135,16 @@ BOOL const ADS_ACTIVATED = 1;
 }
 
 - (void)integratedFacebookRequest{
+    
+    integratedLoginLabel.hidden = false;
+    integratedLoginLabel.text = @"Logging You In, Please Wait";
+    activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.transform = CGAffineTransformMakeScale(2.5f, 2.5f);
+    activityIndicator.hidden = false;
+    activityIndicator.center = CGPointMake(self.view.center.x, self.view.center.y);
+    [self.view addSubview:activityIndicator];
+    [activityIndicator startAnimating];
+    
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *facebookAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
     
@@ -161,9 +164,9 @@ BOOL const ADS_ACTIVATED = 1;
                                                //need to set userId
                                                accessToken = [[facebookAccount credential] oauthToken];        //this sets the access token
                                                [self setUserInfo]; //this will set the user id
-//                                               [self performSelectorOnMainThread:@selector(enableComputeButton) withObject:nil waitUntilDone:YES];
                                            }
                                            else{
+                                               [self performSelectorOnMainThread:@selector(updateUIFail) withObject:nil waitUntilDone:nil];
                                                NSLog(@"Failed to grant access\n%@", error);
                                            }
                                        }];
@@ -197,14 +200,25 @@ BOOL const ADS_ACTIVATED = 1;
         [self sendLoginDataToDatabase:userId with:accessToken];
         
         //update ui only after we have obtained user id
-        [self performSelectorOnMainThread:@selector(enableComputeButton) withObject:nil waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:YES];
         
         NSLog(@"userId: %@", userId);       //this sets the user id
     }];
 }
 
-- (void)enableComputeButton{
-    integratedLoginLabel.hidden = false;
+- (void)updateUIFail{
+    if(userHaveIntegrataedFacebookAccountSetup){
+        integratedLoginLabel.text = @"Login Failed";
+        [activityIndicator stopAnimating];
+    }
+}
+
+- (void)updateUISuccess{
+    
+    if(userHaveIntegrataedFacebookAccountSetup){
+        integratedLoginLabel.text = @"Logged In";
+        [activityIndicator stopAnimating];
+    }
     
     calculateButton.enabled = true;
     calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
@@ -217,7 +231,7 @@ BOOL const ADS_ACTIVATED = 1;
 }
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
-    [self enableComputeButton];
+    [self updateUISuccess];
 }
 
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
