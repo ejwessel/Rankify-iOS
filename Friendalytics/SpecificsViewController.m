@@ -90,14 +90,14 @@
 
 - (void)hideBanner{
     [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-    banner.frame = CGRectOffset(banner.frame, 0, self.view.frame.size.height+50);
+    banner.frame = CGRectOffset(banner.frame, 0, 50);
     banner.hidden = YES;
     [UIView commitAnimations];
 }
 
 - (void)showBanner{
     [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-    banner.frame = CGRectOffset(banner.frame, 0, self.view.frame.size.height-50);
+    banner.frame = CGRectOffset(banner.frame, 0, -50);
     banner.hidden = NO;
     [UIView commitAnimations];
 }

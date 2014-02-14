@@ -39,7 +39,7 @@ BOOL const ADS_ACTIVATED = 1;
     
     //ADS
     if(ADS_ACTIVATED){
-        banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
+        banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-50, self.view.frame.size.width, self.view.frame.size.height)];
         //banner.backgroundColor = [UIColor redColor];
         banner.layer.borderWidth = .5;
         banner.delegate = self;
@@ -87,14 +87,14 @@ BOOL const ADS_ACTIVATED = 1;
 
 - (void)hideBanner{
     [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-    banner.frame = CGRectOffset(banner.frame, 0, -50);
+    banner.frame = CGRectOffset(banner.frame, 0, 50);
     banner.hidden = YES;
     [UIView commitAnimations];
 }
 
 - (void)showBanner{
     [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
-    banner.frame = CGRectOffset(banner.frame, 0, 50);
+    banner.frame = CGRectOffset(banner.frame, 0, -50);
     banner.hidden = NO;
     [UIView commitAnimations];
 }
