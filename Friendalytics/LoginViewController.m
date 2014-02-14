@@ -147,7 +147,7 @@ BOOL const ADS_ACTIVATED = 1;
     NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options: NSJSONReadingMutableContainers error: &requestError];
     
     NSString *urlPath = [[[jsonData objectForKey:@"picture"] objectForKey:@"data"] objectForKey:@"url"];
-    NSLog(@"userId:%@ accessToken:%@ urlPath: %@", userId, accessToken, urlPath);
+    //NSLog(@"userId:%@ accessToken:%@ urlPath: %@", userId, accessToken, urlPath);
     NSURL *pictureUrl = [NSURL URLWithString:urlPath];
     NSData *data = [[NSData alloc] initWithContentsOfURL:pictureUrl];
     UIImage *tmpImage = [[UIImage alloc] initWithData:data];
@@ -285,7 +285,7 @@ BOOL const ADS_ACTIVATED = 1;
                                   FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
                                   accessToken = (NSString*)token;
                                   [self sendAccessToken:accessToken withUserID:userId];
-                                  [self getUserPhoto];
+                                  [self performSelectorOnMainThread:@selector(getUserPhoto) withObject:nil waitUntilDone:NO];
                               } else {
                                   // An error occurred, we need to handle the error
                                   // See: https://developers.facebook.com/docs/ios/errors

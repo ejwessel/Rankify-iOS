@@ -105,7 +105,7 @@
         controller.totalVideoLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"videoLikes"]];
         controller.totalStatusLikes = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"statusLikes"]];
         controller.totalComments = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"totalComments"]];
-        controller.totalAlbumComments = @"0"; //will need to change this later
+        controller.totalAlbumComments = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"albumComments"]];
         controller.totalPhotoComments = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"photoComments"]];
         controller.totalVideoComments = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"videoComments"]];
         controller.totalStatusComments = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"statusComments"]];

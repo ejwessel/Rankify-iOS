@@ -26,7 +26,6 @@
 @synthesize totalStatusLikes;
 @synthesize profilePictureURL;
 @synthesize profilePicture;
-@synthesize fbButton;
 @synthesize profileId;
 @synthesize totalCommentsLabel;
 @synthesize totalAlbumCommentsLabel;
@@ -80,12 +79,12 @@
     //load the profile picture in the background to prevent blocking main thread
     [self performSelectorInBackground:@selector(downloadAndLoadImage) withObject:nil];
     
-    UIImage *fbImage = [UIImage imageNamed:@"fb_Image.png"];
-    [fbButton setImage:fbImage forState:UIControlStateNormal];
-    [fbButton setTintColor:[UIColor blackColor]];
-    [fbButton addTarget:self action:@selector(visitFBButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-        
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:rank style:UIBarButtonItemStyleDone target:self action:nil];
+    UIImage *fbImage = [UIImage imageNamed:@"fb_Image_bar.png"];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:rank style:UIBarButtonItemStyleDone target:self action:nil];
+    //======================
+    UIBarButtonItem *facebookIconButton = [[UIBarButtonItem alloc] initWithImage:fbImage style:UIBarButtonItemStyleDone target:self action:@selector(visitFBButtonPressed)];
+    self.navigationItem.rightBarButtonItem = facebookIconButton;
+    
 }
 
 - (void)hideBanner{

@@ -236,7 +236,7 @@
     NSLog(@"pullFriends Started");
     NSString *urlString = [NSString stringWithFormat:@"%@users/pullFriends/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -265,7 +265,7 @@
     NSLog(@"pullAlbums Started");
     NSString *urlString = [NSString stringWithFormat:@"%@/albums/pullAlbums/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -278,10 +278,11 @@
         pullAlbumsFlag = true;
         NSLog(@"obtained albumData successfully");
         gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
-        gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
-        [statusPhotos startAnimating];
-        statusPhotos.hidden = false;
-        [self performSelectorInBackground:@selector(pullPhotos) withObject:nil];
+        
+        gatheringVideosColor.backgroundColor = [UIColor yellowColor];
+        [statusVideos startAnimating];
+        statusVideos.hidden = false;
+        [self performSelectorInBackground:@selector(pullVideos) withObject:nil];
     }
     else{
         NSLog(@"unable to obtain albumData successfully");
@@ -297,7 +298,7 @@
     NSLog(@"pullPhotos Started");
     NSString *urlString = [NSString stringWithFormat:@"%@photos/pullPhotos/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -310,10 +311,12 @@
         pullPhotosFlag = true;
         NSLog(@"obtained photoData successfully");
         gatheringPhotosColor.backgroundColor = [UIColor greenColor];
-        gatheringVideosColor.backgroundColor = [UIColor yellowColor];
-        [statusVideos startAnimating];
-        statusVideos.hidden = false;
-        [self performSelectorInBackground:@selector(pullVideos) withObject:nil];
+        
+        retrievingDataColor.backgroundColor = [UIColor yellowColor];
+        [retrievingStatus startAnimating];
+        retrievingStatus.hidden = false;
+        [self performSelectorInBackground:@selector(getFriendData) withObject:nil];
+
     }
     else{
         NSLog(@"unable to obtain photo successfully");
@@ -328,7 +331,7 @@
     NSLog(@"pullVideos Started");
     NSString *urlString = [NSString stringWithFormat:@"%@videos/pullVideos/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -359,7 +362,7 @@
     NSLog(@"pullStatuses Started");
     NSString *urlString = [NSString stringWithFormat:@"%@statuses/pullStatuses/%@/%@", SITE_PATH, userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -372,10 +375,11 @@
         pullStatusFlag = true;
         NSLog(@"obtained friendData successfully");
         gatheringStatusColor.backgroundColor = [UIColor greenColor];
-        retrievingDataColor.backgroundColor = [UIColor yellowColor];
-        [retrievingStatus startAnimating];
-        retrievingStatus.hidden = false;
-        [self performSelectorInBackground:@selector(getFriendData) withObject:nil];
+
+        gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
+        [statusPhotos startAnimating];
+        statusPhotos.hidden = false;
+        [self performSelectorInBackground:@selector(pullPhotos) withObject:nil];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
@@ -391,7 +395,7 @@
     NSLog(@"getFriendData Started");
     NSString *urlString = [NSString stringWithFormat:@"%@users/getFriendsData/%@", SITE_PATH, userId];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];

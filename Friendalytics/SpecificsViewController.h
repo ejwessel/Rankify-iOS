@@ -18,7 +18,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *totalPhotoLikesLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalVideoLikesLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalStatusLikesLabel;
-@property (strong, nonatomic) IBOutlet UIButton *fbButton;
 @property (strong, nonatomic) IBOutlet UILabel *totalCommentsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalAlbumCommentsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalPhotoCommentsLabel;
