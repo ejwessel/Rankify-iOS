@@ -202,10 +202,7 @@ BOOL const ADS_ACTIVATED = 1;
     //loginView.publishPermissions = @[@"publish_actions"];
     //loginView.defaultAudience = FBSessionDefaultAudienceFriends;
     loginView.delegate = self;
-    loginView.frame = CGRectMake(0,0, 280, 100);
-    loginView.frame = CGRectOffset(loginView.frame,
-                                   (self.view.center.x - (loginView.frame.size.width / 2)),
-                                   (self.view.center.y - (loginView.frame.size.height / 2)));
+    loginView.frame = CGRectMake(98, 252, 125, 45);
     [self.view addSubview:loginView];
 
 }
