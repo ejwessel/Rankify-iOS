@@ -36,6 +36,10 @@
 		23BA70A9189DA76300B39B37 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E4390F189DA487000DA96D /* iAd.framework */; };
 		23D83366188D123100091022 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D83365188D123100091022 /* CustomCell.m */; };
 		23EB40CD1891ED1E004F8121 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23EB40CC1891ED1E004F8121 /* AboutViewController.m */; };
+		47E3B30618AE1948008E4C6C /* videos.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30518AE1948008E4C6C /* videos.png */; };
+		47E3B30818AE195D008E4C6C /* photos.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30718AE195D008E4C6C /* photos.png */; };
+		47E3B30A18AE1976008E4C6C /* statuses.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30918AE1976008E4C6C /* statuses.png */; };
+		47E3B30C18AE1988008E4C6C /* albums.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30B18AE1988008E4C6C /* albums.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +94,10 @@
 		23E4390F189DA487000DA96D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		23EB40CB1891ED1E004F8121 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		23EB40CC1891ED1E004F8121 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		47E3B30518AE1948008E4C6C /* videos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = videos.png; sourceTree = "<group>"; };
+		47E3B30718AE195D008E4C6C /* photos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photos.png; sourceTree = "<group>"; };
+		47E3B30918AE1976008E4C6C /* statuses.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = statuses.png; sourceTree = "<group>"; };
+		47E3B30B18AE1988008E4C6C /* albums.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = albums.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +224,10 @@
 		2338ABC3188E5EFA00C9D1D1 /* pictures */ = {
 			isa = PBXGroup;
 			children = (
+				47E3B30B18AE1988008E4C6C /* albums.png */,
+				47E3B30918AE1976008E4C6C /* statuses.png */,
+				47E3B30718AE195D008E4C6C /* photos.png */,
+				47E3B30518AE1948008E4C6C /* videos.png */,
 				2377DF2F18ADD20E009B24E8 /* fb_Image_bar.png */,
 				2377DF2D18ADCE49009B24E8 /* userIcon.png */,
 				231E1C951898421000DB394A /* fb_Image.png */,
@@ -318,13 +330,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47E3B30818AE195D008E4C6C /* photos.png in Resources */,
 				2308462D1883A77B0056A6A7 /* Main_iPad.storyboard in Resources */,
 				231E1C961898421000DB394A /* fb_Image.png in Resources */,
 				230846321883A77B0056A6A7 /* Images.xcassets in Resources */,
+				47E3B30618AE1948008E4C6C /* videos.png in Resources */,
+				47E3B30C18AE1988008E4C6C /* albums.png in Resources */,
 				2377DF2E18ADCE49009B24E8 /* userIcon.png in Resources */,
 				2308462A1883A77B0056A6A7 /* Main_iPhone.storyboard in Resources */,
 				230846211883A77B0056A6A7 /* InfoPlist.strings in Resources */,
 				2377DF3018ADD20E009B24E8 /* fb_Image_bar.png in Resources */,
+				47E3B30A18AE1976008E4C6C /* statuses.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
