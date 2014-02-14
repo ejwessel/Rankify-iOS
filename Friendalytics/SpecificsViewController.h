@@ -25,6 +25,10 @@
 @property (strong, nonatomic) IBOutlet UILabel *totalStatusCommentsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *rankLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalLabel;
+@property (strong, nonatomic) IBOutlet UILabel *rankHeader;
+@property (strong, nonatomic) IBOutlet UILabel *totalHeader;
+@property (strong, nonatomic) IBOutlet UILabel *likesHeader;
+@property (strong, nonatomic) IBOutlet UILabel *commentsHeader;
 
 @property ADBannerView *banner;
 
