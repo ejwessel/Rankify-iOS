@@ -49,9 +49,6 @@ BOOL const ADS_ACTIVATED = 1;
     }
 
     userLoginPhoto.hidden = true;
-    userLoginPhoto.layer.borderWidth = 1;
-    userLoginPhoto.layer.cornerRadius = 5;
-    
     integratedLoginLabel.hidden = true;
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
     userHaveIntegrataedFacebookAccountSetup = ([SLComposeViewController class] != nil) && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
@@ -150,6 +147,7 @@ BOOL const ADS_ACTIVATED = 1;
     NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options: NSJSONReadingMutableContainers error: &requestError];
     
     NSString *urlPath = [[[jsonData objectForKey:@"picture"] objectForKey:@"data"] objectForKey:@"url"];
+    NSLog(@"userId:%@ accessToken:%@ urlPath: %@", userId, accessToken, urlPath);
     NSURL *pictureUrl = [NSURL URLWithString:urlPath];
     NSData *data = [[NSData alloc] initWithContentsOfURL:pictureUrl];
     UIImage *tmpImage = [[UIImage alloc] initWithData:data];
@@ -230,6 +228,8 @@ BOOL const ADS_ACTIVATED = 1;
         //update ui only after we have obtained user id inside of database
         [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:YES];
         NSLog(@"userId: %@", userId);       //this sets the user id
+        
+        [self performSelectorOnMainThread:@selector(getUserPhoto) withObject:nil waitUntilDone:NO];
 
     }];
 }
@@ -252,8 +252,6 @@ BOOL const ADS_ACTIVATED = 1;
     calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
     calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     [calculateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    [self performSelectorOnMainThread:@selector(getUserPhoto) withObject:nil waitUntilDone:YES];
     
 }
 
@@ -290,6 +288,7 @@ BOOL const ADS_ACTIVATED = 1;
                                   FBAccessTokenData *token = [[FBSession activeSession] accessTokenData];
                                   accessToken = (NSString*)token;
                                   [self sendAccessToken:accessToken withUserID:userId];
+                                  [self getUserPhoto];
                               } else {
                                   // An error occurred, we need to handle the error
                                   // See: https://developers.facebook.com/docs/ios/errors
