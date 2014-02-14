@@ -36,6 +36,7 @@
 @synthesize retrievingDataColor;
 @synthesize retrievingStatus;
 @synthesize retrieveStatusFlag;
+@synthesize banner;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -47,6 +48,17 @@
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
+    //ADS
+    if(ADS_ACTIVATED){
+        banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height)];
+        //banner.backgroundColor = [UIColor redColor];
+        banner.layer.borderWidth = .5;
+        banner.delegate = self;
+        banner.AutoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [self.view addSubview:banner];
+        [self hideBanner];
+    }
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
@@ -116,6 +128,60 @@
 
 }
 
+- (void)hideBanner{
+    [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+    banner.frame = CGRectOffset(banner.frame, 0, -50);
+    banner.hidden = YES;
+    [UIView commitAnimations];
+}
+
+- (void)showBanner{
+    [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
+    banner.frame = CGRectOffset(banner.frame, 0, 50);
+    banner.hidden = NO;
+    [UIView commitAnimations];
+}
+
+- (void)bannerViewDidLoadAd:(ADBannerView *)bannerAd{
+    NSLog(@"Banner Loaded an Ad");
+    if(bannerAd.hidden){
+        [self showBanner];
+    }
+}
+
+- (void)bannerView:(ADBannerView *)bannerAd didFailToReceiveAdWithError:(NSError *)error{
+    NSLog(@"Banner Failed");
+    switch ([error code]) {
+        case 1:
+            NSLog(@"Error Code %i, Server Failure", [error code]);
+            [self hideBanner];
+            break;
+        case 2:
+            NSLog(@"Error Code %i, Loading Throttled", [error code]);
+            break;
+        case 3:
+            NSLog(@"Error Code %i, Inventory Unavailable", [error code]);
+            [self hideBanner];
+            break;
+        case 4:
+            NSLog(@"Error Code %i, Configuration Error", [error code]);
+            break;
+        case 5:
+            NSLog(@"Error Code %i, Banner Visible Without Content", [error code]);
+            [self hideBanner];
+            break;
+        case 6:
+            NSLog(@"Error Code %i, Application Inactive", [error code]);
+            break;
+        case 7:
+            NSLog(@"Error Code %i, Ad Unloaded", [error code]);
+            [self hideBanner];
+            break;
+        default:
+            break;
+    }
+}
+
 - (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -174,13 +240,12 @@
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    //NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-  
-    //NSLog(@"responseString:%@", responseString);
+    NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
+    NSLog(@"pullFriends status:%@", [jsonData objectForKey:@"status"]);
     
     [statusFriends stopAnimating];
     statusFriends.hidden = true;
-    if(responseData != nil){
+    if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullFriendsFlag = true;
         gatheringFriendsColor.backgroundColor = [UIColor greenColor];
         gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
@@ -204,10 +269,12 @@
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
+    NSLog(@"pullAlbums status:%@", [jsonData objectForKey:@"status"]);
     
     [statusAlbums stopAnimating];
     statusAlbums.hidden = true;
-    if(responseData != nil){
+    if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullAlbumsFlag = true;
         NSLog(@"obtained albumData successfully");
         gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
@@ -234,10 +301,12 @@
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
+    NSLog(@"pullPhotos status:%@", [jsonData objectForKey:@"status"]);
     
     [statusPhotos stopAnimating];
     statusPhotos.hidden = true;
-    if(responseData != nil){
+    if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullPhotosFlag = true;
         NSLog(@"obtained photoData successfully");
         gatheringPhotosColor.backgroundColor = [UIColor greenColor];
@@ -263,10 +332,12 @@
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
+    NSLog(@"pullVideos status:%@", [jsonData objectForKey:@"status"]);
     
     [statusVideos stopAnimating];
     statusVideos.hidden = true;
-    if(responseData != nil){
+    if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullVideosFlag = true;
         NSLog(@"obtained videoData successfully");
         gatheringVideosColor.backgroundColor = [UIColor greenColor];
@@ -292,10 +363,12 @@
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
+    NSLog(@"pullStatuses status:%@", [jsonData objectForKey:@"status"]);
     
     [statusStatus stopAnimating];
     statusStatus.hidden = true;
-    if(responseData != nil){
+    if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullStatusFlag = true;
         NSLog(@"obtained friendData successfully");
         gatheringStatusColor.backgroundColor = [UIColor greenColor];

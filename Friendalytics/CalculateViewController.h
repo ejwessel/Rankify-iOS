@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "FriendTableViewController.h"
+#import "LoginViewController.h"
 
-@interface CalculateViewController : UIViewController
+@interface CalculateViewController : UIViewController <ADBannerViewDelegate>
 
 @property NSString *userId;
 @property NSString *accessToken;
@@ -34,6 +35,7 @@
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *retrievingStatus;
 @property (strong, nonatomic) IBOutlet UIButton *continueButton;
 @property (strong, nonatomic) IBOutlet UIButton *recomputeButton;
+@property ADBannerView *banner;
 
 - (void) requestUsers;
 
