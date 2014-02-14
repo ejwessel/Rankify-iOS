@@ -32,6 +32,7 @@ BOOL const ADS_ACTIVATED = 1;
 @synthesize banner;
 @synthesize activityIndicator;
 @synthesize userHaveIntegrataedFacebookAccountSetup;
+@synthesize userLoginPhoto;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -47,6 +48,10 @@ BOOL const ADS_ACTIVATED = 1;
         [self hideBanner];
     }
 
+    userLoginPhoto.hidden = true;
+    userLoginPhoto.layer.borderWidth = 1;
+    userLoginPhoto.layer.cornerRadius = 5;
+    
     integratedLoginLabel.hidden = true;
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
     userHaveIntegrataedFacebookAccountSetup = ([SLComposeViewController class] != nil) && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
@@ -132,6 +137,24 @@ BOOL const ADS_ACTIVATED = 1;
         default:
             break;
     }
+}
+
+- (void)getUserPhoto{
+    //this function is used primarily for testing
+    NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/?fields=picture.type(large)&access_token=%@", userId, accessToken];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLResponse *response = NULL;
+    NSError *requestError = NULL;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+    NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options: NSJSONReadingMutableContainers error: &requestError];
+    
+    NSString *urlPath = [[[jsonData objectForKey:@"picture"] objectForKey:@"data"] objectForKey:@"url"];
+    NSURL *pictureUrl = [NSURL URLWithString:urlPath];
+    NSData *data = [[NSData alloc] initWithContentsOfURL:pictureUrl];
+    UIImage *tmpImage = [[UIImage alloc] initWithData:data];
+    userLoginPhoto.image = tmpImage;
+    userLoginPhoto.hidden = false;
 }
 
 - (void)integratedFacebookRequest{
@@ -229,6 +252,9 @@ BOOL const ADS_ACTIVATED = 1;
     calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
     calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     [calculateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
+    [self performSelectorOnMainThread:@selector(getUserPhoto) withObject:nil waitUntilDone:YES];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
