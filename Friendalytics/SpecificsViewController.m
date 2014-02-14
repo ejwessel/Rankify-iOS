@@ -79,7 +79,6 @@
     rankLabel.text = rank;
     totalLabel.text = total;
     profilePicture.layer.cornerRadius = 10;
-    profilePicture.layer.borderWidth = .5;
     
     //load the profile picture in the background to prevent blocking main thread
     [self performSelectorInBackground:@selector(downloadAndLoadImage) withObject:nil];
