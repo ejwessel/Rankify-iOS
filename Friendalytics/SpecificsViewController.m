@@ -38,6 +38,9 @@
 @synthesize totalVideoComments;
 @synthesize totalStatusComments;
 @synthesize rank;
+@synthesize total;
+@synthesize rankLabel;
+@synthesize totalLabel;
 @synthesize banner;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -73,6 +76,8 @@
     totalPhotoCommentsLabel.text = totalPhotoComments;
     totalVideoCommentsLabel.text = totalVideoComments;
     totalStatusCommentsLabel.text = totalStatusComments;
+    rankLabel.text = rank;
+    totalLabel.text = total;
     profilePicture.layer.cornerRadius = 10;
     profilePicture.layer.borderWidth = .5;
     

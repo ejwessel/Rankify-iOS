@@ -111,8 +111,9 @@
         controller.totalStatusComments = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"statusComments"]];
         controller.profilePictureURL = [friendObject objectForKey:@"profilePictureLarge"];
         controller.profileId = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"userId"]];
-        int rank = [[friendObject objectForKey:@"totalLikes"] intValue] + [[friendObject objectForKey:@"totalComments"] intValue];
-        controller.rank = [NSString stringWithFormat:@"%d", rank];
+        int total = [[friendObject objectForKey:@"totalLikes"] intValue] + [[friendObject objectForKey:@"totalComments"] intValue];
+        controller.rank = [NSString stringWithFormat:@"%@", [friendObject objectForKey:@"rank"]];
+        controller.total = [NSString stringWithFormat:@"%d", total];
         
     }
 }

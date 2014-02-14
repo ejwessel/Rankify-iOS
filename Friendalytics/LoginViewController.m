@@ -324,7 +324,7 @@ BOOL const ADS_ACTIVATED = 1;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
     NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
-    NSLog(@"pullAlbums status:%@", [jsonData objectForKey:@"status"]);
+//    NSLog(@"status:%@", [jsonData objectForKey:@"status"]);
 //    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){

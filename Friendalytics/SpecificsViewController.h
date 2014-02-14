@@ -23,6 +23,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *totalPhotoCommentsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalVideoCommentsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *totalStatusCommentsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *rankLabel;
+@property (strong, nonatomic) IBOutlet UILabel *totalLabel;
+
 @property ADBannerView *banner;
 
 
@@ -40,6 +43,7 @@
 @property NSString *totalVideoComments;
 @property NSString *totalStatusComments;
 @property NSString *rank;
+@property NSString *total;
 
 - (void)downloadAndLoadImage;
 
