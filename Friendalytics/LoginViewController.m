@@ -223,7 +223,7 @@ BOOL const ADS_ACTIVATED = 1;
         [self sendLoginDataToDatabase:userId with:accessToken];
         
         //update ui only after we have obtained user id inside of database
-        [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:NO];
         NSLog(@"userId: %@", userId);       //this sets the user id
         
         [self performSelectorOnMainThread:@selector(getUserPhoto) withObject:nil waitUntilDone:NO];
@@ -242,9 +242,9 @@ BOOL const ADS_ACTIVATED = 1;
     
     if(userHaveIntegrataedFacebookAccountSetup){
         integratedLoginLabel.text = @"Logged In";
-        [activityIndicator stopAnimating];
     }
-    
+    NSLog(@"should stop animating");
+    [activityIndicator stopAnimating];
     calculateButton.enabled = true;
     calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
     calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
@@ -257,7 +257,8 @@ BOOL const ADS_ACTIVATED = 1;
 }
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
-    [self updateUISuccess];
+    //[self updateUISuccess];
+    [activityIndicator stopAnimating];
 }
 
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
@@ -276,6 +277,14 @@ BOOL const ADS_ACTIVATED = 1;
 //    // causes the control to fetch and display the profile picture for the user
 //    self.profilePic.profileID = user.id;
 //    self.loggedInUser = user;
+    
+    //UI Setup if integrated is set
+    activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    activityIndicator.transform = CGAffineTransformMakeScale(2.5f, 2.5f);
+    activityIndicator.hidden = false;
+    activityIndicator.center = CGPointMake(self.view.center.x, self.view.center.y * .60);
+    [self.view addSubview:activityIndicator];
+    [activityIndicator startAnimating];
     
     [FBRequestConnection startWithGraphPath:@"me/?fields=id"
                           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
@@ -314,9 +323,15 @@ BOOL const ADS_ACTIVATED = 1;
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
+    NSLog(@"pullAlbums status:%@", [jsonData objectForKey:@"status"]);
+//    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
-    NSLog(@"Token and userId sent? %@", responseString);
+    if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
+        [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:NO];
+        NSLog(@"database login successful");
+    }
+//    NSLog(@"Token and userId sent? %@", responseString);
 }
 
 - (void)sendLoginDataToDatabase:(NSString*)userIDNumber with:(NSString*)accessID{
