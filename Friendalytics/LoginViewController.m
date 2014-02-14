@@ -163,7 +163,7 @@ BOOL const ADS_ACTIVATED = 1;
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activityIndicator.transform = CGAffineTransformMakeScale(2.5f, 2.5f);
     activityIndicator.hidden = false;
-    activityIndicator.center = CGPointMake(self.view.center.x, self.view.center.y);
+    activityIndicator.center = CGPointMake(self.view.center.x, self.view.center.y * .60);
     [self.view addSubview:activityIndicator];
     [activityIndicator startAnimating];
     

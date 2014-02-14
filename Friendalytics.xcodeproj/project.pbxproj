@@ -30,6 +30,7 @@
 		2352E2BE188BA06C001B805F /* CalculateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2352E2BD188BA06C001B805F /* CalculateViewController.m */; };
 		2372BCA4189A24F800E59716 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2372BCA3189A24F800E59716 /* Social.framework */; };
 		23771CC0188B6DFA00C3652F /* FriendData.m in Sources */ = {isa = PBXBuildFile; fileRef = 23771CBF188B6DFA00C3652F /* FriendData.m */; };
+		2377DF2E18ADCE49009B24E8 /* userIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2377DF2D18ADCE49009B24E8 /* userIcon.png */; };
 		23794ACC188C855400EA7A74 /* SpecificsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23794ACB188C855400EA7A74 /* SpecificsViewController.m */; };
 		23BA70A9189DA76300B39B37 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E4390F189DA487000DA96D /* iAd.framework */; };
 		23D83366188D123100091022 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D83365188D123100091022 /* CustomCell.m */; };
@@ -79,6 +80,7 @@
 		2372BCA3189A24F800E59716 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		23771CBE188B6DFA00C3652F /* FriendData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendData.h; sourceTree = "<group>"; };
 		23771CBF188B6DFA00C3652F /* FriendData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendData.m; sourceTree = "<group>"; };
+		2377DF2D18ADCE49009B24E8 /* userIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userIcon.png; sourceTree = "<group>"; };
 		23794ACA188C855400EA7A74 /* SpecificsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecificsViewController.h; sourceTree = "<group>"; };
 		23794ACB188C855400EA7A74 /* SpecificsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecificsViewController.m; sourceTree = "<group>"; };
 		23D83364188D123100091022 /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 		2338ABC3188E5EFA00C9D1D1 /* pictures */ = {
 			isa = PBXGroup;
 			children = (
+				2377DF2D18ADCE49009B24E8 /* userIcon.png */,
 				231E1C951898421000DB394A /* fb_Image.png */,
 			);
 			name = pictures;
@@ -315,6 +318,7 @@
 				2308462D1883A77B0056A6A7 /* Main_iPad.storyboard in Resources */,
 				231E1C961898421000DB394A /* fb_Image.png in Resources */,
 				230846321883A77B0056A6A7 /* Images.xcassets in Resources */,
+				2377DF2E18ADCE49009B24E8 /* userIcon.png in Resources */,
 				2308462A1883A77B0056A6A7 /* Main_iPhone.storyboard in Resources */,
 				230846211883A77B0056A6A7 /* InfoPlist.strings in Resources */,
 			);
