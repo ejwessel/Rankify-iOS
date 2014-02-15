@@ -243,7 +243,6 @@ BOOL const ADS_ACTIVATED = 1;
     if(userHaveIntegrataedFacebookAccountSetup){
         integratedLoginLabel.text = @"Logged In";
     }
-    NSLog(@"should stop animating");
     [activityIndicator stopAnimating];
     calculateButton.enabled = true;
     calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
