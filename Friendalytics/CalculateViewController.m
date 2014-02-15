@@ -16,11 +16,12 @@
 @synthesize friendData;
 @synthesize userId;
 @synthesize accessToken;
-@synthesize gatheringFriendsColor;
-@synthesize gatheringAlbumsColor;
-@synthesize gatheringPhotosColor;
-@synthesize gatheringVideosColor;
-@synthesize gatheringStatusColor;
+@synthesize gatheringFriendsCheck;
+@synthesize gatheringAlbumsCheck;
+@synthesize gatheringVideosCheck;
+@synthesize gatheringStatusesCheck;
+@synthesize gatheringPhotosCheck;
+@synthesize retrievingDataCheck;
 @synthesize statusFriends;
 @synthesize statusAlbums;
 @synthesize statusPhotos;
@@ -33,7 +34,6 @@
 @synthesize pullAlbumsFlag;
 @synthesize pullVideosFlag;
 @synthesize pullStatusFlag;
-@synthesize retrievingDataColor;
 @synthesize retrievingStatus;
 @synthesize retrieveStatusFlag;
 @synthesize banner;
@@ -66,29 +66,12 @@
     continueButton.layer.cornerRadius = 5;
     continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     
-    gatheringFriendsColor.backgroundColor = [UIColor grayColor];
-    gatheringFriendsColor.layer.cornerRadius = 10;
-    gatheringFriendsColor.layer.borderWidth = .5;
-    
-    gatheringAlbumsColor.backgroundColor = [UIColor grayColor];
-    gatheringAlbumsColor.layer.cornerRadius = 10;
-    gatheringAlbumsColor.layer.borderWidth = .5;
-    
-    gatheringPhotosColor.backgroundColor = [UIColor grayColor];
-    gatheringPhotosColor.layer.cornerRadius = 10;
-    gatheringPhotosColor.layer.borderWidth = .5;
-    
-    gatheringVideosColor.backgroundColor = [UIColor grayColor];
-    gatheringVideosColor.layer.cornerRadius = 10;
-    gatheringVideosColor.layer.borderWidth = .5;
-    
-    gatheringStatusColor.backgroundColor = [UIColor grayColor];
-    gatheringStatusColor.layer.cornerRadius = 10;
-    gatheringStatusColor.layer.borderWidth = .5;
-    
-    retrievingDataColor.backgroundColor = [UIColor grayColor];
-    retrievingDataColor.layer.cornerRadius = 10;
-    retrievingDataColor.layer.borderWidth = .5;
+    gatheringFriendsCheck.hidden = true;
+    gatheringAlbumsCheck.hidden = true;
+    gatheringVideosCheck.hidden = true;
+    gatheringStatusesCheck.hidden = true;
+    gatheringPhotosCheck.hidden = true;
+    retrievingDataCheck.hidden = true;
     
     continueButton.layer.cornerRadius = 5;
     continueButton.layer.borderWidth = 1;
@@ -122,7 +105,6 @@
     
     [statusFriends startAnimating];
     statusFriends.hidden = false;
-    gatheringFriendsColor.backgroundColor = [UIColor yellowColor];
     [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
     [recomputeButton addTarget:self action:@selector(viewDidLoad) forControlEvents:UIControlEventTouchUpInside];
 
@@ -247,14 +229,14 @@
     statusFriends.hidden = true;
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullFriendsFlag = true;
-        gatheringFriendsColor.backgroundColor = [UIColor greenColor];
-        gatheringAlbumsColor.backgroundColor = [UIColor yellowColor];
+        gatheringFriendsCheck.hidden = false;
         [statusAlbums startAnimating];
         statusAlbums.hidden = false;
         [self performSelectorInBackground:@selector(pullAlbums) withObject:nil];
     }
     else{
-        gatheringFriendsColor.backgroundColor = [UIColor redColor];
+        // TODO FIND AN X MARK FOR FAIL
+        //gatheringFriendsColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
         [self enabledRecomputeColor];
     }
@@ -277,16 +259,15 @@
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullAlbumsFlag = true;
         NSLog(@"obtained albumData successfully");
-        gatheringAlbumsColor.backgroundColor = [UIColor greenColor];
-        
-        gatheringVideosColor.backgroundColor = [UIColor yellowColor];
+        gatheringAlbumsCheck.hidden = false;
         [statusVideos startAnimating];
         statusVideos.hidden = false;
         [self performSelectorInBackground:@selector(pullVideos) withObject:nil];
     }
     else{
         NSLog(@"unable to obtain albumData successfully");
-        gatheringAlbumsColor.backgroundColor = [UIColor redColor];
+        // TODO FIND AN X MARK FOR FAIL
+        //gatheringAlbumsColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
         [self enabledRecomputeColor];
     }
@@ -310,9 +291,7 @@
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullPhotosFlag = true;
         NSLog(@"obtained photoData successfully");
-        gatheringPhotosColor.backgroundColor = [UIColor greenColor];
-        
-        retrievingDataColor.backgroundColor = [UIColor yellowColor];
+        gatheringPhotosCheck.hidden = false;
         [retrievingStatus startAnimating];
         retrievingStatus.hidden = false;
         [self performSelectorInBackground:@selector(getFriendData) withObject:nil];
@@ -320,7 +299,8 @@
     }
     else{
         NSLog(@"unable to obtain photo successfully");
-        gatheringPhotosColor.backgroundColor = [UIColor redColor];
+        // TODO FIND AN X MARK FOR FAIL
+        //gatheringPhotosColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
         [self enabledRecomputeColor];
     }
@@ -343,15 +323,15 @@
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullVideosFlag = true;
         NSLog(@"obtained videoData successfully");
-        gatheringVideosColor.backgroundColor = [UIColor greenColor];
-        gatheringStatusColor.backgroundColor = [UIColor yellowColor];
+        gatheringVideosCheck.hidden = false;
         [statusStatus startAnimating];
         statusStatus.hidden = false;
         [self performSelectorInBackground:@selector(pullStatuses) withObject:nil];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        gatheringVideosColor.backgroundColor = [UIColor redColor];
+        // TODO FIND AN X MARK FOR FAIL
+        //gatheringVideosColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
         [self enabledRecomputeColor];
     }
@@ -374,16 +354,15 @@
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullStatusFlag = true;
         NSLog(@"obtained friendData successfully");
-        gatheringStatusColor.backgroundColor = [UIColor greenColor];
-
-        gatheringPhotosColor.backgroundColor = [UIColor yellowColor];
+        gatheringStatusesCheck.hidden = false;
         [statusPhotos startAnimating];
         statusPhotos.hidden = false;
         [self performSelectorInBackground:@selector(pullPhotos) withObject:nil];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        gatheringStatusColor.backgroundColor = [UIColor redColor];
+        // TODO FIND AN X MARK FOR FAIL
+        //gatheringStatusColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
         [self enabledRecomputeColor];
     }
@@ -412,7 +391,7 @@
     if(friendData != nil){
         retrieveStatusFlag = true;
         NSLog(@"obtained friendData successfully");
-        retrievingDataColor.backgroundColor = [UIColor greenColor];
+        retrievingDataCheck.hidden = false;
         
         continueButton.enabled = true;
         continueButton.backgroundColor = self.navigationController.navigationBar.tintColor;
@@ -424,7 +403,8 @@
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        retrievingDataColor.backgroundColor = [UIColor redColor];
+        // TODO FIND AN X MARK FOR FAIL
+        //retrievingDataColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
     }
     NSLog(@"getFriendData Finished");

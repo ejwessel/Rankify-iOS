@@ -79,7 +79,6 @@ BOOL const ADS_ACTIVATED = 1;
     aboutButton.layer.borderWidth = 1.0;
     aboutButton.layer.cornerRadius = 5;
     aboutButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-
 }
 
 - (void)hideBanner{
@@ -202,9 +201,8 @@ BOOL const ADS_ACTIVATED = 1;
     //loginView.publishPermissions = @[@"publish_actions"];
     //loginView.defaultAudience = FBSessionDefaultAudienceFriends;
     loginView.delegate = self;
-    loginView.frame = CGRectMake(98, 252, 125, 45);
+    loginView.frame = CGRectMake(61, 252, 200, 45);
     [self.view addSubview:loginView];
-
 }
 
 - (void)setUserInfo{
