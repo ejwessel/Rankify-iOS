@@ -33,6 +33,8 @@ BOOL const ADS_ACTIVATED = 1;
 @synthesize activityIndicator;
 @synthesize userHaveIntegrataedFacebookAccountSetup;
 @synthesize userLoginPhoto;
+@synthesize previousDataButton;
+@synthesize friendData;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -48,7 +50,7 @@ BOOL const ADS_ACTIVATED = 1;
         [self hideBanner];
     }
 
-    userLoginPhoto.hidden = true;
+    userLoginPhoto.image = [UIImage imageNamed:@"award.png"];
     integratedLoginLabel.hidden = true;
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
     userHaveIntegrataedFacebookAccountSetup = ([SLComposeViewController class] != nil) && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
@@ -66,6 +68,8 @@ BOOL const ADS_ACTIVATED = 1;
     
     
     //Other UI Setup
+    [previousDataButton addTarget:self action:@selector(getFriendData) forControlEvents:UIControlEventTouchUpInside];
+    
     UIColor *navColor = self.navigationController.navigationBar.tintColor;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: navColor};
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -76,6 +80,11 @@ BOOL const ADS_ACTIVATED = 1;
     calculateButton.layer.cornerRadius = 5;
     calculateButton.layer.borderColor = [UIColor lightGrayColor].CGColor;//self.navigationController.navigationBar.tintColor.CGColor;
 
+    previousDataButton.enabled = false;
+    previousDataButton.layer.borderWidth = 1.0;
+    previousDataButton.layer.cornerRadius = 5;
+    previousDataButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    
     aboutButton.layer.borderWidth = 1.0;
     aboutButton.layer.cornerRadius = 5;
     aboutButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
@@ -87,21 +96,18 @@ BOOL const ADS_ACTIVATED = 1;
     banner.hidden = YES;
     [UIView commitAnimations];
 }
-
 - (void)showBanner{
     [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
     banner.frame = CGRectOffset(banner.frame, 0, -50);
     banner.hidden = NO;
     [UIView commitAnimations];
 }
-
 - (void)bannerViewDidLoadAd:(ADBannerView *)bannerAd{
     NSLog(@"Banner Loaded an Ad");
     if(bannerAd.hidden){
         [self showBanner];
     }
 }
-
 - (void)bannerView:(ADBannerView *)bannerAd didFailToReceiveAdWithError:(NSError *)error{
     NSLog(@"Banner Failed");
     switch ([error code]) {
@@ -133,6 +139,15 @@ BOOL const ADS_ACTIVATED = 1;
         default:
             break;
     }
+}
+
+- (void)getFriendData{
+    NSLog(@"getFriendData Started");
+    NSString *urlString = [NSString stringWithFormat:@"%@users/getFriendsData/%@", SITE_PATH, userId];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+    NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
+    NSLog(@"connection Started");
 }
 
 - (void)getUserPhoto{
@@ -195,7 +210,6 @@ BOOL const ADS_ACTIVATED = 1;
                                            }
                                        }];
 }
-
 - (void)facebookAppRequest{
     FBLoginView *loginView = [[FBLoginView alloc] initWithReadPermissions:permissions];
     //loginView.publishPermissions = @[@"publish_actions"];
@@ -235,7 +249,6 @@ BOOL const ADS_ACTIVATED = 1;
         [activityIndicator stopAnimating];
     }
 }
-
 - (void)updateUISuccess{
     
     if(userHaveIntegrataedFacebookAccountSetup){
@@ -247,6 +260,11 @@ BOOL const ADS_ACTIVATED = 1;
     calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     [calculateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
+    //cannot immediately set this button to true once logged in, must be after getFriendData
+    previousDataButton.enabled = true;
+    previousDataButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    [previousDataButton setTitleColor:self.navigationController.navigationBar.tintColor forState:UIControlStateNormal];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -257,12 +275,17 @@ BOOL const ADS_ACTIVATED = 1;
     //[self updateUISuccess];
     [activityIndicator stopAnimating];
 }
-
 - (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
     calculateButton.enabled = false;
     calculateButton.backgroundColor = [UIColor whiteColor];
     calculateButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     [calculateButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    
+    previousDataButton.enabled = false;
+    previousDataButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    [previousDataButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    
+    userLoginPhoto.image = [UIImage imageNamed:@"award.png"];; //show our logo instead
 }
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
@@ -299,7 +322,6 @@ BOOL const ADS_ACTIVATED = 1;
                               }
                           }];
 }
-
 - (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error {
     // see https://developers.facebook.com/docs/reference/api/errors/ for general guidance on error handling for Facebook API
     // our policy here is to let the login view handle errors, but to log the results
@@ -330,7 +352,6 @@ BOOL const ADS_ACTIVATED = 1;
     }
 //    NSLog(@"Token and userId sent? %@", responseString);
 }
-
 - (void)sendLoginDataToDatabase:(NSString*)userIDNumber with:(NSString*)accessID{
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, userIDNumber, accessID];
     NSURL *url = [NSURL URLWithString:urlString];
@@ -349,6 +370,25 @@ BOOL const ADS_ACTIVATED = 1;
         //pass data to the next view controller
         controller.userId = userId;
         controller.accessToken = accessToken;
+    }
+    else if([segue.identifier isEqualToString:@"previousData"]){
+        //I was unable to do the following asynchronously, so I did it synchronously
+        NSLog(@"getFriendData Started");
+        NSString *urlString = [NSString stringWithFormat:@"%@users/getFriendsData/%@", SITE_PATH, userId];
+        NSURL *url = [NSURL URLWithString:urlString];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+        NSURLResponse *response = NULL;
+        NSError *requestError = NULL;
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
+        
+        //obtain the json data
+        NSError *err;
+        friendData = [NSJSONSerialization JSONObjectWithData:responseData
+                                                     options:NSJSONReadingMutableContainers
+                                                       error:&err];
+        
+        FriendTableViewController *controller = (FriendTableViewController *)segue.destinationViewController;
+        controller.friendData = friendData;
     }
 }
 

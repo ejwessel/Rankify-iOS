@@ -107,7 +107,7 @@
     //load the profile picture in the background to prevent blocking main thread
     [self performSelectorInBackground:@selector(downloadAndLoadImage) withObject:nil];
     
-    UIImage *fbImage = [UIImage imageNamed:@"fb_Image_bar_2.png"];
+    UIImage *fbImage = [UIImage imageNamed:@"fb_Image_bar.png"];
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:rank style:UIBarButtonItemStyleDone target:self action:nil];
     //======================
     UIBarButtonItem *facebookIconButton = [[UIBarButtonItem alloc] initWithImage:fbImage style:UIBarButtonItemStyleDone target:self action:@selector(visitFBButtonPressed)];
