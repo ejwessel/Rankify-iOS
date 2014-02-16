@@ -68,8 +68,6 @@ BOOL const ADS_ACTIVATED = 1;
     
     
     //Other UI Setup
-    [previousDataButton addTarget:self action:@selector(getFriendData) forControlEvents:UIControlEventTouchUpInside];
-    
     UIColor *navColor = self.navigationController.navigationBar.tintColor;
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: navColor};
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -141,17 +139,7 @@ BOOL const ADS_ACTIVATED = 1;
     }
 }
 
-- (void)getFriendData{
-    NSLog(@"getFriendData Started");
-    NSString *urlString = [NSString stringWithFormat:@"%@users/getFriendsData/%@", SITE_PATH, userId];
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
-    NSURLConnection* connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
-    NSLog(@"connection Started");
-}
-
 - (void)getUserPhoto{
-    //this function is used primarily for testing
     NSString *urlString = [NSString stringWithFormat:@"https://graph.facebook.com/%@/?fields=picture.type(large)&access_token=%@", userId, accessToken];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -343,14 +331,11 @@ BOOL const ADS_ACTIVATED = 1;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
     NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
-//    NSLog(@"status:%@", [jsonData objectForKey:@"status"]);
-//    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:NO];
-        NSLog(@"database login successful");
+        NSLog(@"database login successful integrated");
     }
-//    NSLog(@"Token and userId sent? %@", responseString);
 }
 - (void)sendLoginDataToDatabase:(NSString*)userIDNumber with:(NSString*)accessID{
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, userIDNumber, accessID];
@@ -359,9 +344,12 @@ BOOL const ADS_ACTIVATED = 1;
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+   NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
     
-    NSLog(@"Token and userId sent? %@", responseString);
+    if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
+        [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:NO];
+        NSLog(@"database login successful");
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
