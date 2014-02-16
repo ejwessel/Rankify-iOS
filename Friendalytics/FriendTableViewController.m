@@ -20,6 +20,7 @@
 @synthesize filteredResults;
 @synthesize cellDownload;
 @synthesize permissions;
+@synthesize hasFriends;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -40,6 +41,16 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     NSLog(@"total friends: %i",(int)friendData.count);
+    hasFriends = true;
+    
+    if((int)friendData.count == 0){
+        hasFriends = false;
+        [[[UIAlertView alloc] initWithTitle:@"No Friend Data"
+                                    message:@"Please 'Pull Data' to populate"
+                                   delegate:self
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
+    }
     
     //set the back button here so that it doesn't show "back"
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -53,14 +64,6 @@
     //multiple ways to hide the search bar, but this was one was the most direct,
     //I originally wanted to show the search bar and then scroll up and hide it, but ios is being a fucktard
     [self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)];
-//    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-//    self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height);
-//    [UIView animateWithDuration:0.1
-//                          delay:0.5
-//                        options:UIViewAnimationOptionTransitionNone
-//                     animations:^{ self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height); }
-//                     completion:nil];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -148,7 +151,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     
     //if the post button was clicked
-    if (buttonIndex == 1){
+    if (buttonIndex == 1 && hasFriends){
         NSLog(@"post was clicked");
         
         BOOL haveIntegratedFacebookAtAll = ([SLComposeViewController class] != nil);
@@ -162,6 +165,10 @@
         else{
             [self facebookAppRequest];
         }
+    }
+    else if(buttonIndex == 0 && !hasFriends){
+        //go back to login screen
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

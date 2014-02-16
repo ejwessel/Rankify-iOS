@@ -23,6 +23,7 @@
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property CustomCell *cellDownload;
 @property NSArray *permissions;
+@property BOOL hasFriends;
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
