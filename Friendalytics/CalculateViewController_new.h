@@ -36,6 +36,12 @@
 @property (strong, nonatomic) IBOutlet UIButton *continueButton;
 @property (strong, nonatomic) IBOutlet UIButton *recomputeButton;
 @property ADBannerView *banner;
+@property NSMutableData *responseData;
+@property NSURLConnection *connectionFriends;
+@property NSURLConnection *connectionAlbums;
+@property NSURLConnection *connectionPhotos;
+@property NSURLConnection *connectionVideos;
+@property NSURLConnection *connectionStatuses;
 
 - (void) requestUsers;
 
