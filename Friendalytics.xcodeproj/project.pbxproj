@@ -27,7 +27,6 @@
 		2337A54218B1319B00812AF4 /* CalculateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2337A54118B1319B00812AF4 /* CalculateViewController.m */; };
 		2338ABC9188E621900C9D1D1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2338ABC8188E621900C9D1D1 /* QuartzCore.framework */; };
 		2352E2BB188B9B57001B805F /* FriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2352E2BA188B9B57001B805F /* FriendTableViewController.m */; };
-		2352E2BE188BA06C001B805F /* CalculateViewController_new.m in Sources */ = {isa = PBXBuildFile; fileRef = 2352E2BD188BA06C001B805F /* CalculateViewController_new.m */; };
 		2372BCA4189A24F800E59716 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2372BCA3189A24F800E59716 /* Social.framework */; };
 		23771CC0188B6DFA00C3652F /* FriendData.m in Sources */ = {isa = PBXBuildFile; fileRef = 23771CBF188B6DFA00C3652F /* FriendData.m */; };
 		2377DF2E18ADCE49009B24E8 /* userIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2377DF2D18ADCE49009B24E8 /* userIcon.png */; };
@@ -83,8 +82,6 @@
 		2338ABC8188E621900C9D1D1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2352E2B9188B9B57001B805F /* FriendTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendTableViewController.h; sourceTree = "<group>"; };
 		2352E2BA188B9B57001B805F /* FriendTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendTableViewController.m; sourceTree = "<group>"; };
-		2352E2BC188BA06C001B805F /* CalculateViewController_new.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculateViewController_new.h; sourceTree = "<group>"; };
-		2352E2BD188BA06C001B805F /* CalculateViewController_new.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculateViewController_new.m; sourceTree = "<group>"; };
 		2372BCA3189A24F800E59716 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		23771CBE188B6DFA00C3652F /* FriendData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendData.h; sourceTree = "<group>"; };
 		23771CBF188B6DFA00C3652F /* FriendData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendData.m; sourceTree = "<group>"; };
@@ -178,8 +175,6 @@
 				2308462B1883A77B0056A6A7 /* Main_iPad.storyboard */,
 				2308462E1883A77B0056A6A7 /* LoginViewController.h */,
 				2308462F1883A77B0056A6A7 /* LoginViewController.m */,
-				2352E2BC188BA06C001B805F /* CalculateViewController_new.h */,
-				2352E2BD188BA06C001B805F /* CalculateViewController_new.m */,
 				2337A54018B1319B00812AF4 /* CalculateViewController.h */,
 				2337A54118B1319B00812AF4 /* CalculateViewController.m */,
 				2352E2B9188B9B57001B805F /* FriendTableViewController.h */,
@@ -374,7 +369,6 @@
 				23771CC0188B6DFA00C3652F /* FriendData.m in Sources */,
 				23D83366188D123100091022 /* CustomCell.m in Sources */,
 				2352E2BB188B9B57001B805F /* FriendTableViewController.m in Sources */,
-				2352E2BE188BA06C001B805F /* CalculateViewController_new.m in Sources */,
 				2337A54218B1319B00812AF4 /* CalculateViewController.m in Sources */,
 				230846271883A77B0056A6A7 /* AppDelegate.m in Sources */,
 				230846231883A77B0056A6A7 /* main.m in Sources */,
