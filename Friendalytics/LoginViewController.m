@@ -33,7 +33,6 @@ BOOL const ADS_ACTIVATED = 1;
 @synthesize activityIndicator;
 @synthesize userHaveIntegrataedFacebookAccountSetup;
 @synthesize userLoginPhoto;
-@synthesize previousDataButton;
 @synthesize friendData;
 
 - (void)viewDidLoad{
@@ -77,11 +76,6 @@ BOOL const ADS_ACTIVATED = 1;
     calculateButton.layer.borderWidth = 1.0;
     calculateButton.layer.cornerRadius = 5;
     calculateButton.layer.borderColor = [UIColor lightGrayColor].CGColor;//self.navigationController.navigationBar.tintColor.CGColor;
-
-    previousDataButton.enabled = false;
-    previousDataButton.layer.borderWidth = 1.0;
-    previousDataButton.layer.cornerRadius = 5;
-    previousDataButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     aboutButton.layer.borderWidth = 1.0;
     aboutButton.layer.cornerRadius = 5;
@@ -247,12 +241,6 @@ BOOL const ADS_ACTIVATED = 1;
     calculateButton.backgroundColor = self.navigationController.navigationBar.tintColor;
     calculateButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     [calculateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    
-    //cannot immediately set this button to true once logged in, must be after getFriendData
-    previousDataButton.enabled = true;
-    previousDataButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-    [previousDataButton setTitleColor:self.navigationController.navigationBar.tintColor forState:UIControlStateNormal];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -268,10 +256,6 @@ BOOL const ADS_ACTIVATED = 1;
     calculateButton.backgroundColor = [UIColor whiteColor];
     calculateButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     [calculateButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    
-    previousDataButton.enabled = false;
-    previousDataButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    [previousDataButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
     userLoginPhoto.image = [UIImage imageNamed:@"award.png"];; //show our logo instead
 }

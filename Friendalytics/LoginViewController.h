@@ -30,7 +30,6 @@ extern BOOL const ADS_ACTIVATED;
 @property UIActivityIndicatorView *activityIndicator;
 @property BOOL userHaveIntegrataedFacebookAccountSetup;
 @property (strong, nonatomic) IBOutlet UIImageView *userLoginPhoto;
-@property (strong, nonatomic) IBOutlet UIButton *previousDataButton;
 @property NSArray *friendData;
 
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;

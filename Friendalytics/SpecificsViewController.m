@@ -41,10 +41,6 @@
 @synthesize total;
 @synthesize rankLabel;
 @synthesize totalLabel;
-@synthesize rankHeader;
-@synthesize totalHeader;
-@synthesize likesHeader;
-@synthesize commentsHeader;
 @synthesize banner;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -71,21 +67,6 @@
     
     self.title = friendName;
     
-    NSMutableArray *colorOptions =[[NSMutableArray alloc] init];
-    UIColor *blue, *red, *green, *orange;
-    
-    blue = [UIColor colorWithRed:(0/255.f) green:(121/255.f) blue:(225/255.f) alpha:1.0f];
-    red = [UIColor colorWithRed:(255/255.f) green:(0/255.f) blue:(0/255.f) alpha:1.0f];
-    green = [UIColor colorWithRed:(0/255.f) green:(255/255.f) blue:(0/255.f) alpha:1.0f];
-    orange = [UIColor colorWithRed:(255/255.f) green:(154/255.f) blue:(0/255.f) alpha:1.0f];
-    
-    [colorOptions addObject:blue];
-    [colorOptions addObject:red];
-    [colorOptions addObject:green];
-    [colorOptions addObject:orange];
-    
-    NSUInteger randomIndex = arc4random() % [colorOptions count];
-    
     totalLikesLabel.text = totalLikes;
     totalStatusLikesLabel.text = totalStatusLikes;
     totalVideoLikesLabel.text = totalVideoLikes;
@@ -98,10 +79,6 @@
     totalStatusCommentsLabel.text = totalStatusComments;
     rankLabel.text = rank;
     totalLabel.text = total;
-    rankHeader.textColor = [colorOptions objectAtIndex:randomIndex];
-    totalHeader.textColor = [colorOptions objectAtIndex:randomIndex];
-    likesHeader.textColor = [colorOptions objectAtIndex:randomIndex];
-    commentsHeader.textColor = [colorOptions objectAtIndex:randomIndex];
     profilePicture.layer.cornerRadius = 10;
     
     //load the profile picture in the background to prevent blocking main thread
