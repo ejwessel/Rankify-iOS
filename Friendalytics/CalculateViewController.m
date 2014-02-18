@@ -60,6 +60,7 @@
         [self hideBanner];
     }
     
+    //change back button text
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     continueButton.layer.borderWidth = 1;

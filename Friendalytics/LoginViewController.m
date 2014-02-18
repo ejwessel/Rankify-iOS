@@ -310,7 +310,7 @@ BOOL const ADS_ACTIVATED = 1;
     //send url request to database
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, idNumber, token];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -322,9 +322,10 @@ BOOL const ADS_ACTIVATED = 1;
     }
 }
 - (void)sendLoginDataToDatabase:(NSString*)userIDNumber with:(NSString*)accessID{
+        
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, userIDNumber, accessID];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -333,6 +334,9 @@ BOOL const ADS_ACTIVATED = 1;
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:NO];
         NSLog(@"database login successful");
+    }
+    else{
+        NSLog(@"database did not receive login info");
     }
 }
 
