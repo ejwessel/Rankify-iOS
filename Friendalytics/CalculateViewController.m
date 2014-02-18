@@ -37,6 +37,7 @@
 @synthesize retrievingStatus;
 @synthesize retrieveStatusFlag;
 @synthesize banner;
+@synthesize recentlyPulled;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,16 +64,6 @@
     //change back button text
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
-    continueButton.layer.borderWidth = 1;
-    continueButton.layer.cornerRadius = 5;
-    continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-    
-    gatheringFriendsCheck.hidden = true;
-    gatheringAlbumsCheck.hidden = true;
-    gatheringVideosCheck.hidden = true;
-    gatheringStatusesCheck.hidden = true;
-    gatheringPhotosCheck.hidden = true;
-    retrievingDataCheck.hidden = true;
     
     continueButton.layer.cornerRadius = 5;
     continueButton.layer.borderWidth = 1;
@@ -85,54 +76,46 @@
     recomputeButton.backgroundColor = [UIColor whiteColor];
     recomputeButton.layer.borderColor = [UIColor lightGrayColor].CGColor;//self.navigationController.navigationBar.tintColor.CGColor;
     [recomputeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    
+    [recomputeButton addTarget:self action:@selector(startCompute) forControlEvents:UIControlEventTouchUpInside];
 
-    continueButton.enabled = false;
-    recomputeButton.enabled = false;
+    statusFriends.hidden = true;
+    statusAlbums.hidden = true;
+    statusPhotos.hidden = true;
+    statusVideos.hidden = true;
+    statusStatus.hidden = true;
+    retrievingStatus.hidden = true;
     
-    self.statusAlbums.hidden = true;
-    self.statusPhotos.hidden = true;
-    self.statusVideos.hidden = true;
-    self.statusStatus.hidden = true;
-    self.retrievingStatus.hidden = true;
-    
-    pullFriendsFlag = false;
-    pullAlbumsFlag = false;
-    pullPhotosFlag = false;
-    pullVideosFlag = false;
-    pullStatusFlag = false;
-    
-    //==========================================================================
-    
-    [statusFriends startAnimating];
-    statusFriends.hidden = false;
-    [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
-    [recomputeButton addTarget:self action:@selector(viewDidLoad) forControlEvents:UIControlEventTouchUpInside];
-
+    if(recentlyPulled){
+        [self enableUI];
+        [self getFriendData];
+    }
+    else{
+        [self startCompute];
+    }
 }
 
-- (void)hideBanner{
+- (void) hideBanner{
     [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
     banner.frame = CGRectOffset(banner.frame, 0, 50);
     banner.hidden = YES;
     [UIView commitAnimations];
 }
 
-- (void)showBanner{
+- (void) showBanner{
     [UIView beginAnimations:@"animateAdBannerOff" context:NULL];
     banner.frame = CGRectOffset(banner.frame, 0, -50);
     banner.hidden = NO;
     [UIView commitAnimations];
 }
 
-- (void)bannerViewDidLoadAd:(ADBannerView *)bannerAd{
+- (void) bannerViewDidLoadAd:(ADBannerView *)bannerAd{
     NSLog(@"Banner Loaded an Ad");
     if(bannerAd.hidden){
         [self showBanner];
     }
 }
 
-- (void)bannerView:(ADBannerView *)bannerAd didFailToReceiveAdWithError:(NSError *)error{
+- (void) bannerView:(ADBannerView *)bannerAd didFailToReceiveAdWithError:(NSError *)error{
     NSLog(@"Banner Failed");
     switch ([error code]) {
         case 1:
@@ -168,6 +151,29 @@
 - (void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) startCompute{
+    
+    gatheringFriendsCheck.hidden = true;
+    gatheringAlbumsCheck.hidden = true;
+    gatheringVideosCheck.hidden = true;
+    gatheringStatusesCheck.hidden = true;
+    gatheringPhotosCheck.hidden = true;
+    retrievingDataCheck.hidden = true;
+    
+    continueButton.enabled = false;
+    recomputeButton.enabled = false;
+    
+    pullFriendsFlag = false;
+    pullAlbumsFlag = false;
+    pullPhotosFlag = false;
+    pullVideosFlag = false;
+    pullStatusFlag = false;
+    
+    [statusFriends startAnimating];
+    statusFriends.hidden = false;
+    [self performSelectorInBackground:@selector(pullFriends) withObject:nil];
 }
 
 - (void) getFriendsWithUserID:(NSString *)passedUserId {
@@ -208,7 +214,13 @@
     }
 }
 
-- (void) enabledRecomputeColor{
+- (void) enableUI{
+    continueButton.enabled = true;
+    continueButton.backgroundColor = self.navigationController.navigationBar.tintColor;
+    continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    [continueButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    recomputeButton.enabled = true;
     recomputeButton.backgroundColor = [UIColor whiteColor];
     recomputeButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     [recomputeButton setTitleColor:self.navigationController.navigationBar.tintColor forState:UIControlStateNormal];
@@ -239,7 +251,7 @@
         // TODO FIND AN X MARK FOR FAIL
         //gatheringFriendsColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
-        [self enabledRecomputeColor];
+        [self enableUI];
     }
     NSLog(@"pullFriends Finished");
 }
@@ -270,7 +282,7 @@
         // TODO FIND AN X MARK FOR FAIL
         //gatheringAlbumsColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
-        [self enabledRecomputeColor];
+        [self enableUI];
     }
     NSLog(@"pullAlbums Finished");
 }
@@ -303,7 +315,7 @@
         // TODO FIND AN X MARK FOR FAIL
         //gatheringPhotosColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
-        [self enabledRecomputeColor];
+        [self enableUI];
     }
     NSLog(@"pullPhotos Finished");
 }
@@ -334,7 +346,7 @@
         // TODO FIND AN X MARK FOR FAIL
         //gatheringVideosColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
-        [self enabledRecomputeColor];
+        [self enableUI];
     }
     NSLog(@"pullVideos Finished");
  }
@@ -365,7 +377,7 @@
         // TODO FIND AN X MARK FOR FAIL
         //gatheringStatusColor.backgroundColor = [UIColor redColor];
         recomputeButton.enabled = true;
-        [self enabledRecomputeColor];
+        [self enableUI];
     }
     NSLog(@"pullStatuses Finished");
 }
@@ -394,13 +406,7 @@
         NSLog(@"obtained friendData successfully");
         retrievingDataCheck.hidden = false;
         
-        continueButton.enabled = true;
-        continueButton.backgroundColor = self.navigationController.navigationBar.tintColor;
-        continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-        [continueButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        
-        recomputeButton.enabled = true;
-        [self enabledRecomputeColor];
+        [self enableUI];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
