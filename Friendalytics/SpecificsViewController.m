@@ -57,8 +57,6 @@
 
     if(ADS_ACTIVATED){
         banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-50, self.view.frame.size.width, self.view.frame.size.height)];
-        //banner.backgroundColor = [UIColor redColor];
-        banner.layer.borderWidth = .5;
         banner.delegate = self;
         banner.AutoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self.view addSubview:banner];
