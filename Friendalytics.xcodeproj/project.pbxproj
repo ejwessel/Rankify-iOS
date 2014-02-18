@@ -30,6 +30,7 @@
 		23771CC0188B6DFA00C3652F /* FriendData.m in Sources */ = {isa = PBXBuildFile; fileRef = 23771CBF188B6DFA00C3652F /* FriendData.m */; };
 		2377DF2E18ADCE49009B24E8 /* userIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2377DF2D18ADCE49009B24E8 /* userIcon.png */; };
 		23794ACC188C855400EA7A74 /* SpecificsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23794ACB188C855400EA7A74 /* SpecificsViewController.m */; };
+		239F649818B40F8C004F738D /* x_mark.png in Resources */ = {isa = PBXBuildFile; fileRef = 239F649718B40F8C004F738D /* x_mark.png */; };
 		23BA70A9189DA76300B39B37 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E4390F189DA487000DA96D /* iAd.framework */; };
 		23D83366188D123100091022 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D83365188D123100091022 /* CustomCell.m */; };
 		23EB40CD1891ED1E004F8121 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23EB40CC1891ED1E004F8121 /* AboutViewController.m */; };
@@ -88,6 +89,7 @@
 		2377DF2D18ADCE49009B24E8 /* userIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userIcon.png; sourceTree = "<group>"; };
 		23794ACA188C855400EA7A74 /* SpecificsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecificsViewController.h; sourceTree = "<group>"; };
 		23794ACB188C855400EA7A74 /* SpecificsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecificsViewController.m; sourceTree = "<group>"; };
+		239F649718B40F8C004F738D /* x_mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_mark.png; sourceTree = "<group>"; };
 		23D83364188D123100091022 /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
 		23D83365188D123100091022 /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
 		23E4390F189DA487000DA96D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -226,6 +228,7 @@
 		2338ABC3188E5EFA00C9D1D1 /* pictures */ = {
 			isa = PBXGroup;
 			children = (
+				239F649718B40F8C004F738D /* x_mark.png */,
 				4724A82A18B1F1A200B1635F /* check.png */,
 				4736162518AE398F0090B47C /* fb_Image_bar.png */,
 				47E3B30B18AE1988008E4C6C /* albums.png */,
@@ -341,6 +344,7 @@
 				4736162618AE398F0090B47C /* fb_Image_bar.png in Resources */,
 				47E3B30618AE1948008E4C6C /* videos.png in Resources */,
 				47E3B30C18AE1988008E4C6C /* albums.png in Resources */,
+				239F649818B40F8C004F738D /* x_mark.png in Resources */,
 				2377DF2E18ADCE49009B24E8 /* userIcon.png in Resources */,
 				2308462A1883A77B0056A6A7 /* Main_iPhone.storyboard in Resources */,
 				230846211883A77B0056A6A7 /* InfoPlist.strings in Resources */,

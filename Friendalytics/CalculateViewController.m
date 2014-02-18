@@ -240,14 +240,17 @@
     statusFriends.hidden = true;
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullFriendsFlag = true;
+        UIImage *checkMark = [UIImage imageNamed:@"check.png"];
+        gatheringFriendsCheck.image = checkMark;
         gatheringFriendsCheck.hidden = false;
         [statusAlbums startAnimating];
         statusAlbums.hidden = false;
         [self performSelectorInBackground:@selector(pullAlbums) withObject:nil];
     }
     else{
-        // TODO FIND AN X MARK FOR FAIL
-        //gatheringFriendsColor.backgroundColor = [UIColor redColor];
+        UIImage *xMark = [UIImage imageNamed:@"x_mark.png"];
+        gatheringFriendsCheck.image = xMark;
+        gatheringFriendsCheck.hidden = false;
         recomputeButton.enabled = true;
         [self enableUI];
     }
@@ -270,6 +273,8 @@
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullAlbumsFlag = true;
         NSLog(@"obtained albumData successfully");
+        UIImage *checkMark = [UIImage imageNamed:@"check.png"];
+        gatheringAlbumsCheck.image = checkMark;
         gatheringAlbumsCheck.hidden = false;
         [statusVideos startAnimating];
         statusVideos.hidden = false;
@@ -277,8 +282,9 @@
     }
     else{
         NSLog(@"unable to obtain albumData successfully");
-        // TODO FIND AN X MARK FOR FAIL
-        //gatheringAlbumsColor.backgroundColor = [UIColor redColor];
+        UIImage *xMark = [UIImage imageNamed:@"x_mark.png"];
+        gatheringAlbumsCheck.image = xMark;
+        gatheringAlbumsCheck.hidden = false;
         recomputeButton.enabled = true;
         [self enableUI];
     }
@@ -302,6 +308,8 @@
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullPhotosFlag = true;
         NSLog(@"obtained photoData successfully");
+        UIImage *checkMark = [UIImage imageNamed:@"check.png"];
+        gatheringPhotosCheck.image = checkMark;
         gatheringPhotosCheck.hidden = false;
         [retrievingStatus startAnimating];
         retrievingStatus.hidden = false;
@@ -310,8 +318,9 @@
     }
     else{
         NSLog(@"unable to obtain photo successfully");
-        // TODO FIND AN X MARK FOR FAIL
-        //gatheringPhotosColor.backgroundColor = [UIColor redColor];
+        UIImage *xMark = [UIImage imageNamed:@"x_mark.png"];
+        gatheringPhotosCheck.image = xMark;
+        gatheringPhotosCheck.hidden = false;
         recomputeButton.enabled = true;
         [self enableUI];
     }
@@ -334,6 +343,8 @@
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullVideosFlag = true;
         NSLog(@"obtained videoData successfully");
+        UIImage *checkMark = [UIImage imageNamed:@"check.png"];
+        gatheringVideosCheck.image = checkMark;
         gatheringVideosCheck.hidden = false;
         [statusStatus startAnimating];
         statusStatus.hidden = false;
@@ -341,8 +352,9 @@
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        // TODO FIND AN X MARK FOR FAIL
-        //gatheringVideosColor.backgroundColor = [UIColor redColor];
+        UIImage *xMark = [UIImage imageNamed:@"x_mark.png"];
+        gatheringVideosCheck.image = xMark;
+        gatheringVideosCheck.hidden = false;
         recomputeButton.enabled = true;
         [self enableUI];
     }
@@ -365,6 +377,8 @@
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullStatusFlag = true;
         NSLog(@"obtained friendData successfully");
+        UIImage *checkMark = [UIImage imageNamed:@"check.png"];
+        gatheringStatusesCheck.image = checkMark;
         gatheringStatusesCheck.hidden = false;
         [statusPhotos startAnimating];
         statusPhotos.hidden = false;
@@ -372,8 +386,9 @@
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        // TODO FIND AN X MARK FOR FAIL
-        //gatheringStatusColor.backgroundColor = [UIColor redColor];
+        UIImage *xMark = [UIImage imageNamed:@"x_mark.png"];
+        gatheringStatusesCheck.image = xMark;
+        gatheringStatusesCheck.hidden = false;
         recomputeButton.enabled = true;
         [self enableUI];
     }
@@ -402,14 +417,17 @@
     if(friendData != nil){
         retrieveStatusFlag = true;
         NSLog(@"obtained friendData successfully");
+        UIImage *checkMark = [UIImage imageNamed:@"check.png"];
+        retrievingDataCheck.image = checkMark;
         retrievingDataCheck.hidden = false;
         
         [self enableUI];
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        // TODO FIND AN X MARK FOR FAIL
-        //retrievingDataColor.backgroundColor = [UIColor redColor];
+        UIImage *xMark = [UIImage imageNamed:@"check.png"];
+        retrievingDataCheck.image = xMark;
+        retrievingDataCheck.hidden = false;
         recomputeButton.enabled = true;
     }
     NSLog(@"getFriendData Finished");
