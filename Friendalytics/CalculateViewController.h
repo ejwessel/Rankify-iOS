@@ -36,6 +36,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *continueButton;
 @property (strong, nonatomic) IBOutlet UIButton *recomputeButton;
 @property ADBannerView *banner;
+@property BOOL recentlyPulled;
 
 - (void) requestUsers;
 

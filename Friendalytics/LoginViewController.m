@@ -308,7 +308,7 @@ BOOL const ADS_ACTIVATED = 1;
     //send url request to database
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, idNumber, token];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -320,9 +320,10 @@ BOOL const ADS_ACTIVATED = 1;
     }
 }
 - (void)sendLoginDataToDatabase:(NSString*)userIDNumber with:(NSString*)accessID{
+        
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, userIDNumber, accessID];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -332,6 +333,9 @@ BOOL const ADS_ACTIVATED = 1;
         [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:NO];
         NSLog(@"database login successful");
     }
+    else{
+        NSLog(@"database did not receive login info");
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -340,25 +344,21 @@ BOOL const ADS_ACTIVATED = 1;
         //pass data to the next view controller
         controller.userId = userId;
         controller.accessToken = accessToken;
-    }
-    else if([segue.identifier isEqualToString:@"previousData"]){
-        //I was unable to do the following asynchronously, so I did it synchronously
+        
         NSLog(@"getFriendData Started");
-        NSString *urlString = [NSString stringWithFormat:@"%@users/getFriendsData/%@", SITE_PATH, userId];
+        NSString *urlString = [NSString stringWithFormat:@"%@users/doesFriendDataExist/%@", SITE_PATH, userId];
         NSURL *url = [NSURL URLWithString:urlString];
         NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
         NSURLResponse *response = NULL;
         NSError *requestError = NULL;
         NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
-        
         //obtain the json data
-        NSError *err;
-        friendData = [NSJSONSerialization JSONObjectWithData:responseData
-                                                     options:NSJSONReadingMutableContainers
-                                                       error:&err];
+        NSMutableDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&requestError];
+
+        NSLog(@"json Data %@", jsonData);
         
-        FriendTableViewController *controller = (FriendTableViewController *)segue.destinationViewController;
-        controller.friendData = friendData;
+        NSLog(@"hasFriends: %hhd", [[jsonData objectForKey:@"hasFriends"] boolValue]);
+        controller.recentlyPulled = [[jsonData objectForKey:@"hasFriends"] boolValue];
     }
 }
 
