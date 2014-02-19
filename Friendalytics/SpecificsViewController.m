@@ -77,7 +77,6 @@
     totalStatusCommentsLabel.text = totalStatusComments;
     rankLabel.text = rank;
     totalLabel.text = total;
-    profilePicture.layer.cornerRadius = 10;
     
     //load the profile picture in the background to prevent blocking main thread
     [self performSelectorInBackground:@selector(downloadAndLoadImage) withObject:nil];
@@ -171,7 +170,6 @@
     NSData *data = [[NSData alloc] initWithContentsOfURL:url];
     UIImage *tmpImage = [[UIImage alloc] initWithData:data];
     profilePicture.image = tmpImage;
-    profilePicture.layer.cornerRadius = 10;
     profilePicture.layer.masksToBounds = YES;
 }
 
