@@ -152,6 +152,7 @@
 }
 
 - (void) startCompute{
+    self.navigationItem.hidesBackButton = true;
     
     gatheringFriendsCheck.hidden = true;
     gatheringAlbumsCheck.hidden = true;
@@ -213,6 +214,8 @@
 }
 
 - (void) enableUI{
+    self.navigationItem.hidesBackButton = false;
+    
     continueButton.enabled = true;
     continueButton.backgroundColor = self.navigationController.navigationBar.tintColor;
     continueButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
@@ -238,7 +241,7 @@
     
     [statusFriends stopAnimating];
     statusFriends.hidden = true;
-    if(![[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
+    if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullFriendsFlag = true;
         UIImage *checkMark = [UIImage imageNamed:@"check.png"];
         gatheringFriendsCheck.image = checkMark;
