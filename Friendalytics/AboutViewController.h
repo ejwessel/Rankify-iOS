@@ -10,6 +10,6 @@
 
 @interface AboutViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UILabel *versionLabel;
-@property (strong, nonatomic) IBOutlet UIWebView *webView;
+//@property (strong, nonatomic) IBOutlet UIWebView *webView;
 
 @end
