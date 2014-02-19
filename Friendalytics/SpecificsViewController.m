@@ -42,7 +42,6 @@
 @synthesize rankLabel;
 @synthesize totalLabel;
 @synthesize banner;
-@synthesize photoImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -79,18 +78,6 @@
     rankLabel.text = rank;
     totalLabel.text = total;
     profilePicture.layer.cornerRadius = 10;
-
-    UIImage *i = [UIImage imageNamed:@"photos.png"];
-    photoImage.image = i;
-    
-//    if(isRetina){
-//        UIImage *i = [UIImage imageNamed:@"photos@2x.png"];
-//        photoImage.image = i;
-//    }
-//    else{
-//        UIImage *i = [UIImage imageNamed:@"photos.png"];
-//        photoImage.image = i;
-//    }
     
     //load the profile picture in the background to prevent blocking main thread
     [self performSelectorInBackground:@selector(downloadAndLoadImage) withObject:nil];
