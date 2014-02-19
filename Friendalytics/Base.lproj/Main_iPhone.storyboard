@@ -76,12 +76,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Need to mention the guy who made AsyncImageView" translatesAutoresizingMaskIntoConstraints="NO" id="3HU-a9-ifX">
-                                <rect key="frame" x="20" y="145" width="280" height="127"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3HU-a9-ifX">
+                                <rect key="frame" x="20" y="115" width="280" height="182"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <string key="text">Credits:
+AsyncImageView[https://github.com/nicklockwood/AsyncImageView] by Nick Lockwood 
+Facebook by Luboš Volkov from The Noun Project</string>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="VersionLabel" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7aq-Ae-nft">
                                 <rect key="frame" x="201" y="86" width="99" height="21"/>
@@ -551,7 +555,7 @@
     <resources>
         <image name="albums.png" width="1200" height="1200"/>
         <image name="check.png" width="1200" height="1200"/>
-        <image name="photos.png" width="1200" height="1200"/>
+        <image name="photos.png" width="40" height="40"/>
         <image name="statuses.png" width="1200" height="1200"/>
         <image name="videos.png" width="1200" height="1200"/>
     </resources>
