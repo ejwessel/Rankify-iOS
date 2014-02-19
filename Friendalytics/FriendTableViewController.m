@@ -392,7 +392,7 @@
     int rank = [[[element objectForKey:@"User"] objectForKey:@"totalLikes"] intValue] + [[[element objectForKey:@"User"] objectForKey:@"totalComments"] intValue];
     NSString *rankNumber = [NSString stringWithFormat:@"%d", rank];
     NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
-    
+        
     cell.nameLabel.text = fullName;
     cell.rankLabel.text = rankNumber;
     cell.rankLabel.textColor = self.navigationController.navigationBar.tintColor;

@@ -57,7 +57,7 @@ BOOL isRetina;
         [self hideBanner];
     }
 
-    userLoginPhoto.image = [UIImage imageNamed:@"award.png"];
+    userLoginPhoto.image = [UIImage imageNamed:@"rank.png"];
     integratedLoginLabel.hidden = true;
     permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
     userHaveIntegrataedFacebookAccountSetup = ([SLComposeViewController class] != nil) && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
@@ -265,7 +265,7 @@ BOOL isRetina;
     calculateButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     [calculateButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
-    userLoginPhoto.image = [UIImage imageNamed:@"award.png"];; //show our logo instead
+    userLoginPhoto.image = [UIImage imageNamed:@"rank.png"];; //show our logo instead
 }
 
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {

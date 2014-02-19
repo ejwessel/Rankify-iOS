@@ -27,13 +27,12 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-//    self.navigationController.navigationBarHidden = false;
     
-//    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-//    NSString *version = [info objectForKey:@"CFBundleShortVersionString"];
-//    version = [NSString stringWithFormat:@"Version %@", version];
-//    versionLabel.text = version;
-//    
+    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+    NSString *version = [info objectForKey:@"CFBundleShortVersionString"];
+    version = [NSString stringWithFormat:@"Version %@", version];
+    versionLabel.text = version;
+//
 //    NSString *myHtml = [NSString stringWithFormat:
 //                        @"<html><head>"
 //                        "<style type=\"text/css\">"
