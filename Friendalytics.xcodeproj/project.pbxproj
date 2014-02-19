@@ -44,7 +44,7 @@
 		23FC4AFB18B0858500814F3A /* award.png in Resources */ = {isa = PBXBuildFile; fileRef = 23FC4AFA18B0858500814F3A /* award.png */; };
 		4724A82B18B1F1A200B1635F /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 4724A82A18B1F1A200B1635F /* check.png */; };
 		4736162618AE398F0090B47C /* fb_Image_bar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4736162518AE398F0090B47C /* fb_Image_bar.png */; };
-		47ABE4A418B4742E000476C8 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308464E1883A8F60056A6A7 /* FacebookSDK.framework */; };
+		477284F918B49C1800A9AFA7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308464E1883A8F60056A6A7 /* FacebookSDK.framework */; };
 		47E3B30618AE1948008E4C6C /* videos.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30518AE1948008E4C6C /* videos.png */; };
 		47E3B30818AE195D008E4C6C /* photos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30718AE195D008E4C6C /* photos@2x.png */; };
 		47E3B30A18AE1976008E4C6C /* statuses.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30918AE1976008E4C6C /* statuses.png */; };
@@ -123,7 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47ABE4A418B4742E000476C8 /* FacebookSDK.framework in Frameworks */,
+				477284F918B49C1800A9AFA7 /* FacebookSDK.framework in Frameworks */,
 				23BA70A9189DA76300B39B37 /* iAd.framework in Frameworks */,
 				2372BCA4189A24F800E59716 /* Social.framework in Frameworks */,
 				2338ABC9188E621900C9D1D1 /* QuartzCore.framework in Frameworks */,
