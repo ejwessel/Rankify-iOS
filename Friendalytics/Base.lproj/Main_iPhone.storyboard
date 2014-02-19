@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
-        <!--Login View Controller - Friendalytics-->
+        <!--Login View Controller - Rankify-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="LoginViewController" sceneMemberID="viewController">
@@ -48,7 +48,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Friendalytics" id="bmT-XA-ktK"/>
+                    <navigationItem key="navigationItem" title="Rankify" id="bmT-XA-ktK"/>
                     <connections>
                         <outlet property="aboutButton" destination="ONB-dX-1df" id="jpv-TU-m2z"/>
                         <outlet property="calculateButton" destination="Q0I-eD-SMk" id="gie-G9-btM"/>
