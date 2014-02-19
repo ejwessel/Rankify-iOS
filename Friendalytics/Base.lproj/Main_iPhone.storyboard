@@ -94,12 +94,18 @@ Facebook by Luboš Volkov from The Noun Project</string>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iuC-8M-j6g">
+                                <rect key="frame" x="40" y="347" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="About" id="fu1-LH-X2u"/>
                     <connections>
                         <outlet property="versionLabel" destination="7aq-Ae-nft" id="PaS-Tq-IK4"/>
+                        <outlet property="webView" destination="iuC-8M-j6g" id="mAg-gf-5EY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e0a-0h-7Fx" userLabel="First Responder" sceneMemberID="firstResponder"/>
