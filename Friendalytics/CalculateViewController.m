@@ -162,7 +162,14 @@
     retrievingDataCheck.hidden = true;
     
     continueButton.enabled = false;
+    continueButton.backgroundColor = [UIColor clearColor];
+    continueButton.layer.borderColor = [UIColor grayColor].CGColor;
+    [continueButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    
     recomputeButton.enabled = false;
+    recomputeButton.backgroundColor = [UIColor clearColor];
+    recomputeButton.layer.borderColor = [UIColor grayColor].CGColor;
+    [recomputeButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     
     pullFriendsFlag = false;
     pullAlbumsFlag = false;
