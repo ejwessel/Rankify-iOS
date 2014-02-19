@@ -12,6 +12,7 @@
 NSString const *SITE_PATH = @"http://e-wit.co.uk/friendalytics/";
 NSString const *FACEBOOK_APP_ID_VALUE = @"1397650163819409"; //this MUST match Friendalytics-Info.plist value for FacebookAppId
 BOOL const ADS_ACTIVATED = 1;
+BOOL isRetina;
 
 //leovander.com
 //e-wit.co.uk
@@ -37,6 +38,15 @@ BOOL const ADS_ACTIVATED = 1;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
+    
+    //check if we have retina or non retina screen
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2){
+        isRetina = YES;
+    } else {
+        isRetina = NO;
+    }
+    
+    NSLog(@"is retina: %hhd", isRetina);
     
     //ADS
     if(ADS_ACTIVATED){

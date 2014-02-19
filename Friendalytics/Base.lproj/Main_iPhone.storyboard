@@ -439,6 +439,7 @@ Facebook by Luboš Volkov from The Noun Project</string>
                     </view>
                     <navigationItem key="navigationItem" id="YSe-Qr-6Rt"/>
                     <connections>
+                        <outlet property="photoImage" destination="tBf-5F-XkV" id="axG-I7-Xx7"/>
                         <outlet property="profilePicture" destination="90m-No-zh2" id="tnr-ND-atH"/>
                         <outlet property="rankLabel" destination="orZ-I3-mYC" id="567-76-RvN"/>
                         <outlet property="totalAlbumCommentsLabel" destination="R64-07-1xQ" id="7e6-Tr-I8b"/>
@@ -554,8 +555,8 @@ Facebook by Luboš Volkov from The Noun Project</string>
     </scenes>
     <resources>
         <image name="albums.png" width="1200" height="1200"/>
-        <image name="check.png" width="1200" height="1200"/>
-        <image name="photos.png" width="40" height="40"/>
+        <image name="check.png" width="56" height="56"/>
+        <image name="photos.png" width="20" height="20"/>
         <image name="statuses.png" width="1200" height="1200"/>
         <image name="videos.png" width="1200" height="1200"/>
     </resources>

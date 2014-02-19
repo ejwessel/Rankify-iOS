@@ -28,6 +28,7 @@
 
 @property ADBannerView *banner;
 
+@property (strong, nonatomic) IBOutlet UIImageView *photoImage;
 
 @property NSString *friendName;
 @property NSString *totalLikes;
