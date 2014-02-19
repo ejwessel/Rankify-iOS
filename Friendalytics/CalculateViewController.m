@@ -238,7 +238,7 @@
     
     [statusFriends stopAnimating];
     statusFriends.hidden = true;
-    if(![[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
+    if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         pullFriendsFlag = true;
         UIImage *checkMark = [UIImage imageNamed:@"check.png"];
         gatheringFriendsCheck.image = checkMark;
