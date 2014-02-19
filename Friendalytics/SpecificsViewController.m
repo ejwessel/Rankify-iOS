@@ -79,15 +79,18 @@
     rankLabel.text = rank;
     totalLabel.text = total;
     profilePicture.layer.cornerRadius = 10;
+
+    UIImage *i = [UIImage imageNamed:@"photos.png"];
+    photoImage.image = i;
     
-    if(isRetina){
-        UIImage *i = [UIImage imageNamed:@"photos@x2.png"];
-        photoImage.image = i;
-    }
-    else{
-        UIImage *i = [UIImage imageNamed:@"photos.png"];
-        photoImage.image = i;
-    }
+//    if(isRetina){
+//        UIImage *i = [UIImage imageNamed:@"photos@2x.png"];
+//        photoImage.image = i;
+//    }
+//    else{
+//        UIImage *i = [UIImage imageNamed:@"photos.png"];
+//        photoImage.image = i;
+//    }
     
     //load the profile picture in the background to prevent blocking main thread
     [self performSelectorInBackground:@selector(downloadAndLoadImage) withObject:nil];
