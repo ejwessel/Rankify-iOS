@@ -553,11 +553,11 @@ Facebook by Luboš Volkov from The Noun Project</string>
         </scene>
     </scenes>
     <resources>
-        <image name="albums.png" width="1200" height="1200"/>
+        <image name="albums.png" width="20" height="20"/>
         <image name="check.png" width="28" height="28"/>
         <image name="photos.png" width="20" height="20"/>
         <image name="statuses.png" width="20" height="20"/>
-        <image name="videos.png" width="1200" height="1200"/>
+        <image name="videos.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
