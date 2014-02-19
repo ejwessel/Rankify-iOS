@@ -46,7 +46,7 @@ BOOL isRetina;
         isRetina = NO;
     }
     
-    NSLog(@"is retina: %hhd", isRetina);
+    NSLog(@"is retina: %d", isRetina);
     
     //ADS
     if(ADS_ACTIVATED){
@@ -112,28 +112,28 @@ BOOL isRetina;
     NSLog(@"Banner Failed");
     switch ([error code]) {
         case 1:
-            NSLog(@"Error Code %i, Server Failure", [error code]);
+            NSLog(@"Error Code %li, Server Failure", (long)[error code]);
             [self hideBanner];
             break;
         case 2:
-            NSLog(@"Error Code %i, Loading Throttled", [error code]);
+            NSLog(@"Error Code %li, Loading Throttled", (long)[error code]);
             break;
         case 3:
-            NSLog(@"Error Code %i, Inventory Unavailable", [error code]);
+            NSLog(@"Error Code %li, Inventory Unavailable", (long)[error code]);
             [self hideBanner];
             break;
         case 4:
-            NSLog(@"Error Code %i, Configuration Error", [error code]);
+            NSLog(@"Error Code %li, Configuration Error", (long)[error code]);
             break;
         case 5:
-            NSLog(@"Error Code %i, Banner Visible Without Content", [error code]);
+            NSLog(@"Error Code %li, Banner Visible Without Content", (long)[error code]);
             [self hideBanner];
             break;
         case 6:
-            NSLog(@"Error Code %i, Application Inactive", [error code]);
+            NSLog(@"Error Code %li, Application Inactive", (long)[error code]);
             break;
         case 7:
-            NSLog(@"Error Code %i, Ad Unloaded", [error code]);
+            NSLog(@"Error Code %li, Ad Unloaded", (long)[error code]);
             [self hideBanner];
             break;
         default:
@@ -367,7 +367,7 @@ BOOL isRetina;
 
         NSLog(@"json Data %@", jsonData);
         
-        NSLog(@"hasFriends: %hhd", [[jsonData objectForKey:@"hasFriends"] boolValue]);
+        NSLog(@"hasFriends: %d", [[jsonData objectForKey:@"hasFriends"] boolValue]);
         controller.recentlyPulled = [[jsonData objectForKey:@"hasFriends"] boolValue];
     }
 }
