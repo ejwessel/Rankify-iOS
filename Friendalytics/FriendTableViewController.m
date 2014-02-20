@@ -139,12 +139,26 @@
                       otherButtonTitles:nil] show];
 }
 
-- (void)postUnsuccessful {
-    [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
-                                message:@"Facebook disallows pushing of redundant content"
-                               delegate:nil
-                      cancelButtonTitle:@"Ok"
-                      otherButtonTitles:nil] show];
+- (void)postUnsuccessfulWithError:(NSDictionary*)err {
+    
+    NSNumber *errorNum = [err objectForKey:@"code"];
+    
+    //if the error code is redundant
+    if([errorNum intValue] == 506){
+        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
+                                    message:@"Facebook disallows pushing of redundant content"
+                                   delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
+    }
+    else{
+        NSString *error = [NSString stringWithFormat:@"Error: %@", [err objectForKey:@"code"]];
+        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
+                                    message:error
+                                   delegate:nil
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
+    }
 }
 
 //what happens when the Post button is clicked
@@ -220,7 +234,7 @@
                                                        // See: https://developers.facebook.com/docs/ios/errors
                                                        NSLog([NSString stringWithFormat:@"%@", [responseDictionary objectForKey:@"error"]]);
                                                        
-                                                       [self performSelectorOnMainThread:@selector(postUnsuccessful) withObject:nil waitUntilDone:YES];
+                                                       [self performSelectorOnMainThread:@selector(postUnsuccessfulWithError:) withObject:[responseDictionary objectForKey:@"error"] waitUntilDone:YES];
                                                    }
                                                }];
                                                
