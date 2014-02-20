@@ -14,9 +14,6 @@ NSString const *FACEBOOK_APP_ID_VALUE = @"1397650163819409"; //this MUST match F
 BOOL const ADS_ACTIVATED = 1;
 BOOL isRetina;
 
-//leovander.com
-//e-wit.co.uk
-
 @interface LoginViewController () <FBLoginViewDelegate>
 @end
 

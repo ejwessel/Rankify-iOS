@@ -211,7 +211,7 @@
                                                                                        requestMethod:SLRequestMethodPOST
                                                                                                  URL:URL
                                                                                           parameters:parameters];
-                                               
+
                                                // Since we are performing a method that requires authorization we can simply
                                                // add the ACAccount to the SLRequest
                                                [request setAccount:account];
@@ -234,7 +234,9 @@
                                                        // See: https://developers.facebook.com/docs/ios/errors
                                                        NSLog([NSString stringWithFormat:@"%@", [responseDictionary objectForKey:@"error"]]);
                                                        
-                                                       [self performSelectorOnMainThread:@selector(postUnsuccessfulWithError:) withObject:[responseDictionary objectForKey:@"error"] waitUntilDone:YES];
+                                                       [self performSelectorOnMainThread:@selector(postUnsuccessfulWithError:)
+                                                                              withObject:[responseDictionary objectForKey:@"error"]
+                                                                           waitUntilDone:YES];
                                                    }
                                                }];
                                                
