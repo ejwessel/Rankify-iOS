@@ -189,8 +189,6 @@
 - (void)integratedFacebookRequest{
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
-    NSArray *accounts = [accountStore accountsWithAccountType:accountType];
-    ACAccount *account = [accounts lastObject];
     
     //NEED TO ASK FOR PUBLISH PERMISSIONS HERE!!!!!!!!!!
     NSDictionary *options = @{ACFacebookAppIdKey: FACEBOOK_APP_ID_VALUE,
@@ -212,9 +210,17 @@
                                                                                                  URL:URL
                                                                                           parameters:parameters];
 
+                                               //get updated access token
+                                               ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+                                               ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
+                                               NSArray *accounts = [accountStore accountsWithAccountType:accountType];
+                                               ACAccount *account = [accounts lastObject];
+                                               
                                                // Since we are performing a method that requires authorization we can simply
                                                // add the ACAccount to the SLRequest
                                                [request setAccount:account];
+                                               
+                                               //need to updated the access token
                                                
                                                // Perform request
                                                [request performRequestWithHandler:^(NSData *respData, NSHTTPURLResponse *urlResp, NSError *error) {
