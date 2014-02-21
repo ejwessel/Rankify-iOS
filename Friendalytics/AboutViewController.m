@@ -14,6 +14,7 @@
 
 @implementation AboutViewController
 @synthesize versionLabel;
+@synthesize supportButton;
 //@synthesize webView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
@@ -32,7 +33,12 @@
     NSString *version = [info objectForKey:@"CFBundleShortVersionString"];
     version = [NSString stringWithFormat:@"Version %@", version];
     versionLabel.text = version;
-//
+    
+    supportButton.layer.borderWidth = 1;
+    supportButton.layer.cornerRadius = 5;
+    supportButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+    [supportButton addTarget:self action:@selector(messageButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    
 //    NSString *myHtml = [NSString stringWithFormat:
 //                        @"<html><head>"
 //                        "<style type=\"text/css\">"
@@ -44,6 +50,12 @@
 //                        "</head><body>Hi<a href='%@'>Link text</a></body></html>", @"https://github.com/nicklockwood/AsyncImageView"];
 //    
 //    [webView loadHTMLString:myHtml baseURL:nil];
+}
+
+- (void)messageButtonClicked{
+    NSLog(@"Message Button is clicked");
+    NSString *url = [URLEMail stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: url]];
 }
 
 - (void)didReceiveMemoryWarning{

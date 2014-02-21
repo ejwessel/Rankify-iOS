@@ -307,10 +307,11 @@
         for (int i = 0; i < count; i++) {
             NSMutableDictionary *friend = [[friendData objectAtIndex:i] objectForKey:@"User"];
             NSString *name = [friend objectForKey:@"name"];
-            NSString *totalLikes = [friend objectForKey:@"totalLikes"];
-            NSString *totalComments = [friend objectForKey:@"totalComments"];
+            int totalLikes = [[friend objectForKey:@"totalLikes"] integerValue];
+            int totalComments = [[friend objectForKey:@"totalComments"] integerValue];
+            int rank = totalLikes + totalComments;
             int index = i + 1;
-            topFriends = [NSString stringWithFormat:@"%@\n %i. %@ : [%@ Likes, %@ Comments]", topFriends, index, name, totalLikes, totalComments];
+            topFriends = [NSString stringWithFormat:@"%@\n %i. %@ : %i", topFriends, index, name, rank];
         }
     }
     //if there happens to be no friends

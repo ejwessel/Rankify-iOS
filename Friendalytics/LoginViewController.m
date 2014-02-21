@@ -9,7 +9,7 @@
 #import "LoginViewController.h"
 #import "AppDelegate.h"
 
-NSString const *SITE_PATH = @"http://e-wit.co.uk/friendalytics/";
+NSString const *SITE_PATH = @"http://e-wit.co.uk/rankify/";
 NSString const *FACEBOOK_APP_ID_VALUE = @"1397650163819409"; //this MUST match Friendalytics-Info.plist value for FacebookAppId
 BOOL const ADS_ACTIVATED = 1;
 BOOL isRetina;
