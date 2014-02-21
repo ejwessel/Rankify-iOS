@@ -219,9 +219,7 @@
                                                // Since we are performing a method that requires authorization we can simply
                                                // add the ACAccount to the SLRequest
                                                [request setAccount:account];
-                                               
-                                               //need to updated the access token
-                                               
+                                                                                              
                                                // Perform request
                                                [request performRequestWithHandler:^(NSData *respData, NSHTTPURLResponse *urlResp, NSError *error) {
                                                    NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:respData
