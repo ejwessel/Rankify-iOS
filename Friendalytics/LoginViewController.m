@@ -56,7 +56,9 @@ BOOL isRetina;
 
     userLoginPhoto.image = [UIImage imageNamed:@"rank.png"];
     integratedLoginLabel.hidden = true;
-    permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", nil];
+    permissions = [NSArray arrayWithObjects: @"user_videos", @"user_status", @"user_photos", @"user_friends", nil];
+    //@"user_birthday", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos",
+    
     userHaveIntegrataedFacebookAccountSetup = ([SLComposeViewController class] != nil) && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
     
     //If the user has the integrated facebook account set up

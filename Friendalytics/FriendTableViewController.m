@@ -33,7 +33,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    permissions = [NSArray arrayWithObjects:@"user_birthday", @"user_videos", @"user_status", @"user_photos", @"user_friends", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos", @"publish_actions", nil];
+    permissions = [NSArray arrayWithObjects: @"user_videos", @"user_status", @"user_photos", @"user_friends", @"publish_actions", nil];
+    //@"user_birthday", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos",
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
