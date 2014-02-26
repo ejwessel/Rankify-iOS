@@ -28,6 +28,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     if(!ADS_ACTIVATED){
+        [removeAdsButton setTitle:@"Premium Version" forState:UIControlStateNormal];
         removeAdsButton.enabled = false;
         removeAdsButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     }
@@ -92,10 +93,11 @@
     
     // Finally, remove the transaction from the payment queue.
 
+    [removeAdsButton setTitle:@"Premium Version" forState:UIControlStateNormal];
     removeAdsButton.enabled = false;
     removeAdsButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     ADS_ACTIVATED = 0;
-    [[[UIAlertView alloc] initWithTitle:@"Ads Removed" message:@"" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:@"Ads Removed" message:@"Thank you" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 }
 - (void) restoreTransaction: (SKPaymentTransaction *)transaction{
