@@ -31,8 +31,10 @@ BOOL ADS_ACTIVATED = 1;
 @synthesize userHaveIntegrataedFacebookAccountSetup;
 @synthesize userLoginPhoto;
 @synthesize friendData;
+@synthesize receiptStoreString;
 
 - (void)viewWillAppear:(BOOL)animated{
+    //hides ad banner, this is mainly after coming back from the about viewController
     if(!ADS_ACTIVATED){
         [self hideBanner];
     }
@@ -41,19 +43,9 @@ BOOL ADS_ACTIVATED = 1;
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    //check if we have retina or non retina screen
-    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2){
-         NSLog(@"is retina: 1");
-    }
-    else {
-         NSLog(@"is retina: 0");
-    }
+    //Is screen retina?
+    NSLog(@"Retina: %i",([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2) ? 1 : 0);
    
-    
-    //gather whether user has already bought 'remove ads'
-    [self getUserReceipt];
-    
-    //ADS
     if(ADS_ACTIVATED){
         banner = [[ADBannerView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-50, self.view.frame.size.width, self.view.frame.size.height)];
         banner.delegate = self;
@@ -61,20 +53,20 @@ BOOL ADS_ACTIVATED = 1;
         [self.view addSubview:banner];
         [self hideBanner];
     }
-
+    
+    receiptStoreString = @"https://sandbox.itunes.apple.com/verifyReceipt"; //@"https://buy.itunes.apple.com/verifyReceipt"];
+    [self getUserReceipt];  //gather whether user has already bought 'remove ads'
+    
     userLoginPhoto.image = [UIImage imageNamed:@"rank.png"];
     integratedLoginLabel.hidden = true;
     permissions = [NSArray arrayWithObjects: @"user_videos", @"user_status", @"user_photos", @"user_friends", nil];
     //@"user_birthday", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos",
     
     userHaveIntegrataedFacebookAccountSetup = ([SLComposeViewController class] != nil) && ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
-    
-    //If the user has the integrated facebook account set up
     if(userHaveIntegrataedFacebookAccountSetup){
         NSLog(@"Facebook Integrated Account is set up");
         [self integratedFacebookRequest];
     }
-    //If the user doesn't have the integrated facebook account set up
     else{
          NSLog(@"Facebook Integrated Account is not set up");
         [self facebookAppRequest];
@@ -90,7 +82,7 @@ BOOL ADS_ACTIVATED = 1;
     calculateButton.enabled = false;
     calculateButton.layer.borderWidth = 1.0;
     calculateButton.layer.cornerRadius = 5;
-    calculateButton.layer.borderColor = [UIColor lightGrayColor].CGColor;//self.navigationController.navigationBar.tintColor.CGColor;
+    calculateButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     
     aboutButton.layer.borderWidth = 1.0;
     aboutButton.layer.cornerRadius = 5;
@@ -103,8 +95,8 @@ BOOL ADS_ACTIVATED = 1;
     if (!receipt) {
         NSLog(@"no local receipt data available");
     }
+    //if a receipt exists
     else{
-        NSLog(@"local receipt data available");
         // Create the JSON object that describes the request
         NSError *error;
         NSDictionary *requestContents = @{@"receipt-data": [receipt base64EncodedStringWithOptions:0]};
@@ -116,7 +108,7 @@ BOOL ADS_ACTIVATED = 1;
         }
         else{
             // Create a POST request with the receipt data.
-            NSURL *storeURL = [NSURL URLWithString:@"https://sandbox.itunes.apple.com/verifyReceipt"];//@"https://buy.itunes.apple.com/verifyReceipt"];
+            NSURL *storeURL = [NSURL URLWithString: receiptStoreString];
             NSMutableURLRequest *storeRequest = [NSMutableURLRequest requestWithURL:storeURL];
             [storeRequest setHTTPMethod:@"POST"];
             [storeRequest setHTTPBody:requestData];
@@ -139,8 +131,8 @@ BOOL ADS_ACTIVATED = 1;
                                                NSString *productId = [[[[jsonResponse objectForKey:@"receipt"] objectForKey:@"in_app"] objectAtIndex:0] objectForKey:@"product_id"];
                                                if([productId isEqualToString:@"RankifyRemoveAds"]){
                                                    NSLog(@"iAd has been disabled");
-                                                   ADS_ACTIVATED = 0;
-                                                   [self hideBanner];
+                                                   ADS_ACTIVATED = 0; //turn off ads for the rest of the app
+                                                   [self hideBanner]; //hide the banner on the login page
                                                }
                                            }
                                        }

@@ -17,6 +17,4 @@
 @property (strong, nonatomic) IBOutlet UIButton *removeAdsButton;
 #define URLEMail @"mailto:support.rankify@e-wit.co.uk?subject=Rankify Support"
 
--(IBAction)ButtonPressed:(id)sender;
-
 @end

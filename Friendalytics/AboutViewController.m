@@ -30,6 +30,7 @@
     if(!ADS_ACTIVATED){
         [removeAdsButton setTitle:@"Premium Version" forState:UIControlStateNormal];
         removeAdsButton.enabled = false;
+        //removeAdsButton.backgroundColor = [UIColor colorWithRed:252.0/255.0 green:250.0/255.0 blue:0 alpha:1.0]; //gold color for premium?
         removeAdsButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     }
 }
@@ -51,18 +52,7 @@
     removeAdsButton.layer.borderWidth = 1;
     removeAdsButton.layer.cornerRadius = 5;
     removeAdsButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-    
-//    NSString *myHtml = [NSString stringWithFormat:
-//                        @"<html><head>"
-//                        "<style type=\"text/css\">"
-//                        "body{"
-//                        "font-family: Helvetica;"
-//                        "font-size: 20px;"
-//                        "a {color: #FFF;}"
-//                        "},</style>"
-//                        "</head><body>Hi<a href='%@'>Link text</a></body></html>", @"https://github.com/nicklockwood/AsyncImageView"];
-//    
-//    [webView loadHTMLString:myHtml baseURL:nil];
+    [removeAdsButton addTarget:self action:@selector(removeAdsButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)messageButtonClicked{
@@ -76,7 +66,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(IBAction)ButtonPressed:(id)sender {
+- (void)removeAdsButtonClicked{
     SKProductsRequest *request= [[SKProductsRequest alloc]
                                  initWithProductIdentifiers: [NSSet setWithObject: @"RankifyRemoveAds"]];
     request.delegate = self;
@@ -96,7 +86,7 @@
     [removeAdsButton setTitle:@"Premium Version" forState:UIControlStateNormal];
     removeAdsButton.enabled = false;
     removeAdsButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    ADS_ACTIVATED = 0;
+    ADS_ACTIVATED = 0; //turn off ads for rest of app
     [[[UIAlertView alloc] initWithTitle:@"Ads Removed" message:@"Thank you" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 }
@@ -116,10 +106,10 @@
     {
         // Display an error here.
         [[[UIAlertView alloc] initWithTitle:@"Purchase Unsuccessful"
-                                                        message:@"Your purchase failed. Please try again."
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil] show];
+                                    message:@"Your purchase failed. Please try again."
+                                   delegate:self
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
     }
     
     // Finally, remove the transaction from the payment queue.

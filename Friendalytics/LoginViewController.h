@@ -31,6 +31,7 @@ extern BOOL ADS_ACTIVATED;
 @property BOOL userHaveIntegrataedFacebookAccountSetup;
 @property (strong, nonatomic) IBOutlet UIImageView *userLoginPhoto;
 @property NSArray *friendData;
+@property NSString *receiptStoreString;
 
 - (void) sendAccessToken:(NSString*)token withUserID:(NSString*)userId;
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender;
