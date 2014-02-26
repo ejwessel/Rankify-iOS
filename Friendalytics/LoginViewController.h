@@ -14,8 +14,7 @@
 
 extern NSString const *SITE_PATH;
 extern NSString const *FACEBOOK_APP_ID_VALUE;
-extern BOOL const ADS_ACTIVATED;
-extern BOOL isRetina;
+extern BOOL ADS_ACTIVATED;
 
 @interface LoginViewController : UIViewController <ADBannerViewDelegate>
 

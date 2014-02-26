@@ -11,8 +11,7 @@
 
 NSString const *SITE_PATH = @"http://e-wit.co.uk/rankify/";
 NSString const *FACEBOOK_APP_ID_VALUE = @"1397650163819409"; //this MUST match Friendalytics-Info.plist value for FacebookAppId
-BOOL const ADS_ACTIVATED = 1;
-BOOL isRetina;
+BOOL ADS_ACTIVATED = 1;
 
 @interface LoginViewController () <FBLoginViewDelegate>
 @end
@@ -33,17 +32,26 @@ BOOL isRetina;
 @synthesize userLoginPhoto;
 @synthesize friendData;
 
+- (void)viewWillAppear:(BOOL)animated{
+    if(!ADS_ACTIVATED){
+        [self hideBanner];
+    }
+}
+
 - (void)viewDidLoad{
     [super viewDidLoad];
     
     //check if we have retina or non retina screen
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2){
-        isRetina = YES;
-    } else {
-        isRetina = NO;
+         NSLog(@"is retina: 1");
     }
+    else {
+         NSLog(@"is retina: 0");
+    }
+   
     
-    NSLog(@"is retina: %d", isRetina);
+    //gather whether user has already bought 'remove ads'
+    [self getUserReceipt];
     
     //ADS
     if(ADS_ACTIVATED){
@@ -87,6 +95,58 @@ BOOL isRetina;
     aboutButton.layer.borderWidth = 1.0;
     aboutButton.layer.cornerRadius = 5;
     aboutButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+}
+
+- (void)getUserReceipt{
+    NSURL *receiptURL = [[NSBundle mainBundle] appStoreReceiptURL];
+    NSData *receipt = [NSData dataWithContentsOfURL:receiptURL];
+    if (!receipt) {
+        NSLog(@"no local receipt data available");
+    }
+    else{
+        NSLog(@"local receipt data available");
+        // Create the JSON object that describes the request
+        NSError *error;
+        NSDictionary *requestContents = @{@"receipt-data": [receipt base64EncodedStringWithOptions:0]};
+        NSData *requestData = [NSJSONSerialization dataWithJSONObject:requestContents
+                                                              options:0
+                                                                error:&error];
+        if (!requestData) {
+            NSLog(@"no request data");
+        }
+        else{
+            // Create a POST request with the receipt data.
+            NSURL *storeURL = [NSURL URLWithString:@"https://sandbox.itunes.apple.com/verifyReceipt"];//@"https://buy.itunes.apple.com/verifyReceipt"];
+            NSMutableURLRequest *storeRequest = [NSMutableURLRequest requestWithURL:storeURL];
+            [storeRequest setHTTPMethod:@"POST"];
+            [storeRequest setHTTPBody:requestData];
+            
+            // Make a connection to the iTunes Store on a background queue.
+            NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+            [NSURLConnection sendAsynchronousRequest:storeRequest
+                                               queue:queue
+                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                                       if (connectionError) {
+                                           NSLog(@"There was a connection error while verifying receipt");
+                                       }
+                                       else {
+                                           NSError *error;
+                                           NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                                           if (!jsonResponse) {
+                                               NSLog(@"Error with jsonResponse while verifying receipt");
+                                           }
+                                           else{
+                                               NSString *productId = [[[[jsonResponse objectForKey:@"receipt"] objectForKey:@"in_app"] objectAtIndex:0] objectForKey:@"product_id"];
+                                               if([productId isEqualToString:@"RankifyRemoveAds"]){
+                                                   NSLog(@"iAd has been disabled");
+                                                   ADS_ACTIVATED = 0;
+                                                   [self hideBanner];
+                                               }
+                                           }
+                                       }
+                                   }];
+        }
+    }
 }
 
 - (void)hideBanner{
