@@ -54,7 +54,7 @@ BOOL ADS_ACTIVATED = 1;
         [self hideBanner];
     }
     
-    receiptStoreString = @"https://sandbox.itunes.apple.com/verifyReceipt"; //@"https://buy.itunes.apple.com/verifyReceipt"];
+    receiptStoreString = @"https://buy.itunes.apple.com/verifyReceipt";//@"https://sandbox.itunes.apple.com/verifyReceipt";
     [self getUserReceipt];  //gather whether user has already bought 'remove ads'
     
     userLoginPhoto.image = [UIImage imageNamed:@"rank.png"];
