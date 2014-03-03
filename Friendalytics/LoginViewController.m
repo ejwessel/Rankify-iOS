@@ -246,8 +246,10 @@ BOOL ADS_ACTIVATED = 1;
                                            }
                                            else{
                                                //update ui on a login fail
-                                               [self performSelectorOnMainThread:@selector(updateUIFail) withObject:nil waitUntilDone:YES];
                                                NSLog(@"Facebook Failed to grant access\n%@", error);
+                                               if(error == nil){
+                                                   [self performSelectorOnMainThread:@selector(updateUIFail) withObject:nil waitUntilDone:YES];
+                                               }
                                            }
                                        }];
 }
@@ -287,6 +289,11 @@ BOOL ADS_ACTIVATED = 1;
 - (void)updateUIFail{
     if(userHaveIntegrataedFacebookAccountSetup){
         integratedLoginLabel.text = @"Login Failed";
+        [[[UIAlertView alloc] initWithTitle:@"User Permissions Disabled"
+                                    message:@"Enable Permissions by going to Settings > Facebook > Rankify and then restarting Rankify"
+                                   delegate:self
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
         [activityIndicator stopAnimating];
     }
 }
@@ -395,6 +402,11 @@ BOOL ADS_ACTIVATED = 1;
         NSLog(@"database login successful");
     }
     else{
+        [[[UIAlertView alloc] initWithTitle:@"Rankify Database Error"
+                                    message:@"Rankify database failed to receive access data."
+                                   delegate:self
+                          cancelButtonTitle:@"Ok"
+                          otherButtonTitles:nil] show];
         NSLog(@"database did not receive login info");
     }
 }
