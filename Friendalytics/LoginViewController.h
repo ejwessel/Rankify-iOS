@@ -15,6 +15,7 @@
 extern NSString const *SITE_PATH;
 extern NSString const *FACEBOOK_APP_ID_VALUE;
 extern BOOL ADS_ACTIVATED;
+extern double const TIMEOUT;
 
 @interface LoginViewController : UIViewController <ADBannerViewDelegate>
 

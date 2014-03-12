@@ -314,6 +314,7 @@
             int index = i + 1;
             topFriends = [NSString stringWithFormat:@"%@\n %i. %@ : %i", topFriends, index, name, rank];
         }
+        //topFriends = [NSString stringWithFormat:@"%@\n Find your top friends through Rankify", topFriends];
     }
     //if there happens to be no friends
     else{

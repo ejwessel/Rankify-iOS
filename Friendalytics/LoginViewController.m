@@ -12,6 +12,7 @@
 NSString const *SITE_PATH = @"http://e-wit.co.uk/rankify/";
 NSString const *FACEBOOK_APP_ID_VALUE = @"1397650163819409"; //this MUST match Friendalytics-Info.plist value for FacebookAppId
 BOOL ADS_ACTIVATED = 1;
+double const TIMEOUT = 180.0;
 
 @interface LoginViewController () <FBLoginViewDelegate>
 @end
@@ -54,7 +55,7 @@ BOOL ADS_ACTIVATED = 1;
         [self hideBanner];
     }
     
-    receiptStoreString = @"https://buy.itunes.apple.com/verifyReceipt";//@"https://sandbox.itunes.apple.com/verifyReceipt";
+    receiptStoreString = @"https://buy.itunes.apple.com/verifyReceipt";//@"https://sandbox.itunes.apple.com/verifyReceipt"; //
     [self getUserReceipt];  //gather whether user has already bought 'remove ads'
     
     userLoginPhoto.image = [UIImage imageNamed:@"rank.png"];
@@ -128,11 +129,19 @@ BOOL ADS_ACTIVATED = 1;
                                                NSLog(@"Error with jsonResponse while verifying receipt");
                                            }
                                            else{
-                                               NSString *productId = [[[[jsonResponse objectForKey:@"receipt"] objectForKey:@"in_app"] objectAtIndex:0] objectForKey:@"product_id"];
-                                               if([productId isEqualToString:@"RankifyRemoveAds"]){
-                                                   NSLog(@"iAd has been disabled");
-                                                   ADS_ACTIVATED = 0; //turn off ads for the rest of the app
-                                                   [self hideBanner]; //hide the banner on the login page
+//                                               NSLog(@"jsonResponse: %@", jsonResponse);
+                                               //we first need to check if the array is empty, if it is then there is no in app data
+                                               if([[[jsonResponse objectForKey:@"receipt"] objectForKey:@"in_app"] count] != 0){
+                                                   NSString *productId = [[[[jsonResponse objectForKey:@"receipt"] objectForKey:@"in_app"] objectAtIndex:0] objectForKey:@"product_id"];
+                                                   if([productId isEqualToString:@"RankifyRemoveAds"]){
+                                                       NSLog(@"iAd has been disabled");
+                                                       ADS_ACTIVATED = 0; //turn off ads for the rest of the app
+                                                       [self hideBanner]; //hide the banner on the login page
+                                                   }
+                                               }
+                                               else{
+                                                   NSLog(@"jsonResponse.receipt.in_app is empty, user has not bought remove ads");
+                                                   //this means we do nothing
                                                }
                                            }
                                        }
@@ -376,7 +385,7 @@ BOOL ADS_ACTIVATED = 1;
     //send url request to database
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, idNumber, token];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:TIMEOUT];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -384,14 +393,14 @@ BOOL ADS_ACTIVATED = 1;
     
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:NO];
-        NSLog(@"database login successful integrated");
+        NSLog(@"database login successful");
     }
 }
 - (void)sendLoginDataToDatabase:(NSString*)userIDNumber with:(NSString*)accessID{
         
     NSString *urlString = [NSString stringWithFormat:@"%@users/login/%@/%@", SITE_PATH, userIDNumber, accessID];
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:TIMEOUT];
     NSURLResponse *response = NULL;
     NSError *requestError = NULL;
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
@@ -399,7 +408,7 @@ BOOL ADS_ACTIVATED = 1;
     
     if([[jsonData objectForKey:@"status"] isEqualToString:@"success"]){
         [self performSelectorOnMainThread:@selector(updateUISuccess) withObject:nil waitUntilDone:NO];
-        NSLog(@"database login successful");
+        NSLog(@"database login successful integrated"); //integrated
     }
     else{
         [[[UIAlertView alloc] initWithTitle:@"Rankify Database Error"
@@ -421,7 +430,7 @@ BOOL ADS_ACTIVATED = 1;
         NSLog(@"getFriendData Started");
         NSString *urlString = [NSString stringWithFormat:@"%@users/doesFriendDataExist/%@", SITE_PATH, userId];
         NSURL *url = [NSURL URLWithString:urlString];
-        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:TIMEOUT];
         NSURLResponse *response = NULL;
         NSError *requestError = NULL;
         NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&requestError];
