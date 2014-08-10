@@ -32,15 +32,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     permissions = [NSArray arrayWithObjects: @"user_videos", @"user_status", @"user_photos", @"user_friends", @"publish_actions", nil];
     //@"user_birthday", @"friends_birthday", @"friends_videos", @"friends_status", @"friends_photos",
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
     NSLog(@"total friends: %i",(int)friendData.count);
     hasFriends = true;
     
@@ -61,14 +62,14 @@
     self.navigationItem.rightBarButtonItem = shareButton;
     
     filteredResults = [[NSMutableArray alloc] initWithCapacity:friendData.count];
-
+    
     //multiple ways to hide the search bar, but this was one was the most direct,
     //I originally wanted to show the search bar and then scroll up and hide it, but ios is being a fucktard
     [self.tableView setContentOffset:CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height)];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-//    self.navigationController.navigationBarHidden = true;
+    //    self.navigationController.navigationBarHidden = true;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -78,7 +79,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    self.navigationController.navigationBarHidden = false;
+    //    self.navigationController.navigationBarHidden = false;
     //determine if we are using the search bar or the table view
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         friendObject = [[filteredResults objectAtIndex:indexPath.row] objectForKey:@"User"];
@@ -140,12 +141,10 @@
                       otherButtonTitles:nil] show];
 }
 
-- (void)postUnsuccessfulWithError:(NSDictionary*)err {
-    
-    NSNumber *errorNum = [err objectForKey:@"code"];
+- (void)postUnsuccessfulWithError:(NSInteger)errorNum {
     
     //if the error code is redundant
-    if([errorNum intValue] == 506){
+    if(errorNum == 506){
         [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
                                     message:@"Facebook disallows pushing of redundant content"
                                    delegate:nil
@@ -153,7 +152,7 @@
                           otherButtonTitles:nil] show];
     }
     else{
-        NSString *error = [NSString stringWithFormat:@"Error: %@", [err objectForKey:@"code"]];
+        NSString *error = [NSString stringWithFormat:@"Error: %li", (long)errorNum];
         [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
                                     message:error
                                    delegate:nil
@@ -210,7 +209,7 @@
                                                                                        requestMethod:SLRequestMethodPOST
                                                                                                  URL:URL
                                                                                           parameters:parameters];
-
+                                               
                                                //get updated access token
                                                ACAccountStore *accountStore = [[ACAccountStore alloc] init];
                                                ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook];
@@ -296,25 +295,25 @@
     NSString *topFriends = @"";
     //if there are at least some friends
     if(friendData.count > 0){
-        
-        topFriends = @"Top 10 Friends:";
-        
         int count = 10;
         //if the friendData is smaller than top 10, adjust
         if(friendData.count < count){
             count = (int)friendData.count;
         }
         
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count-1; i++) {
             NSMutableDictionary *friend = [[friendData objectAtIndex:i] objectForKey:@"User"];
             NSString *name = [friend objectForKey:@"name"];
-            int totalLikes = [[friend objectForKey:@"totalLikes"] integerValue];
-            int totalComments = [[friend objectForKey:@"totalComments"] integerValue];
-            int rank = totalLikes + totalComments;
-            int index = i + 1;
-            topFriends = [NSString stringWithFormat:@"%@\n %i. %@ : %i", topFriends, index, name, rank];
+//            int totalLikes = [[friend objectForKey:@"totalLikes"] integerValue];
+//            int totalComments = [[friend objectForKey:@"totalComments"] integerValue];
+//            int rank = totalLikes + totalComments;
+//            int index = i + 1;
+            topFriends = [NSString stringWithFormat:@"%@ %i.%@, ", topFriends, i+1, name];
         }
-        //topFriends = [NSString stringWithFormat:@"%@\n Find your top friends through Rankify", topFriends];
+        //get last person and add
+        NSMutableDictionary *friend = [[friendData objectAtIndex:count-1] objectForKey:@"User"];
+        NSString *name = [friend objectForKey:@"name"];
+        topFriends = [NSString stringWithFormat:@"%@ %i.%@", topFriends, count, name];
     }
     //if there happens to be no friends
     else{
@@ -330,30 +329,55 @@
 
 //the actual sharing of content after post button authentication is clicked
 - (void)facebookAppShare:(NSString*)topTenFriends{
-    [FBRequestConnection startForPostStatusUpdate:topTenFriends
-                                completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                    if (!error) {
-                                        // Status update posted successfully to Facebook
-                                        NSLog(@"Top 10 Friends published");
-                                        
-                                        [[[UIAlertView alloc] initWithTitle:@"Posted to Facebook"
-                                                                    message:@""
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"Ok"
-                                                          otherButtonTitles:nil] show];
-                                    }
-                                    else {
-                                        // An error occurred, we need to handle the error
-                                        // See: https://developers.facebook.com/docs/ios/errors
-                                        NSLog([NSString stringWithFormat:@"%@", error.description]);
-                                        
-                                        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
-                                                                    message:@"Facebook disallows pushing of redundant content"
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"Ok"
-                                                          otherButtonTitles:nil] show];
-                                    }
-                                }];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                   @"Rankify", @"name",
+                                   @"Top 10 Friends:", @"caption",
+                                   topTenFriends, @"description",
+                                   @"http://e-wit.co.uk/rankifyapp/index.php", @"link",
+                                   nil];
+    
+    [FBRequestConnection startWithGraphPath:@"/me/feed"
+                                 parameters:params
+                                 HTTPMethod:@"POST"
+                          completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                              if (!error) {
+                                  [self postSuccessful];
+                              } else {
+                                  
+                                  NSInteger errorNum = error.code;
+                                  [self postUnsuccessfulWithError:errorNum];
+                                  NSLog(@"%@", error.description);
+                              }
+                          }];
+    //    [FBRequestConnection startForPostStatusUpdate:topTenFriends
+    //                                completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+    //                                    if (!error) {
+    //                                        // Status update posted successfully to Facebook
+    //                                        NSLog(@"Top 10 Friends published");
+    //
+    ////                                        [[[UIAlertView alloc] initWithTitle:@"Posted to Facebook"
+    ////                                                                    message:@""
+    ////                                                                   delegate:nil
+    ////                                                          cancelButtonTitle:@"Ok"
+    ////                                                          otherButtonTitles:nil] show];
+    //
+    //                                        [self postSuccessful];
+    //                                    }
+    //                                    else {
+    //                                        // An error occurred, we need to handle the error
+    //                                        // See: https://developers.facebook.com/docs/ios/errors
+    //                                        NSLog([NSString stringWithFormat:@"%@", error.description]);
+    //
+    //                                        //Redundant functionality
+    //                                        //can be fixed if we call postUnsuccessfulWithError and change the parameters around
+    //                                        [[[UIAlertView alloc] initWithTitle:@"Error posting to Facebook"
+    //                                                                    message:@"Facebook disallows pushing of redundant content"
+    //                                                                   delegate:nil
+    //                                                          cancelButtonTitle:@"Ok"
+    //                                                          otherButtonTitles:nil] show];
+    //                                    }
+    //                                }];
 }
 
 #pragma mark Content Filtering
@@ -415,7 +439,7 @@
     int rank = [[[element objectForKey:@"User"] objectForKey:@"totalLikes"] intValue] + [[[element objectForKey:@"User"] objectForKey:@"totalComments"] intValue];
     NSString *rankNumber = [NSString stringWithFormat:@"%d", rank];
     NSString *urlPath = [[element objectForKey:@"User"] objectForKey:@"profilePictureSmall"];
-        
+    
     cell.nameLabel.text = fullName;
     cell.rankLabel.text = rankNumber;
     cell.rankLabel.textColor = self.navigationController.navigationBar.tintColor;
@@ -426,54 +450,54 @@
 }
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
 
 /*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
 
 /*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
 
 /*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
+ #pragma mark - Navigation
+ 
+ // In a story board-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ 
  */
 
 @end
