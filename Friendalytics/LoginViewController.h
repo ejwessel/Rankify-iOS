@@ -14,6 +14,7 @@
 
 extern NSString const *SITE_PATH;
 extern NSString const *FACEBOOK_APP_ID_VALUE;
+extern NSString const *RANKIFY_WEBSITE;
 extern BOOL ADS_ACTIVATED;
 extern double const TIMEOUT;
 

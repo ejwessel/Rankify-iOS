@@ -201,7 +201,18 @@
                                            if (granted){
                                                
                                                // Create the parameters dictionary and the URL (!use HTTPS!)
-                                               NSDictionary *parameters = @{@"message" : [self getTopFriends]};
+                                               NSDictionary *parameters = @{@"name" : @"Rankify",
+                                                                            @"caption" : @"Top 10 Friends:",
+                                                                            @"description" : [self getTopFriends],
+                                                                            @"link" : RANKIFY_WEBSITE
+//                                                                            @"message" : [self getTopFriends],
+                                                                            };
+//
+//                                               [NSMutableDictionary dictionaryWithObjectsAndKeys:
+//                                                @"Rankify", @"name",
+//                                                @"Top 10 Friends:", @"caption",
+//                                                topTenFriends, @"description",
+//                                                @"http://e-wit.co.uk/rankifyapp/index.html", @"link",
                                                NSURL *URL = [NSURL URLWithString:@"https://graph.facebook.com/me/feed"];
                                                
                                                // Create request
@@ -334,7 +345,7 @@
                                    @"Rankify", @"name",
                                    @"Top 10 Friends:", @"caption",
                                    topTenFriends, @"description",
-                                   @"http://e-wit.co.uk/rankifyapp/index.php", @"link",
+                                   RANKIFY_WEBSITE, @"link",
                                    nil];
     
     [FBRequestConnection startWithGraphPath:@"/me/feed"
