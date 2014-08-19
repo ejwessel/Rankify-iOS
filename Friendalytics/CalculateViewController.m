@@ -84,7 +84,6 @@
     retrievingStatus.hidden = true;
     
     if(recentlyPulled){
-        [self enableUI];
         [self getFriendData];
     }
     else{
