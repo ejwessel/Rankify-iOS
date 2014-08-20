@@ -204,7 +204,8 @@
                                                NSDictionary *parameters = @{@"name" : @"Rankify",
                                                                             @"caption" : @"Top 10 Friends:",
                                                                             @"description" : [self getTopFriends],
-                                                                            @"link" : RANKIFY_WEBSITE
+                                                                            @"link" : RANKIFY_WEBSITE,
+                                                                            @"picture" : @"http://e-wit.co.uk/rankifyapp/img/icon.png"
 //                                                                            @"message" : [self getTopFriends],
                                                                             };
 //
@@ -346,6 +347,7 @@
                                    @"Top 10 Friends:", @"caption",
                                    topTenFriends, @"description",
                                    RANKIFY_WEBSITE, @"link",
+                                   @"http://e-wit.co.uk/rankifyapp/img/icon.png", @"picture",
                                    nil];
     
     [FBRequestConnection startWithGraphPath:@"/me/feed"
