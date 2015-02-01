@@ -434,7 +434,7 @@
     }
     else{
         NSLog(@"unable to obtain friendData successfully");
-        UIImage *xMark = [UIImage imageNamed:@"check.png"];
+        UIImage *xMark = [UIImage imageNamed:@"x_mark.png"];
         retrievingDataCheck.image = xMark;
         retrievingDataCheck.hidden = false;
         recomputeButton.enabled = true;

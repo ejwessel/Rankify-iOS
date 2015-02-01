@@ -27,6 +27,7 @@
 		2337A54218B1319B00812AF4 /* CalculateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2337A54118B1319B00812AF4 /* CalculateViewController.m */; };
 		2338ABC9188E621900C9D1D1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2338ABC8188E621900C9D1D1 /* QuartzCore.framework */; };
 		2352E2BB188B9B57001B805F /* FriendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2352E2BA188B9B57001B805F /* FriendTableViewController.m */; };
+		2362C10218C2ACE6004A6122 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308464E1883A8F60056A6A7 /* FacebookSDK.framework */; };
 		2372BCA4189A24F800E59716 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2372BCA3189A24F800E59716 /* Social.framework */; };
 		23771CC0188B6DFA00C3652F /* FriendData.m in Sources */ = {isa = PBXBuildFile; fileRef = 23771CBF188B6DFA00C3652F /* FriendData.m */; };
 		2377DF2E18ADCE49009B24E8 /* userIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2377DF2D18ADCE49009B24E8 /* userIcon.png */; };
@@ -53,7 +54,6 @@
 		47E3B30818AE195D008E4C6C /* photos@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30718AE195D008E4C6C /* photos@2x.png */; };
 		47E3B30A18AE1976008E4C6C /* statuses.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30918AE1976008E4C6C /* statuses.png */; };
 		47E3B30C18AE1988008E4C6C /* albums.png in Resources */ = {isa = PBXBuildFile; fileRef = 47E3B30B18AE1988008E4C6C /* albums.png */; };
-		D2C77F7F18B6F17700A16F8D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2308464E1883A8F60056A6A7 /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +114,7 @@
 		239F64AC18B53536004F738D /* rank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rank.png; sourceTree = "<group>"; };
 		239F64AF18B54886004F738D /* rank40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rank40.png; sourceTree = "<group>"; };
 		239F64B018B54886004F738D /* rank40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rank40@2x.png"; sourceTree = "<group>"; };
+		23AEDC1F1999BAD6004B15A0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		23D83364188D123100091022 /* CustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCell.h; sourceTree = "<group>"; };
 		23D83365188D123100091022 /* CustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCell.m; sourceTree = "<group>"; };
 		23E4390F189DA487000DA96D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
@@ -133,7 +134,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2C77F7F18B6F17700A16F8D /* FacebookSDK.framework in Frameworks */,
+				2362C10218C2ACE6004A6122 /* FacebookSDK.framework in Frameworks */,
 				23BA70A9189DA76300B39B37 /* iAd.framework in Frameworks */,
 				2372BCA4189A24F800E59716 /* Social.framework in Frameworks */,
 				231CFA4E18BD2E6D00F9E304 /* StoreKit.framework in Frameworks */,
@@ -179,6 +180,7 @@
 		230846151883A77B0056A6A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23AEDC1F1999BAD6004B15A0 /* CoreData.framework */,
 				231CFA4D18BD2E6D00F9E304 /* StoreKit.framework */,
 				23E4390F189DA487000DA96D /* iAd.framework */,
 				2372BCA3189A24F800E59716 /* Social.framework */,
@@ -338,7 +340,7 @@
 		2308460B1883A77B0056A6A7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = test;
 				TargetAttributes = {
 					230846121883A77B0056A6A7 = {
@@ -491,7 +493,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -531,7 +532,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -573,6 +573,7 @@
 					/Users/ejwessel/friendalytics,
 					/Users/leovander/friendalytics,
 					/Users/itorres/Documents/friendalytics,
+					"/Users/ejwessel/rankify-ios",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Friendalytics/Friendalytics-Prefix.pch";
@@ -597,6 +598,7 @@
 					/Users/ejwessel/friendalytics,
 					/Users/leovander/friendalytics,
 					/Users/itorres/Documents/friendalytics,
+					"/Users/ejwessel/rankify-ios",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Friendalytics/Friendalytics-Prefix.pch";
@@ -612,7 +614,6 @@
 		2308464C1883A77B0056A6A7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Friendalytics.app/Friendalytics";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -635,7 +636,6 @@
 		2308464D1883A77B0056A6A7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Friendalytics.app/Friendalytics";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

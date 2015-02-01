@@ -15,6 +15,6 @@
 //@property (strong, nonatomic) IBOutlet UIWebView *webView;
 @property (strong, nonatomic) IBOutlet UIButton *supportButton;
 @property (strong, nonatomic) IBOutlet UIButton *removeAdsButton;
-#define URLEMail @"mailto:support.rankify@e-wit.co.uk?subject=Rankify Support"
+#define URLEMail @"mailto:ejwessel@gmail.com?subject=Rankify Support"
 
 @end
