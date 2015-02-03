@@ -15,7 +15,7 @@
 @implementation AboutViewController
 @synthesize versionLabel;
 @synthesize supportButton;
-@synthesize removeAdsButton;
+//@synthesize removeAdsButton;
 //@synthesize webView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
@@ -26,14 +26,14 @@
     return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    if(!ADS_ACTIVATED){
-        [removeAdsButton setTitle:@"Premium Version" forState:UIControlStateNormal];
-        removeAdsButton.enabled = false;
-        //removeAdsButton.backgroundColor = [UIColor colorWithRed:252.0/255.0 green:250.0/255.0 blue:0 alpha:1.0]; //gold color for premium?
-        removeAdsButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    }
-}
+//- (void)viewWillAppear:(BOOL)animated{
+////    if(!ADS_ACTIVATED){
+////        [removeAdsButton setTitle:@"Premium Version" forState:UIControlStateNormal];
+////        removeAdsButton.enabled = false;
+////        //removeAdsButton.backgroundColor = [UIColor colorWithRed:252.0/255.0 green:250.0/255.0 blue:0 alpha:1.0]; //gold color for premium?
+////        removeAdsButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+////    }
+//}
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -49,10 +49,10 @@
     supportButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
     [supportButton addTarget:self action:@selector(messageButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     
-    removeAdsButton.layer.borderWidth = 1;
-    removeAdsButton.layer.cornerRadius = 5;
-    removeAdsButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
-    [removeAdsButton addTarget:self action:@selector(removeAdsButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+//    removeAdsButton.layer.borderWidth = 1;
+//    removeAdsButton.layer.cornerRadius = 5;
+//    removeAdsButton.layer.borderColor = self.navigationController.navigationBar.tintColor.CGColor;
+//    [removeAdsButton addTarget:self action:@selector(removeAdsButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)messageButtonClicked{
@@ -83,9 +83,9 @@
     
     // Finally, remove the transaction from the payment queue.
 
-    [removeAdsButton setTitle:@"Premium Version" forState:UIControlStateNormal];
-    removeAdsButton.enabled = false;
-    removeAdsButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//    [removeAdsButton setTitle:@"Premium Version" forState:UIControlStateNormal];
+//    removeAdsButton.enabled = false;
+//    removeAdsButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
     ADS_ACTIVATED = 0; //turn off ads for rest of app
     [[[UIAlertView alloc] initWithTitle:@"Ads Removed" message:@"Thank you" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];

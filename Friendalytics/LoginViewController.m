@@ -36,12 +36,12 @@ double const TIMEOUT = 180.0;
 @synthesize friendData;
 @synthesize receiptStoreString;
 
-- (void)viewWillAppear:(BOOL)animated{
-    //hides ad banner, this is mainly after coming back from the about viewController
-    if(!ADS_ACTIVATED){
-        [self hideBanner];
-    }
-}
+//- (void)viewWillAppear:(BOOL)animated{
+//    //hides ad banner, this is mainly after coming back from the about viewController
+//    if(!ADS_ACTIVATED){
+//        [self hideBanner];
+//    }
+//}
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -320,9 +320,9 @@ double const TIMEOUT = 180.0;
     [calculateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-//    self.navigationController.navigationBarHidden = true;
-}
+//- (void)viewDidAppear:(BOOL)animated{
+////    self.navigationController.navigationBarHidden = true;
+//}
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
     //[self updateUISuccess];

@@ -177,14 +177,6 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wQJ-gc-2my">
-                                        <rect key="frame" x="98" y="81" width="124" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="Futura-MediumItalic" family="Futura" pointSize="15"/>
-                                        <state key="normal" title="REMOVE ADS">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -197,7 +189,6 @@
                     </scrollView>
                     <navigationItem key="navigationItem" title="About" id="fu1-LH-X2u"/>
                     <connections>
-                        <outlet property="removeAdsButton" destination="wQJ-gc-2my" id="y4y-bX-vYZ"/>
                         <outlet property="supportButton" destination="RUT-oC-71w" id="GBt-TB-fpa"/>
                         <outlet property="versionLabel" destination="7aq-Ae-nft" id="PaS-Tq-IK4"/>
                     </connections>
